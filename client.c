@@ -1,13 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <strings.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
+#include "clnt.h"
 
 char* ipAddr;
 char* portNo;
@@ -47,12 +38,10 @@ void create(char* projectName)
 		i++;
 		p++;
 	}
-	printf("%d\n", strlen(buffer));
+	printf("%lu\n", strlen(buffer));
 	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 
 }
-
-// DEVO IS AN ASSHOLE
 
 void connecter(int fileSize)
 {
