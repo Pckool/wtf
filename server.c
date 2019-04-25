@@ -98,7 +98,7 @@ int newUser(char* buffer){
 	//create a new thread
 	printf("New User connected...\n");
 	pthread_t thread_id;
-	pthread_create(&thread_id, NULL, myThreadFun, NULL);
+	pthread_create(&thread_id, NULL, newUserThread, NULL);
 
 	pthread_join(thread_id, NULL);
 
