@@ -1,20 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/stat.h>
-#include <unistd.h>   
+#include "srv.h"
 
-void error(char *msg)
-{
+void error(char *msg){
 	perror(msg);
 	exit(1);
 }
 
-void create(char* buffer)
-{
+void create(char* buffer){
 	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
 	int p = 6;
@@ -34,10 +25,10 @@ int main(int argc, char* argv[])
 /*Most of this code except like two lines near the bottom is from the lecture 4/11/19
  * server.c */
 	int sockfd = -1;
-	int newsockfd = -1;	
-	int portno = -1;	
-	int clilen = -1;	 
-	int n = -1;		
+	int newsockfd = -1;
+	int portno = -1;
+	int clilen = -1;
+	int n = -1;
 	char buffer[256];
 	struct sockaddr_in serverAddressInfo;
 	struct sockaddr_in clientAddressInfo;
@@ -71,22 +62,53 @@ int main(int argc, char* argv[])
 	{
 		error("ERROR on accept");
 	}
-	bzero(buffer,256);
-	n = read(newsockfd,buffer,255);
-	if(n < 0)
-	{
-		error("ERROR reading from socket");
+
+	// Main loop of the server. This will never exit until we recieve ctrl-c
+	while(1){
+		bzero(buffer,256);
+		n = read(newsockfd,buffer,255);
+		if(n < 0)
+		{
+			error("ERROR reading from socket");
+		}
+		else{
+			int commStat; // the status of the command (if it was successful or not)
+			printf("Here is the message: %s\n", buffer);
+			n = write(newsockfd, "I got your message", 18);
+			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
+
+			if(n < 0)
+			{
+				error("ERROR writing to socket");
+			}
+
+			if(commStat < 0){
+				printf("Something went wrong with the user's requested command...\n");
+			}
+		}
+
+
 	}
 
-	printf("Here is the message: %s\n", buffer);
-	n = write(newsockfd, "I got your message", 18);
-	create(buffer);
-
-	if(n < 0)
-	{
-		error("ERROR writing to socket");
-	}
-	
 	return 0;
-	
+
+}
+
+int newUser(char* buffer){
+	//create a new thread
+	printf("New User connected...\n");
+	pthread_t thread_id;
+	pthread_create(&thread_id, NULL, myThreadFun, NULL);
+
+	pthread_join(thread_id, NULL);
+
+	if(true){
+		return 0;
+	}
+}
+
+void *newUserThread(void *vargp){
+	printf("Created a new Thread...\n");
+	create(buffer);
+	return NULL;
 }
