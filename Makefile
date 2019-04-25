@@ -8,7 +8,10 @@ CFLAGS=-O
 all: Client Server
 
 Client: client.c addremove.c clnt.h
-	$(CC) -o Client client.c
+	$(CC) -o $@ client.c
 
 Server: server.c srv.h
-	$(CC) -o Server server.c
+	$(CC) -o $@ server.c
+
+clean:
+	rm *.o Server Client
