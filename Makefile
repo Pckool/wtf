@@ -16,7 +16,7 @@ Client: client.o addremove.o
 client.o: client.h global.h
 
 Server: server.o
-	$(CC) -o $@ server.o
+	$(CC) -o $@ -pthread server.o
 server.o: server.h global.h
 
 clean:
