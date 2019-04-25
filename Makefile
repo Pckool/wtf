@@ -11,7 +11,7 @@ CFLAGS=-O
 
 all: Client Server
 
-Client: client.o addremove.o
+Client: client.o addremove.o configure.o
 	$(CC) -o $@ $^
 client.o: client.h global.h
 
