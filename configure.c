@@ -1,4 +1,4 @@
-#include "clnt.h"
+#include "client.h"
 
 void configure(char *ip, unsigned port){
     // look for a .config file

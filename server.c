@@ -1,4 +1,4 @@
-#include "srv.h"
+#include "server.h"
 
 void error(char *msg){
 	perror(msg);

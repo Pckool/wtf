@@ -1,4 +1,4 @@
-#include "clnt.h"
+#include "client.h"
 
 char* ipAddr;
 char* portNo;
