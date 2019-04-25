@@ -22,8 +22,9 @@ void create(char* buffer){
 }
 int main(int argc, char* argv[])
 {
-/*Most of this code except like two lines near the bottom is from the lecture 4/11/19
- * server.c */
+
+	/*Most of this code except like two lines near the bottom is from the lecture 4/11/19
+ 	* server.c */
 	int sockfd = -1;
 	int newsockfd = -1;
 	int portno = -1;
@@ -32,8 +33,7 @@ int main(int argc, char* argv[])
 	char buffer[256];
 	struct sockaddr_in serverAddressInfo;
 	struct sockaddr_in clientAddressInfo;
-	if(argc < 2)
-	{
+	if(argc < 2){
 		fprintf(stderr,"ERROR, no port provided\n");
 		exit(1);
 	}
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 	{
 		error("ERROR on accept");
 	}
-
+	printf("Server Started...\n");
 	// Main loop of the server. This will never exit until we recieve ctrl-c
 	while(1){
 		bzero(buffer,256);
