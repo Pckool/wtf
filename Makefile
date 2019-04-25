@@ -3,7 +3,7 @@ DEPS = global.h client.h server.h
 CFLAGS=-O
 
 %.o: %.c $(DEPS)
-	$(CC) -c -o $@ $^ $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 
 
@@ -18,6 +18,6 @@ client.o: client.h global.h
 Server: server.o
 	$(CC) -o $@ server.o
 server.o: server.h global.h
-	
+
 clean:
 	rm *.o Server Client
