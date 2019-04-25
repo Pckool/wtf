@@ -1,6 +1,9 @@
 #ifndef SRV_H
 #define SRV_H
 
+#define true 1
+#define false 0
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
