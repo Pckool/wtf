@@ -98,7 +98,7 @@ int newUser(char* buffer){
 	//create a new thread
 	printf("New User connected...\n");
 	pthread_t thread_id;
-	pthread_create(&thread_id, NULL, newUserThread, NULL);
+	pthread_create(&thread_id, NULL, newUserThread, (void*) &buffer);
 
 	pthread_join(thread_id, NULL);
 
@@ -107,8 +107,8 @@ int newUser(char* buffer){
 	}
 }
 
-void *newUserThread(void *vargp){
+void *newUserThread(void *buffer){
 	printf("Created a new Thread...\n");
-	create(buffer);
+	create((char*) buffer);
 	return NULL;
 }
