@@ -19,7 +19,7 @@ void create(char* projectName);
 void connecter(int fileSize);
 
 // Configure
-void configure(char *ip, unsigned port);
+// void configure(char *ip, unsigned port);
 int getFile();
 
 #endif

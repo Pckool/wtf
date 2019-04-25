@@ -10,9 +10,8 @@ void error(char *msg){
 	exit(1);
 }
 
-void configure(char* ip, char* port)
-{
-	int fp = open("configure", O_CREAT | O_WRONLY, 600);
+void configure(char* ip, char* port){
+	int fp = open(".configure", O_CREAT | O_WRONLY, 600);
 	printf("%d\n", fp);
 	write(fp, ip, strlen(ip));
 	write (fp, "\n", 1);
@@ -26,7 +25,7 @@ void create(char* projectName)
  */
 	struct stat *buf; //Needed to check the size of the config file
 	buf = malloc(sizeof(struct stat));
-	char* fp = "configure";
+	char* fp = ".configure";
         stat(fp, buf); //Gets stats about the file and puts it in the struct buf
         int size = buf->st_size;
 	connecter(size); //Takes the size and goes to connecter
@@ -45,7 +44,7 @@ void create(char* projectName)
 
 void connecter(int fileSize)
 {
-        int fd = open("configure", O_RDONLY); //Opens configure file to read only
+        int fd = open(".configure", O_RDONLY); //Opens configure file to read only
         printf("%d\n", fd); //Delete before submit
         int portno;
         struct sockaddr_in serverAddressInfo;
@@ -96,7 +95,7 @@ int main(int argc, char* argv[])
 		error("Error. Invalid number of inputs");
 	}
 
-	if (strcmp(argv[1], "configure") == 0){
+	if (strcmp(argv[1], ".configure") == 0){
 		printf("%s\n"," Configuring the IP and port number");
 		configure(argv[2], argv[3]);
 	}
