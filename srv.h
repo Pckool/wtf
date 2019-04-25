@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <pthread.h> 
 
 void *newUserThread(void *vargp);
 int newUser(char* buffer);
