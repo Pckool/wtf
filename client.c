@@ -10,13 +10,13 @@ void error(char *msg){
 	exit(1);
 }
 
-void configure(char* ip, char* port){
-	int fp = open(".configure", O_CREAT | O_WRONLY, 600);
-	printf("%d\n", fp);
-	write(fp, ip, strlen(ip));
-	write (fp, "\n", 1);
-	write(fp, port, strlen(port));
-}
+// void configure(char* ip, char* port){
+// 	int fp = open(".configure", O_CREAT | O_WRONLY, 600);
+// 	printf("%d\n", fp);
+// 	write(fp, ip, strlen(ip));
+// 	write (fp, "\n", 1);
+// 	write(fp, port, strlen(port));
+// }
 
 void create(char* projectName)
 {
