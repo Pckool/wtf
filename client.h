@@ -17,12 +17,17 @@
 
 // main
 void error(char *msg);
-void configure(char* ip, char* port);
+
 void create(char* projectName);
 void connecter(int fileSize);
 
 // Configure
-// void configure(char *ip, unsigned port);
+void configure(char* ip, char* port);
 int getFile();
+
+// Add/Remove
+
+// Helping Function
+int findDir(char *dirname);
 
 #endif
