@@ -4,7 +4,6 @@ void error(char *msg){
 	perror(msg);
 	exit(1);
 }
-
 void create(char* buffer){
 	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
@@ -19,6 +18,11 @@ void create(char* buffer){
 	if(!check){ //If check passes
 		printf("%s\n", "Directory Created!");
 	}
+	DIR *dir;
+	dir = opendir(proj);
+	char path[PATH_MAX];
+	snprintf(path, PATH_MAX, "%s/%s", proj, ".Manifest");
+	int fd = open(path, O_CREAT, 600);
 }
 int main(int argc, char* argv[])
 {
@@ -73,10 +77,9 @@ int main(int argc, char* argv[])
 		}
 		else{
 			int commStat; // the status of the command (if it was successful or not)
-			printf("Here is the message: %s\n", buffer);
-			n = write(newsockfd, "I got your message", 18);
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
-
+			create(buffer);
+			bzero(buffer,256);
 			if(n < 0)
 			{
 				error("ERROR writing to socket");
@@ -86,8 +89,6 @@ int main(int argc, char* argv[])
 				printf("Something went wrong with the user's requested command...\n");
 			}
 		}
-
-
 	}
 
 	return 0;

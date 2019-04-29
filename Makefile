@@ -1,6 +1,6 @@
 CC=gcc
 DEPS = global.h client.h server.h
-CFLAGS=-O
+CFLAGS= -O
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -12,7 +12,7 @@ CFLAGS=-O
 all: Client Server
 
 Client: client.o addremove.o configure.o
-	$(CC) -o $@ $^
+	$(CC) -o  $@ client.o -lssl -lcrypto addremove.o configure.o
 client.o: client.h global.h
 
 Server: server.o

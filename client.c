@@ -1,7 +1,7 @@
 #include "client.h"
 
-char* ipAddr;
-char* portNo;
+//char* ipAddr;
+//char* portNo;
 int sockfd = -1; //File Descriptor for socket
 
 
@@ -95,4 +95,8 @@ int main(int argc, char* argv[])
 	if (strcmp(argv[1], "create") == 0){
 		create(argv[2]);
 	}
+	if (strcmp(argv[1], "add") == 0){
+                add(argv[2], argv[3]);
+        }
+
 }

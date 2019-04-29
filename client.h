@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <openssl/sha.h>
 
 // main
 void error(char *msg);
