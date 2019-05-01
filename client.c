@@ -36,16 +36,15 @@ void create(char* projectName)
 	printf("%s\n", message);
 }
 
-void connecter(int fileSize)
-{
-        int fd = open(".configure", O_RDONLY); //Opens configure file to read only
+void connecter(int fileSize){
+    int fd = open(".configure", O_RDONLY); //Opens configure file to read only
 	if (fd == -1){
 		error("Error. Configure file does not exist");
 	}
-        int portno;
-        struct sockaddr_in serverAddressInfo;
-        struct hostent *serverIPAddress;
-        char buffer[256];
+    int portno;
+    struct sockaddr_in serverAddressInfo;
+    struct hostent *serverIPAddress;
+    char buffer[256];
 	read(fd, buffer, fileSize);
 	int ipSize = 0; //Need to do alot of bullshit here to read the file and check its size to then be able to split it to IP address and port.
 	int i = 0;
@@ -74,7 +73,9 @@ void connecter(int fileSize)
 	bzero((char*)&serverAddressInfo,sizeof(serverAddressInfo)); //zero out. After this line I really dont get whats happening but it works
 	serverAddressInfo.sin_family = AF_INET;
 	serverAddressInfo.sin_port = htons(port);
+	printf("here6\n");
 	bcopy((char *)serverIPAddress->h_addr, (char *)&serverAddressInfo.sin_addr.s_addr, serverIPAddress->h_length);
+	printf("here7\n");
 	if (connect(sockfd,(struct sockaddr *)&serverAddressInfo,sizeof(serverAddressInfo)) < 0)
 	{
 		error("ERROR connecting");
@@ -88,7 +89,7 @@ int main(int argc, char* argv[])
 		error("Error. Invalid number of inputs");
 	}
 
-	if (strcmp(argv[1], ".configure") == 0){
+	if (strcmp(argv[1], "configure") == 0){
 		printf("%s\n"," Configuring the IP and port number");
 		configure(argv[2], argv[3]);
 	}
@@ -97,7 +98,7 @@ int main(int argc, char* argv[])
 		create(argv[2]);
 	}
 	if (strcmp(argv[1], "add") == 0){
-                add(argv[2], argv[3]);
-        }
+        add(argv[2], argv[3]);
+    }
 
 }

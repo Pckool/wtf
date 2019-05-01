@@ -67,16 +67,20 @@ int main(int argc, char* argv[])
 	{
 		error("ERROR on binding");
 	}
-	listen(sockfd, 0);
-	clilen = sizeof(clientAddressInfo);
-	newsockfd = accept(sockfd, (struct sockaddr *)&clientAddressInfo, &clilen);
-	if (newsockfd < 0)
-	{
-		error("ERROR on accept");
-	}
-	printf("Server Started...\n");
+
 	// Main loop of the server. This will never exit until we recieve ctrl-c
-	while(k == 1){
+	while(k == true){
+		printf("Server Started...\n");
+
+		listen(sockfd, 0);
+		clilen = sizeof(clientAddressInfo);
+		newsockfd = accept(sockfd, (struct sockaddr *)&clientAddressInfo, &clilen);
+		if (newsockfd < 0)
+		{
+			error("ERROR on accept");
+		}
+		
+		printf("In the server loop\n");
 		bzero(buffer,256);
 		n = read(newsockfd,buffer,255);
 		if(n < 0)
