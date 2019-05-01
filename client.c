@@ -15,6 +15,8 @@ void create(char* projectName)
 /* The reason why we have this code here to check the size of the configure file is because
  * when I had this in the connecter function it didn't work. I moved it here and it started to.
  */
+	int n = -1;
+	char message[256];
 	struct stat *buf; //Needed to check the size of the config file
 	buf = malloc(sizeof(struct stat));
 	char* fp = ".configure";
@@ -29,15 +31,17 @@ void create(char* projectName)
 		i++;
 		p++;
 	}
-	printf("%lu\n", strlen(buffer));
 	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
-
+	n = read(sockfd, message,255);
+	printf("%s\n", message);
 }
 
 void connecter(int fileSize)
 {
         int fd = open(".configure", O_RDONLY); //Opens configure file to read only
-        printf("%d\n", fd); //Delete before submit
+	if (fd == -1){
+		error("Error. Configure file does not exist");
+	}
         int portno;
         struct sockaddr_in serverAddressInfo;
         struct hostent *serverIPAddress;
@@ -49,24 +53,21 @@ void connecter(int fileSize)
 		ipSize++;
 		i++;
 	}
-	printf("%d\n", ipSize); //Delete before submit
 	char* ipAddress = (char *) malloc(ipSize - 1);
 	i = 0;
 	while (i < ipSize){
 		ipAddress[i] = buffer[i];
 		i++;
 	}
-	printf("%s\n", ipAddress); //Delete before submit
 	int portSize = fileSize - (ipSize + 2);
 	i = 0;
 	int t = ipSize + 1;
 	char* portNum = (char *) malloc(portSize);
-	while (i < portSize){
+	while (i < portSize + 1){
 		portNum[i] = buffer[t];
 		i++;
 		t++;
 	}
-	printf("%s\n", portNum); //Delete before submit
 	int port = atoi(portNum); //Convert string to int
 	serverIPAddress = gethostbyname(ipAddress); //Resolve IP from hostname
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);

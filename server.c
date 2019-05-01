@@ -1,28 +1,35 @@
 #include "server.h"
 
+
 void error(char *msg){
 	perror(msg);
 	exit(1);
 }
-void create(char* buffer){
+
+
+char* create(char* buffer){
 	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
 	int p = 6;
+	int x = 0;
 	while (i < sizeof(proj)){
 		proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
 		i++;
 		p++;
 	}
-	printf("%s\n", proj);
-	int check = mkdir(proj, S_IRWXU); //tries to make the directory
+	mkdir(".repo", S_IRWXU); //Makes a .repo directory where the server will store all the projects.
+	char path[PATH_MAX];
+	snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
+	int check = mkdir(path, S_IRWXU); //tries to make the directory
+	bzero(path, PATH_MAX);
 	if(!check){ //If check passes
 		printf("%s\n", "Directory Created!");
 	}
 	DIR *dir;
 	dir = opendir(proj);
-	char path[PATH_MAX];
-	snprintf(path, PATH_MAX, "%s/%s", proj, ".Manifest");
-	int fd = open(path, O_CREAT, 600);
+	snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
+	int fd = open(path, O_CREAT, 0600);
+	char* sendback[2];
 }
 int main(int argc, char* argv[])
 {
@@ -34,6 +41,7 @@ int main(int argc, char* argv[])
 	int portno = -1;
 	int clilen = -1;
 	int n = -1;
+	int k = 1;
 	char buffer[256];
 	struct sockaddr_in serverAddressInfo;
 	struct sockaddr_in clientAddressInfo;
@@ -68,7 +76,7 @@ int main(int argc, char* argv[])
 	}
 	printf("Server Started...\n");
 	// Main loop of the server. This will never exit until we recieve ctrl-c
-	while(1){
+	while(k == 1){
 		bzero(buffer,256);
 		n = read(newsockfd,buffer,255);
 		if(n < 0)
@@ -79,7 +87,8 @@ int main(int argc, char* argv[])
 			int commStat; // the status of the command (if it was successful or not)
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
 			create(buffer);
-			bzero(buffer,256);
+			n = write(newsockfd, buffer, 255);
+			bzero(buffer, 255);
 			if(n < 0)
 			{
 				error("ERROR writing to socket");
@@ -100,7 +109,6 @@ int newUser(char* buffer){
 	printf("New User connected...\n");
 	pthread_t thread_id;
 	pthread_create(&thread_id, NULL, newUserThread, (void*) &buffer);
-
 	pthread_join(thread_id, NULL);
 
 	if(true){

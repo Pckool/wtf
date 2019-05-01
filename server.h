@@ -18,7 +18,7 @@
 
 void *newUserThread(void *vargp);
 int newUser(char* buffer);
-void create(char* buffer);
+char* create(char* buffer);
 void error(char *msg);
 
 #endif

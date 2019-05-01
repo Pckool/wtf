@@ -15,6 +15,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <openssl/sha.h>
+#include <dirent.h>
 
 // main
 void error(char *msg);

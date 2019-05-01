@@ -2,18 +2,20 @@
 
 void add(char* proj, char* file){
 	char path[2000];
-	snprintf(path, 2000, "%s/%s", proj, ".Manifest");
-	int fd = open(file, O_RDWR);
+	snprintf(path, 2000, "%s/%s", proj, file);
+	int fd = open(path, O_RDWR);
 	char buffer[2000];
 	read(fd, buffer, 2000);
+	printf("%s\n", buffer);
 	size_t length = strlen(buffer);
 	unsigned char hash[SHA_DIGEST_LENGTH];
 	SHA1(buffer, length, hash);
-	int x = 0;
-	for (x = 0; x < SHA_DIGEST_LENGTH; x++){
-		printf("%02x", hash[x]);
-	}
-	putchar('\n');
+	snprintf(path, 2000, "%s/%s", proj, ".Manifest");
+	close(fd);
+	fd = open(path, O_RDWR);
+	write(fd, file, strlen(file));
+	write(fd, "\t", 1);
+	write(fd, hash, SHA_DIGEST_LENGTH);
 	
 }
 
