@@ -62,7 +62,7 @@ void connecter(int fileSize){
 	i = 0;
 	int t = ipSize + 1;
 	char* portNum = (char *) malloc(portSize);
-	while (i < portSize + 1){
+	while (i < portSize){
 		portNum[i] = buffer[t];
 		i++;
 		t++;
@@ -73,9 +73,7 @@ void connecter(int fileSize){
 	bzero((char*)&serverAddressInfo,sizeof(serverAddressInfo)); //zero out. After this line I really dont get whats happening but it works
 	serverAddressInfo.sin_family = AF_INET;
 	serverAddressInfo.sin_port = htons(port);
-	printf("here6\n");
 	bcopy((char *)serverIPAddress->h_addr, (char *)&serverAddressInfo.sin_addr.s_addr, serverIPAddress->h_length);
-	printf("here7\n");
 	if (connect(sockfd,(struct sockaddr *)&serverAddressInfo,sizeof(serverAddressInfo)) < 0)
 	{
 		error("ERROR connecting");

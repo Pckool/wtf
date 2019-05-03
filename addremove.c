@@ -1,9 +1,7 @@
 #include "client.h"
 
 void add(char* proj, char* file){
-        char path[2000];
-        snprintf(path, 2000, "%s/%s", proj, file); //format the pathway to the file
-        int fd = open(path, O_RDWR); //open file
+        int fd = open(file, O_RDWR); //open file
         char buffer[2000];
         read(fd, buffer, 2000); // read the entire file
         size_t length = strlen(buffer);
@@ -25,7 +23,7 @@ void add(char* proj, char* file){
         read(fd, contents, 10000); //read manifest
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         if (fileName == NULL){ //If file isnt in the manifest
-                write(fd, path, strlen(path));
+                write(fd, file, strlen(file));
                 write(fd, "\t", 1);
                 write(fd, "1\t", 2);
                 write(fd, hash, SHA_DIGEST_LENGTH * 2);
