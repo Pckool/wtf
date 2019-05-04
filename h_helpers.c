@@ -1,5 +1,5 @@
-#include "client.h"
-#include "server.h"
+#include "c_client.h"
+#include "s_server.h"
 
 /**
 	* Adds char to the string that is being added to the codebook

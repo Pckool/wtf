@@ -1,4 +1,4 @@
-#include "server.h"
+#include "s_server.h"
 
 
 void error(char *msg){
