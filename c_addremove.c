@@ -8,7 +8,7 @@ void add(char* proj, char* file){
         unsigned char temp[SHA_DIGEST_LENGTH]; // temporary storage for hash
         printf("size of SHA_DIGEST_LENGTH: %d\n", SHA_DIGEST_LENGTH);
 
-        unsigned char *hash = (char *)malloc( ((unsigned)SHA_DIGEST_LENGTH) * sizeof(char)); //actual hash goes here
+        unsigned char *hash = (char *)malloc( (20) * sizeof(char)); //actual hash goes here
         /* The next seven lines I found online and show you how to  format a hash to be written properly to a file */
 
         memset(temp, 0x0, SHA_DIGEST_LENGTH);
