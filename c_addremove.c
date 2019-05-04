@@ -62,11 +62,12 @@ void add(char* proj, char* file){
                 // write(man_fd, "1\t", 2);
                 // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
                 unsigned finalLineSize = strlen(file) + strlen(version) + (SHA_DIGEST_LENGTH * 2);
+                
                 if ((write(man_fd, final, finalLineSize)) != NULL){
-                        printf(".Manifest write was not successful...")
+                        printf(".Manifest write was not successful...");
                 }
                 else{
-                        printf(".Manifest write was successful...")
+                        printf(".Manifest write was successful...");
                 }
         }
         else{ //If file is in manifest
