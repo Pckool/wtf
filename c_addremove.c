@@ -181,7 +181,8 @@ char *replaceLine(char **content, char **line, char *newLine){
 
 
 int removeLine(char **content, char **line){
-        char *restOfCont = ++( strstr(*line, "\n") ); // gets the substring of content minus the line and everything before it
+        char *restOfCont = strstr(*line, "\n"); // gets the substring of content minus the line and everything before it
+        char *restOfCont = ++(&restOfCont);
         char *lineOnly = line - &restOfCont; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
 
         printf("This is the line: %s\n", lineOnly);
@@ -216,14 +217,14 @@ manLineTokens *tokenizeLine(char *line){
 			// ++i;
 			part = 2;
 		}
-		else if(line[i] == '\n' && side == 2 && i != 0){
+		else if(line[i] == '\n' && part == 2 && i != 0){
                         tokLine->path = malloc(sizeof(char *));
                         tokLine->version = malloc(sizeof(char *));
                         tokLine->hash = malloc(sizeof(char *));
 
 			tokLine->path = path;
                         tokLine->version = version;
-                        mainLine->hash = hash;
+                        tokLine->hash = hash;
 			free(path);
 			free(version);
                         free(hash);
