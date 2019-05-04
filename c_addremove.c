@@ -2,6 +2,10 @@
 
 void add(char* proj, char* file){
         int fd = open(file, O_RDWR); //open file
+        if (man_fd < 0){
+                printf("There was an error opening the given file...\nError No: %d\n", fd);
+                return NULL;
+        }
         char buffer[2000];
         read(fd, buffer, 2000); // read the entire file
         size_t length = strlen(buffer);
@@ -22,13 +26,12 @@ void add(char* proj, char* file){
         char* mpath[2000];
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
         close(fd);
-        // printf("This is the temp: %s\nThis is the size of the temp: %d\n", temp, sizeof(temp));
-        // printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
         
         int man_fd;
         mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+        printf("Trying to open/create %s\n", mpath);
         man_fd = open(mpath, O_RDWR | O_APPEND | O_CREAT, mode); //Open manifest
-        
+
         if (man_fd < 0){
                 printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
                 return NULL;
