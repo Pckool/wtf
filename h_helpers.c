@@ -15,7 +15,7 @@ char *charAppend(char str[], char charr){
 	return newStr;
 }
 
-char *stringAppend(char *str1, char *str2, int len){
+char *stringAppend(const char *str1, const char *str2, int len){
 	printf("string1: %d\n", strlen(str1));
 	printf("string2: %d\n", strlen(str2));
 	char *new_str;
