@@ -34,7 +34,7 @@ void create(char* projectName){
 	n = read(sockfd, message,255);
 	printf("%s\n", message);
 
-	char *dirStat = mkdir(projectName, S_IRWXU);
+	int dirStat = mkdir(projectName, S_IRWXU);
 	if (!dirStat){ //If check passes
 		printf("%s\n", "Project Created!");
 	}
