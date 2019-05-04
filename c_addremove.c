@@ -188,8 +188,8 @@ int removeLine(char **content, char **line){
         char *contentCpy = malloc(strlen(content) * sizeof(char));
         memcpy(contentCpy, "\0", strlen(content) * sizeof(char));
 
-        char *newContent = malloc( (strlen(content)-lineOnly) * sizeof(char));
-        memcpy(newContent, "\0", (strlen(content)-lineOnly) * sizeof(char));
+        // char *newContent = malloc( (strlen(content)-lineOnly) * sizeof(char));
+        // memcpy(newContent, "\0", (strlen(content)-lineOnly) * sizeof(char));
 
         // strcpy(contentCpy, );
 }
