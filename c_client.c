@@ -10,6 +10,28 @@ void error(char *msg){
 	exit(1);
 }
 
+void destroy(char *projectName){
+	int n = -1;
+        char message[256];
+        struct stat *buf; //Needed to check the size of the config file
+        buf = malloc(sizeof(struct stat));
+        char* fp = ".configure";
+        stat(fp, buf); //Gets stats about the file and puts it in the struct buf
+        int size = buf->st_size;
+        connecter(size); //Takes the size and goes to connecter
+        char buffer[256] = "rmdir:"; //This is here because eventually we need to add the networking protocols
+        int i = 6;
+        int p = 0;
+        while (p < strlen(projectName)){
+                buffer[i] = projectName[p];
+                i++;
+                p++;
+        }
+        write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
+        n = read(sockfd, message,255);
+        printf("%s\n", message);
+}
+
 void create(char* projectName){
 /* The reason why we have this code here to check the size of the configure file is because
  * when I had this in the connecter function it didn't work. I moved it here and it started to.
@@ -110,10 +132,13 @@ int main(int argc, char* argv[])
 		create(argv[2]);
 	}
 	if (strcmp(argv[1], "add") == 0){
-        add(argv[2], argv[3]);
-    }
+    add(argv[2], argv[3]);
+  }
 	if(strcmp(argv[1], "remove") == 0){
 		c_remove(argv[2], argv[3]);
+  }
+	if(strcmp(argv[1], "destroy") == 0){
+		destroy(argv[2]);
 	}
 
 }
