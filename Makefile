@@ -1,19 +1,24 @@
 CC=gcc
-S_DEPS = h_global.h s_server.h
-C_DEPS = h_global.h c_client.h
+S_DEPS = s_server.h
+C_DEPS = c_client.h
+H_DEPS = h_global.h
 CFLAGS= -O
 
-c_%.o: c_%.c h_%.c $(C_DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+c_%.o: c_%.c $(C_DEPS) $(H_DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(H_DEPS)
 
-s_%.o: s_%.c h_%.c $(S_DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+s_%.o: s_%.c $(S_DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS) $(H_DEPS)
+
+
+h_%.o: h_%.c $(S_DEPS) $(H_DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)  $(H_DEPS)
 
 
 all: Client Server
 
 Client: c_client.o c_addremove.o c_configure.o c_helpers.o
-	$(CC) -o  $@ c_client.o -lssl -lcrypto c_addremove.o c_configure.o c_helpers.o
+	$(CC) -o  $@ c_client.o -lssl -lcrypto c_addremove.o c_configure.o h_helpers.o
 client.o: c_client.h h_global.h
 
 Server: s_server.o
