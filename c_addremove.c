@@ -117,7 +117,7 @@ char *replaceLine(char **content, char **line, char *newLine){
         unsigned lineLen = strlen(newLine);
         printf("Line Length: %d\n", lineLen);
 
-        strcpy(*line, newLine);
+        memcpy(*line, newLine, lineLen);
         printf("this is the line %s\n", *content);
 }
 
