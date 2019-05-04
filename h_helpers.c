@@ -37,9 +37,9 @@ char *stringAppend(const char *str1, const char *str2, int len){
 }
 
 char *concat(const char *s1, const char *s2){
-
-	char *result = (char *)malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
-	result[0] = "\0"; // to ensure that result is a string.
+	unsigned lineLen = (strlen(s1) + strlen(s2) + 1);
+	char *result = (char *)malloc(lineLen * sizeof(char)); // +1 for the null-terminator
+	memcpy(result, "\0", lineLen);						   // to ensure that result is a string.
 	strcpy(result, s1);
 	strcat(result, s2);
 	return result;

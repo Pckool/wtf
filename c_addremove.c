@@ -56,7 +56,7 @@ void add(char* proj, char* file){
                 // write(man_fd, "\t", 1);
                 // write(man_fd, "1\t", 2);
                 // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
-                unsigned finalLineSize = strlen(file) + strlen(version) + (SHA_DIGEST_LENGTH * 2);
+                unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
                 int status = write(man_fd, final, finalLineSize);
                 if (status != finalLineSize){
                         printf(".Manifest write was not successful...\nError No: %d\n", status);
@@ -69,6 +69,7 @@ void add(char* proj, char* file){
         else{ //If file is in manifest
                 printf("Found a .Manifest...\n");
                 final = createaManLine(file, version, hash);
+                unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
                 replaceLine(&contents, &fileName, final);
                 printf("Replaced the line...\n");
                 /*
@@ -115,7 +116,7 @@ char *replaceLine(char **content, char **line, char *newLine){
         printf("this is the new line %s\n", newLine);
         unsigned lineLen = strlen(newLine);
         printf("Line Length: %d\n", lineLen);
-        
+
         strcpy(*line, newLine);
         printf("this is the line %s\n", *content);
 }
