@@ -18,7 +18,7 @@ void destroy_s(char* buffer){
         }
 	char path[PATH_MAX];
         snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
-        int check = rmdir(path, S_IRWXU); //tries to make the directory
+        int check = rmdir(path); //tries to make the directory
         bzero(path, PATH_MAX);
         if(!check){ //If check passes
                 printf("%s\n", "Directory Destroyed!");
