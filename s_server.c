@@ -6,7 +6,25 @@ void error(char *msg){
 	exit(1);
 }
 
+char* destroy_s(char* buffer){
+	 char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
+        int i = 0;
+        int p = 6;
+        int x = 0;
+        while (i < sizeof(proj)){
+                proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
+                i++;
+                p++;
+        }
+	char path[PATH_MAX];
+        snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
+        int check = rmdir(path, S_IRWXU); //tries to make the directory
+        bzero(path, PATH_MAX);
+        if(!check){ //If check passes
+                printf("%s\n", "Directory Destroyed!");
+        }
 
+} 
 char* create_s(char* buffer){
 	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
@@ -89,7 +107,6 @@ int main(int argc, char* argv[])
 		else{
 			int commStat; // the status of the command (if it was successful or not)
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
-			create_s(buffer);
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
