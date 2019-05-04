@@ -37,7 +37,7 @@ int getFile();
 void add(char* proj, char* file);
 char *replaceLine(char **content, char **line, char *newLine);
 int removeLine(char **content, char **line);
-void remove(char *proj, char *file);
+void c_remove(char *proj, char *file);
 char *createaManLine(char *file, char *version, char *hash);
 ManLineToken tokenizeLine(char *line);
 
