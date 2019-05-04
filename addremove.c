@@ -57,7 +57,7 @@ void add(char* proj, char* file){
         }
         else{ //If file is in manifest
                 final = createaManLine(file, version, hash);
-                replaceLine(contents, &fileName, final);
+                replaceLine(&contents, &fileName, final);
                 char *ptr[2];
                 ptr[0] = strtok(fileName, "\t");
                 ptr[1] = strtok(NULL, "\t");
@@ -91,12 +91,12 @@ char *createaManLine(char *file, char *version, char *hash){
         return final;
 }
 
-char *replaceLine(char *content, char *line, char *newLine){
-        strcpy(line, newLine);
-        printf("this is the line %s\n", line);
+char *replaceLine(char **content, char **line, char *newLine){
+        strcpy(*line, newLine);
+        printf("this is the line %s\n", *content);
 }
 
-char *removeLine(char *content, char *line){
+char *removeLine(char *content, char **line){
 
 }
 
