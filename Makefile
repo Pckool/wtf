@@ -11,8 +11,8 @@ CFLAGS= -O
 
 all: Client Server
 
-Client: client.o addremove.o configure.o
-	$(CC) -o  $@ client.o -lssl -lcrypto addremove.o configure.o
+Client: client.o addremove.o configure.o helpers.o
+	$(CC) -o  $@ client.o -lssl -lcrypto addremove.o configure.o helpers.o
 client.o: client.h global.h
 
 Server: server.o
