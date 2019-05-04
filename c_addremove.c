@@ -27,6 +27,11 @@ void add(char* proj, char* file){
         
 
         int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+        if (man_fd < 0){
+                printf("There was an error opening the file...");
+                return NULL;
+        }
+
         char contents[10000];
         read(man_fd, contents, 10000); //read manifest
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
@@ -62,12 +67,12 @@ void add(char* proj, char* file){
                 // write(man_fd, "1\t", 2);
                 // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
                 unsigned finalLineSize = strlen(file) + strlen(version) + (SHA_DIGEST_LENGTH * 2);
-                
-                if ((write(man_fd, final, finalLineSize)) != NULL){
-                        printf(".Manifest write was not successful...");
+                int status = write(man_fd, final, finalLineSize);
+                if (status != finalLineSize){
+                        printf(".Manifest write was not successful...\nError No: %d\n", status);
                 }
                 else{
-                        printf(".Manifest write was successful...");
+                        printf(".Manifest write was successful...\nWrote %d bytes...\n", status);
                 }
         }
         else{ //If file is in manifest
