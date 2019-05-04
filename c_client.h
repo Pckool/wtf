@@ -39,7 +39,7 @@ char *replaceLine(char **content, char **line, char *newLine);
 int removeLine(char **content, char **line);
 void c_remove(char *proj, char *file);
 char *createaManLine(char *file, char *version, char *hash);
-ManLineToken tokenizeLine(char *line);
+ManLineTokens tokenizeLine(char *line);
 
 // Helping Function
 int findDir(char *dirname);
