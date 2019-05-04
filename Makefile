@@ -23,7 +23,7 @@ client.o: c_client.h h_global.h
 
 Server: s_server.o
 	$(CC) -o $@ -pthread s_server.o h_helpers.o
-server.o: c_server.h h_helpers.o h_global.h
+server.o: s_server.h h_global.h
 
 clean:
 	rm *.o Server Client
