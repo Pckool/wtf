@@ -58,7 +58,7 @@ void add(char* proj, char* file){
                 // write(man_fd, "\t", 1);
                 // write(man_fd, "1\t", 2);
                 // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
-                unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
+                unsigned finalLineSize = strlen(final); // +1 for the null terminator
                 int status = write(man_fd, final, finalLineSize);
                 if (status != finalLineSize){
                         printf(".Manifest write was not successful...\nError No: %d\n", status);
