@@ -75,7 +75,7 @@ void add(char* proj, char* file){
 
 // create a thing
 char *createaManLine(char *file, char *version, char *hash){
-        char *file_t = concat(file, "\t", strlen(file));
+        char *file_t = concat(file, "\t");
         printf("file_t: %s\n", file_t);
         char *version_t = concat(version, "\t");
 
