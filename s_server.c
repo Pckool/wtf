@@ -67,10 +67,10 @@ int main(int argc, char* argv[])
 	{
 		error("ERROR on binding");
 	}
-
+	printf("Server Started...\n");
 	// Main loop of the server. This will never exit until we recieve ctrl-c
 	while(k == true){
-		printf("Server Started...\n");
+		
 
 		listen(sockfd, 0);
 		clilen = sizeof(clientAddressInfo);
@@ -80,7 +80,6 @@ int main(int argc, char* argv[])
 			error("ERROR on accept");
 		}
 		
-		printf("In the server loop\n");
 		bzero(buffer,256);
 		n = read(newsockfd,buffer,255);
 		if(n < 0)
@@ -111,6 +110,7 @@ int main(int argc, char* argv[])
 int newUser(char* buffer){
 	//create a new thread
 	printf("New User connected...\n");
+	printf("recieved buffer: %s\n", buffer);
 	pthread_t thread_id;
 	pthread_create(&thread_id, NULL, newUserThread, (void*) &buffer);
 	pthread_join(thread_id, NULL);

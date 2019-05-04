@@ -10,8 +10,7 @@ void error(char *msg){
 	exit(1);
 }
 
-void create(char* projectName)
-{
+void create(char* projectName){
 /* The reason why we have this code here to check the size of the configure file is because
  * when I had this in the connecter function it didn't work. I moved it here and it started to.
  */
@@ -70,12 +69,12 @@ void connecter(int fileSize){
 	int port = atoi(portNum); //Convert string to int
 	serverIPAddress = gethostbyname(ipAddress); //Resolve IP from hostname
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	bzero((char*)&serverAddressInfo,sizeof(serverAddressInfo)); //zero out. After this line I really dont get whats happening but it works
+	bzero((char*)&serverAddressInfo, sizeof(serverAddressInfo)); //zero out. After this line I really dont get whats happening but it works
 	serverAddressInfo.sin_family = AF_INET;
 	serverAddressInfo.sin_port = htons(port);
 	bcopy((char *)serverIPAddress->h_addr, (char *)&serverAddressInfo.sin_addr.s_addr, serverIPAddress->h_length);
-	if (connect(sockfd,(struct sockaddr *)&serverAddressInfo,sizeof(serverAddressInfo)) < 0)
-	{
+	
+	if (connect(sockfd, (struct sockaddr *)&serverAddressInfo, sizeof(serverAddressInfo)) < 0){
 		error("ERROR connecting");
 	}
 }
