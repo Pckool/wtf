@@ -19,6 +19,7 @@ void add(char* proj, char* file){
         char* mpath[2000];
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
         close(fd);
+        printf("This is the temp: %s\nThis is the size of the temp: %d\n", temp, sizeof(temp));
         printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
         free(hash);
 
