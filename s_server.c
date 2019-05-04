@@ -32,6 +32,7 @@ char* create_s(char* buffer){
 	if(fd < 0){
 		printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
 	}
+	close(fd);
 	char* sendback[2];
 }
 int main(int argc, char* argv[])

@@ -33,6 +33,21 @@ void create(char* projectName){
 	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 	n = read(sockfd, message,255);
 	printf("%s\n", message);
+
+	char *dirStat = mkdir(projectName, S_IRWXU);
+	if (!dirStat){ //If check passes
+		printf("%s\n", "Project Created!");
+	}
+	DIR *dir;
+	dir = opendir(proj);
+	char path[PATH_MAX];
+
+	snprintf(path, PATH_MAX, "%s/%s", projectName, ".Manifest");
+	int fd = open(path, O_RDWR | O_CREAT, 0600);
+	if (fd < 0){
+		printf("Failed to create .Manifest clientside...\nError No: %d\n", fd);
+	}
+	close(fd);
 }
 
 void connecter(int fileSize){
@@ -73,7 +88,7 @@ void connecter(int fileSize){
 	serverAddressInfo.sin_family = AF_INET;
 	serverAddressInfo.sin_port = htons(port);
 	bcopy((char *)serverIPAddress->h_addr, (char *)&serverAddressInfo.sin_addr.s_addr, serverIPAddress->h_length);
-	
+
 	if (connect(sockfd, (struct sockaddr *)&serverAddressInfo, sizeof(serverAddressInfo)) < 0){
 		error("ERROR connecting");
 	}
