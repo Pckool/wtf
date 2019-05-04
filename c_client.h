@@ -36,5 +36,6 @@ char *createaManLine(char *file, char *version, char *hash);
 // Helping Function
 int findDir(char *dirname);
 char *stringAppend(const char *str1, const char *str2, int len);
+char *concat(const char *s1, const char *s2);
 
 #endif
