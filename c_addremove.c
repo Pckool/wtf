@@ -10,7 +10,6 @@ void add(char* proj, char* file){
         read(fd, buffer, 2000); // read the entire file
         size_t length = strlen(buffer);
         unsigned char temp[SHA_DIGEST_LENGTH]; // temporary storage for hash
-        printf("size of SHA_DIGEST_LENGTH: %d\n", SHA_DIGEST_LENGTH);
 
         unsigned char *hash = (char *)malloc( (SHA_DIGEST_LENGTH * 2) * sizeof(char) + 1); //actual hash goes here
         /* The next seven lines I found online and show you how to  format a hash to be written properly to a file */
@@ -30,7 +29,7 @@ void add(char* proj, char* file){
         int man_fd;
         mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
         printf("Trying to open/create %s\n", mpath);
-        man_fd = open(mpath, O_RDWR | O_APPEND | O_CREAT, mode); //Open manifest
+        man_fd = open(mpath, O_RDWR | O_CREAT, mode); //Open manifest
 
         if (man_fd < 0){
                 printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
