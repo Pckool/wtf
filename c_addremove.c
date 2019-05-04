@@ -91,7 +91,7 @@ void add(char* proj, char* file){
         free(hash);
 }
 
-void remove(char *proj, char *file){
+void c_remove(char *proj, char *file){
          char* mpath[2000];
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
@@ -194,7 +194,7 @@ int removeLine(char **content, char **line){
         // strcpy(contentCpy, );
 }
 
-ManLineToken tokenizeLine(char *line){
+struct ManLineToken tokenizeLine(char *line){
         unsigned len = strlen(line);
         char *path = "";
         char *version = "";
@@ -202,7 +202,7 @@ ManLineToken tokenizeLine(char *line){
 
         int part = 0;
 
-        ManLineToken manLine = malloc(sizeof(manLine));
+        struct ManLineToken manLine = malloc(sizeof(manLine));
 
         int i;
         for(i = 0; i <= len; i++){

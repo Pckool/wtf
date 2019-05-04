@@ -112,5 +112,8 @@ int main(int argc, char* argv[])
 	if (strcmp(argv[1], "add") == 0){
         add(argv[2], argv[3]);
     }
+	if(strcmp(argv[1], "remove") == 0){
+		c_remove(argv[2], argv[3]);
+	}
 
 }
