@@ -24,7 +24,7 @@ void add(char* proj, char* file){
         close(fd);
         printf("This is the temp: %s\nThis is the size of the temp: %d\n", temp, sizeof(temp));
         printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
-        free(hash);
+        
 
         int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
         char contents[10000];
@@ -78,15 +78,14 @@ void add(char* proj, char* file){
                         printf("%d\n", version);
                 }
         }
+
+        free(hash);
 }
 
 // create a thing
 char *createaManLine(char *file, char *version, char *hash){
         printf("file path: %s\n", file);
-        // char *file_t = concat(file, "\t");
-        char *file_t = malloc(20*sizeof(char) + 1 );
-        memcpy(file_t, file, sizeof(file));
-        printf("file_t: %s\n", file_t);
+        char *file_t = concat(file, "\t");
         char *version_t = concat(version, "\t");
 
         char *part1 = concat(file_t, version_t);
