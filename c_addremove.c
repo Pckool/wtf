@@ -119,7 +119,7 @@ void c_remove(char *proj, char *file){
 
         if (fileName != NULL){ //If file is in manifest
                 printf("Found a .Manifest...\n");
-                final = createaManLine(file, version, hash);
+                // final = createaManLine(file, version, hash);
                 unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
                 removeLine(&contents, &fileName);
                 printf("Removed the line...\n");
@@ -179,8 +179,9 @@ char *replaceLine(char **content, char **line, char *newLine){
         // printf("this is the line %s\n", *content);
 }
 
+
 int removeLine(char **content, char **line){
-        char *restOfCont = ++strstr(*line, "\n"); // gets the substring of content minus the line and everything before it
+        char *restOfCont = ++( strstr(*line, "\n") ); // gets the substring of content minus the line and everything before it
         char *lineOnly = line - &restOfCont; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
 
         printf("This is the line: %s\n", lineOnly);
@@ -194,7 +195,7 @@ int removeLine(char **content, char **line){
         // strcpy(contentCpy, );
 }
 
-ManLineTokens tokenizeLine(char *line){
+struct ManLineTokens tokenizeLine(char *line){
         unsigned len = strlen(line);
         char *path = "";
         char *version = "";
@@ -202,7 +203,7 @@ ManLineTokens tokenizeLine(char *line){
 
         int part = 0;
 
-        ManLineTokens manLine = malloc(sizeof(manLine));
+        struct ManLineTokens manLine = malloc(sizeof(manLine));
 
         int i;
         for(i = 0; i <= len; i++){
