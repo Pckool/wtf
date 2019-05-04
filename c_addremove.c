@@ -25,20 +25,30 @@ void add(char* proj, char* file){
         // printf("This is the temp: %s\nThis is the size of the temp: %d\n", temp, sizeof(temp));
         // printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
         
+        int man_fd;
 
-        int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+        int man_fd = open(mpath, O_RDONLY | O_APPEND); //Open manifest
         if (man_fd < 0){
-                printf("There was an error opening the file...");
+                printf("There was an error opening the file...\n");
                 return NULL;
         }
 
         char contents[10000];
         read(man_fd, contents, 10000); //read manifest
+        close(man_fd);
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
-        
         char *version = "1"; // The version number. This gets incremented if the number is found
 
         char *final;
+
+        
+
+        man_fd = open(mpath, O_WRONLY | O_APPEND); //Open manifest
+
+        if (man_fd < 0){
+                printf("There was an error opening the file...\n");
+                return NULL;
+        }
 
         if (fileName == NULL){ //If file isnt in the manifest
                 printf("No .Manifest file found...\n");
@@ -74,6 +84,7 @@ void add(char* proj, char* file){
                 else{
                         printf(".Manifest write was successful...\nWrote %d bytes...\n", status);
                 }
+                
         }
         else{ //If file is in manifest
                 printf("Found a .Manifest...\n");
@@ -92,7 +103,7 @@ void add(char* proj, char* file){
                 */
                printf("content: %s\n", contents);
         }
-
+        close(man_fd);
         free(hash);
 }
 
