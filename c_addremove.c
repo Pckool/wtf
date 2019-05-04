@@ -6,7 +6,7 @@ void add(char* proj, char* file){
         read(fd, buffer, 2000); // read the entire file
         size_t length = strlen(buffer);
         unsigned char temp[SHA_DIGEST_LENGTH]; // temporary storage for hash
-        unsigned char* hash = malloc((SHA_DIGEST_LENGTH)*sizeof(char)); //actual hash goes here
+        unsigned char* hash = (char*)malloc((SHA_DIGEST_LENGTH)*sizeof(char)); //actual hash goes here
         /* The next seven lines I found online and show you how to  format a hash to be written properly to a file */
         memset(temp, 0x0, SHA_DIGEST_LENGTH);
         memset(hash, 0x0, SHA_DIGEST_LENGTH);
@@ -18,7 +18,7 @@ void add(char* proj, char* file){
         char* mpath[2000];
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
         close(fd);
-
+        printf("This is the hash: %s\n", hash);
         free(hash);
 
         int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
