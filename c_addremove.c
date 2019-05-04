@@ -35,8 +35,8 @@ void add(char* proj, char* file){
                 return NULL;
         }
 
-        char contents[10000];
-        read(man_fd, contents, 10000); //read manifest
+        char contents[1000000];
+        read(man_fd, contents, 1000000); //read manifest
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
 
@@ -113,6 +113,9 @@ char *createaManLine(char *file, char *version, char *hash){
 char *replaceLine(char **content, char **line, char *newLine){
         printf("this is the line %s\n", *line);
         printf("this is the new line %s\n", newLine);
+        unsigned lineLen = strlen(newLine);
+        printf("Line Length: %d\n", lineLen);
+        
         strcpy(*line, newLine);
         printf("this is the line %s\n", *content);
 }
