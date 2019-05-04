@@ -4,7 +4,7 @@ void add(char* proj, char* file){
         int fd = open(file, O_RDWR); //open file
         if (fd < 0){
                 printf("There was an error opening the given file...\nError No: %d\n", fd);
-                return NULL;
+                return;
         }
         char buffer[2000];
         read(fd, buffer, 2000); // read the entire file
@@ -34,7 +34,7 @@ void add(char* proj, char* file){
 
         if (man_fd < 0){
                 printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
-                return NULL;
+                return;
         }
 
         char contents[1000000];
@@ -46,7 +46,7 @@ void add(char* proj, char* file){
 
         if (man_fd < 0){
                 printf("There was an error opening the file...\n");
-                return NULL;
+                return;
         }
 
         if (fileName == NULL){ //If file isnt in the manifest
@@ -101,7 +101,7 @@ void c_remove(char *proj, char *file){
 
         if (man_fd < 0){
                 printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
-                return NULL;
+                return;
         }
 
         char *contents = malloc(1000000);
@@ -114,7 +114,7 @@ void c_remove(char *proj, char *file){
 
         if (man_fd < 0){
                 printf("There was an error opening the file...\n");
-                return NULL;
+                return;
         }
 
         if (fileName != NULL){ //If file is in manifest
