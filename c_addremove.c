@@ -19,6 +19,8 @@ void add(char* proj, char* file){
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
         close(fd);
 
+        free(hash);
+
         int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
         char contents[10000];
         read(man_fd, contents, 10000); //read manifest
