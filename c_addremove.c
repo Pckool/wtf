@@ -118,7 +118,7 @@ char *replaceLine(char **content, char **line, char *newLine){
         printf("Line Length: %d\n", lineLen);
 
         memcpy(*line, newLine, lineLen);
-        printf("this is the line %s\n", *content);
+        // printf("this is the line %s\n", *content);
 }
 
 char *removeLine(char *content, char **line){
