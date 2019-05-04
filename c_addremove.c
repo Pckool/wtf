@@ -22,8 +22,8 @@ void add(char* proj, char* file){
         char* mpath[2000];
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
         close(fd);
-        printf("This is the temp: %s\nThis is the size of the temp: %d\n", temp, sizeof(temp));
-        printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
+        // printf("This is the temp: %s\nThis is the size of the temp: %d\n", temp, sizeof(temp));
+        // printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
         
 
         int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
@@ -61,13 +61,19 @@ void add(char* proj, char* file){
                 // write(man_fd, "\t", 1);
                 // write(man_fd, "1\t", 2);
                 // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
-                
-                write(man_fd, final, 1);
+                unsigned finalLineSize = strlen(file) + strlen(version) + (SHA_DIGEST_LENGTH * 2);
+                if ((write(man_fd, final, finalLineSize)) != NULL){
+                        printf(".Manifest write was not successful...")
+                }
+                else{
+                        printf(".Manifest write was successful...")
+                }
         }
         else{ //If file is in manifest
                 printf("Found a .Manifest...\n");
                 final = createaManLine(file, version, hash);
                 replaceLine(&contents, &fileName, final);
+                /*
                 char *ptr[2];
                 ptr[0] = strtok(fileName, "\t");
                 ptr[1] = strtok(NULL, "\t");
@@ -77,6 +83,8 @@ void add(char* proj, char* file){
                         int position = fileName - contents;
                         printf("%d\n", version);
                 }
+                */
+               printf("content: %s\n", contents);
         }
 
         free(hash);
