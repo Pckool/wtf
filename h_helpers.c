@@ -44,3 +44,27 @@ char *concat(const char *s1, const char *s2){
 	strcat(result, s2);
 	return result;
 }
+
+/**
+	* Take in an int and convert it to a string
+	* @param num the int to parse
+	* @return str the resulting string. (MUST BE FREED)
+	*/
+char* parseInt(const int num){
+	// printf("%d\n", getLen(num));
+	char *str = malloc(20);
+	sprintf(str, "%d", num);
+	return str;
+
+}
+
+
+//Returns the number of digits in an int. Was needed at one point but not anymore. Havent deleted yet incase it is needed again
+int getLen(int x){
+	int toReturn = 0;
+	while(x > 0){
+		toReturn++;
+		x /= 10;
+	}
+	return toReturn;
+}

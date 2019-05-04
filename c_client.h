@@ -17,6 +17,12 @@
 #include <openssl/sha.h>
 #include <dirent.h>
 
+typedef struct ManLineTokens{
+	char *path;
+	char *version;
+	char *hash;
+}ManLineTokens;
+
 // main
 void error(char *msg);
 
@@ -30,7 +36,7 @@ int getFile();
 // Add/Remove
 void add(char* proj, char* file);
 char *replaceLine(char **content, char **line, char *newLine);
-char *removeLine(char *content, char **line);
+int removeLine(char **content, char **line);
 char *createaManLine(char *file, char *version, char *hash);
 
 // Helping Function
