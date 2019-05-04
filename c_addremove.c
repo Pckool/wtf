@@ -76,7 +76,9 @@ void add(char* proj, char* file){
 // create a thing
 char *createaManLine(char *file, char *version, char *hash){
         printf("file path: %s\n", file);
-        char *file_t = concat(file, "\t");
+        // char *file_t = concat(file, "\t");
+        char *file_t = malloc(20*sizeof(char) + 1 );
+        memcpy(file_t, file, sizeof(file));
         printf("file_t: %s\n", file_t);
         char *version_t = concat(version, "\t");
 
@@ -105,10 +107,3 @@ char *removeLine(char *content, char **line){
 
 }
 
-char *concat(const char *s1, const char *s2)
-{
-        char *result = (char *)malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
-        strcpy(result, s1);
-        strcat(result, s2);
-        return result;
-}
