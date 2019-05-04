@@ -1,6 +1,6 @@
 CC=gcc
-S_DEPS = global.h server.h
-C_DEPS = global.h client.h
+S_DEPS = h_global.h s_server.h
+C_DEPS = h_global.h c_client.h
 CFLAGS= -O
 
 c_%.o: c_%.c h_%.c $(C_DEPS)
