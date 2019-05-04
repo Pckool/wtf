@@ -19,8 +19,10 @@ char *stringAppend(char *str1, char *str2, int len){
 	printf("string1: %d\n", strlen(str1));
 	printf("string2: %d\n", strlen(str2));
 	char *new_str;
-	if ((new_str = malloc(strlen(str1) + strlen(str2) + 1)) != NULL){
-		
+	new_str = malloc(strlen(str1) + strlen(str2) + 1) 
+	if (true)
+	{
+
 		new_str[0] = '\0'; // ensures the memory is an empty string
 		strcat(new_str, str1);
 		strcat(new_str, str2);
