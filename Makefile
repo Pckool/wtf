@@ -5,14 +5,14 @@ H_DEPS = h_global.h
 CFLAGS= -O
 
 c_%.o: c_%.c $(C_DEPS) $(H_DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS) $(H_DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 s_%.o: s_%.c $(S_DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS) $(H_DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 
 h_%.o: h_%.c $(S_DEPS) $(H_DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)  $(H_DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 
 all: Client Server
