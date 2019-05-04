@@ -195,7 +195,7 @@ int removeLine(char **content, char **line){
         // strcpy(contentCpy, );
 }
 
-struct ManLineTokens tokenizeLine(char *line){
+struct manLineTokens tokenizeLine(char *line){
         unsigned len = strlen(line);
         char *path = "";
         char *version = "";
@@ -203,7 +203,7 @@ struct ManLineTokens tokenizeLine(char *line){
 
         int part = 0;
 
-        struct ManLineTokens manLine = malloc(sizeof(manLine));
+        struct manLineTokens tokLine = malloc(sizeof(manLineTokens));
 
         int i;
         for(i = 0; i <= len; i++){
@@ -217,12 +217,12 @@ struct ManLineTokens tokenizeLine(char *line){
 			part = 2;
 		}
 		else if(line[i] == '\n' && side == 2 && i != 0){
-                        manLine->path = malloc(sizeof(char *));
-                        manLine->version = malloc(sizeof(char *));
-                        manLine->hash = malloc(sizeof(char *));
+                        tokLine->path = malloc(sizeof(char *));
+                        tokLine->version = malloc(sizeof(char *));
+                        tokLine->hash = malloc(sizeof(char *));
 
-			manLine->path = path;
-                        manLine->version = version;
+			tokLine->path = path;
+                        tokLine->version = version;
                         mainLine->hash = hash;
 			free(path);
 			free(version);
