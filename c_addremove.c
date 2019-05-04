@@ -26,24 +26,19 @@ void add(char* proj, char* file){
         // printf("This is the hash: %s\nThis is the size of the hash: %d\n", hash, sizeof(hash));
         
         int man_fd;
-
-        man_fd = open(mpath, O_RDONLY | O_APPEND); //Open manifest
+        mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+        man_fd = open(mpath, O_RDWR | O_APPEND | O_CREAT, mode); //Open manifest
         if (man_fd < 0){
-                printf("There was an error opening the file...\n");
+                printf("There was an error opening .Manifest the file...\n");
                 return NULL;
         }
 
         char contents[10000];
         read(man_fd, contents, 10000); //read manifest
-        close(man_fd);
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
 
         char *final;
-
-        
-
-        man_fd = open(mpath, O_WRONLY | O_APPEND); //Open manifest
 
         if (man_fd < 0){
                 printf("There was an error opening the file...\n");
