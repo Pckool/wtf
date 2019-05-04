@@ -29,6 +29,7 @@ void add(char* proj, char* file){
         char *final;
 
         if (fileName == NULL){ //If file isnt in the manifest
+                printf("No .Manifest file found...\n");
                 final = createaManLine(file, version, hash);
                 /*
                 char *file_t = stringAppend(file, "\t", strlen(file));
@@ -56,6 +57,7 @@ void add(char* proj, char* file){
                 write(man_fd, final, 1);
         }
         else{ //If file is in manifest
+                printf("Found a .Manifest...\n");
                 final = createaManLine(file, version, hash);
                 replaceLine(&contents, &fileName, final);
                 char *ptr[2];
