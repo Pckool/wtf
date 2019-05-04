@@ -39,7 +39,7 @@ void create(char* projectName){
 		printf("%s\n", "Project Created!");
 	}
 	DIR *dir;
-	dir = opendir(proj);
+	dir = opendir(projectName);
 	char path[PATH_MAX];
 
 	snprintf(path, PATH_MAX, "%s/%s", projectName, ".Manifest");
