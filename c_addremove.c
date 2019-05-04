@@ -70,6 +70,7 @@ void add(char* proj, char* file){
                 printf("Found a .Manifest...\n");
                 final = createaManLine(file, version, hash);
                 replaceLine(&contents, &fileName, final);
+                printf("Replaced the line...\n");
                 /*
                 char *ptr[2];
                 ptr[0] = strtok(fileName, "\t");
@@ -110,6 +111,8 @@ char *createaManLine(char *file, char *version, char *hash){
 }
 
 char *replaceLine(char **content, char **line, char *newLine){
+        printf("this is the line %s\n", *line);
+        printf("this is the new line %s\n", newLine);
         strcpy(*line, newLine);
         printf("this is the line %s\n", *content);
 }
