@@ -184,6 +184,7 @@ int removeLine(char **content, char **line){
         char *restOfCont = strstr(*line, "\n"); // gets the substring of content minus the line and everything before it
         char *restOfCont2;
         restOfCont2 = ++restOfCont;
+        printf("restOfCont2: %s\n", restOfCont2)
 
         char *lineOnly = line - &restOfCont2; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
 
