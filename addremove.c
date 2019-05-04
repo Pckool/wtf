@@ -1,7 +1,7 @@
 #include "client.h"
 
 void add(char* proj, char* file){
-        int fd = open(file, O_RDWR; //open file
+        int fd = open(file, O_RDWR); //open file
         char buffer[2000];
         read(fd, buffer, 2000); // read the entire file
         size_t length = strlen(buffer);
