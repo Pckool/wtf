@@ -28,8 +28,9 @@ void add(char* proj, char* file){
         int man_fd;
         mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
         man_fd = open(mpath, O_RDWR | O_APPEND | O_CREAT, mode); //Open manifest
+        
         if (man_fd < 0){
-                printf("There was an error opening .Manifest the file...\n");
+                printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
                 return NULL;
         }
 
