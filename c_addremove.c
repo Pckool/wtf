@@ -207,11 +207,11 @@ ManLineToken tokenizeLine(char *line){
         int i;
         for(i = 0; i <= len; i++){
                 // once we find \t then save that as a temp bit and switch side=1
-		if(line[i] == '\t' && side == 0 && i != 0){
+		if(line[i] == '\t' && part == 0 && i != 0){
 			// ++i;
 			part = 1;
 		}
-                if(line[i] == '\t' && side == 1 && i != 0){
+                if(line[i] == '\t' && part == 1 && i != 0){
 			// ++i;
 			part = 2;
 		}
@@ -239,7 +239,7 @@ ManLineToken tokenizeLine(char *line){
                                         break;
                                 case 2:
                                         hash = concat(hash, line[i]);
-                                        break
+                                        break;
                                 default:
                                         break;
                         }
