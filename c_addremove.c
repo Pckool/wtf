@@ -27,9 +27,8 @@ void add(char* proj, char* file){
         close(fd);
         
         int man_fd;
-        mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
         printf("Trying to open/create %s\n", mpath);
-        man_fd = open(mpath, O_RDWR | O_CREAT, mode); //Open manifest
+        man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
         if (man_fd < 0){
                 printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
@@ -52,23 +51,6 @@ void add(char* proj, char* file){
                 printf("No .Manifest file found...\n");
                 final = createaManLine(file, version, hash);
                 printf("Created the line: %s...\n", final);
-                /*
-                char *file_t = stringAppend(file, "\t", strlen(file));
-
-                char *version_t = stringAppend(version, "\t", strlen(version));
-
-                char *part1 = stringAppend(file_t, version_t, strlen(file_t));
-                free(version_t);
-                free(file_t);
-
-                char *hash_t = stringAppend(hash, "\t", SHA_DIGEST_LENGTH * 2);
-
-                char *part2 = stringAppend(part1, hash_t, strlen(part1));
-
-                free(part1);
-                free(hash_t);
-                char *final = stringAppend(part2, "\n", strlen(part2));
-                */
                 // write(man_fd, file, strlen(file));
 
                 // write(man_fd, "\t", 1);
