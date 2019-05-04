@@ -23,7 +23,7 @@ char *stringAppend(char *str1, char *str2, int len){
 	if ( (new_str = malloc(strlen(str1) + strlen(str2) + 1)) != NULL){
 
 		memcpy(new_str, str1, strlen(str1));
-		memcpy(resnew_strult + strlen(str1), str2, strlen(str2) + 1); // +1 to copy the null-terminator
+		memcpy(new_str + strlen(str1), str2, strlen(str2) + 1); // +1 to copy the null-terminator
 
 		printf("string1: %s\n", new_str);
 		return new_str;
