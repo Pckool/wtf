@@ -2,7 +2,7 @@
 
 void add(char* proj, char* file){
         int fd = open(file, O_RDWR); //open file
-        if (man_fd < 0){
+        if (fd < 0){
                 printf("There was an error opening the given file...\nError No: %d\n", fd);
                 return NULL;
         }
