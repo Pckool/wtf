@@ -7,7 +7,7 @@ void error(char *msg){
 }
 
 
-char* create(char* buffer){
+char* create_s(char* buffer){
 	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
 	int p = 6;
@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
 		else{
 			int commStat; // the status of the command (if it was successful or not)
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
-			create(buffer);
+			create_s(buffer);
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
@@ -122,6 +122,6 @@ int newUser(char* buffer){
 
 void *newUserThread(void *buffer){
 	printf("Created a new Thread...\n");
-	create((char*) buffer);
+	create_s((char *)buffer);
 	return NULL;
 }

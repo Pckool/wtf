@@ -25,7 +25,8 @@ char *stringAppend(char *str1, char *str2, int len){
 	}
 	else
 	{
-		fprintf(STDERR, "malloc failed!\n");
+		// fprintf(STDERR, "malloc failed!\n");
+		printf("malloc failed!\n");
 		// exit?
 	}
 }
