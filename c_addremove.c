@@ -76,19 +76,19 @@ void add(char* proj, char* file){
 // create a thing
 char *createaManLine(char *file, char *version, char *hash){
         char *file_t = stringAppend(file, "\t", strlen(file));
-
+        printf("file_t: %s\n", file_t);
         char *version_t = stringAppend(version, "\t", strlen(version));
 
         char *part1 = stringAppend(file_t, version_t, strlen(file_t));
-        // free(version_t);
-        // free(file_t);
+        free(version_t);
+        free(file_t);
 
         char *hash_t = stringAppend(hash, "\t", SHA_DIGEST_LENGTH * 2);
 
         char *part2 = stringAppend(part1, hash_t, strlen(part1));
 
-        // free(part1);
-        // free(hash_t);
+        free(part1);
+        free(hash_t);
         char *final = stringAppend(part2, "\n", strlen(part2));
 
         return final;
