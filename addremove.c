@@ -1,7 +1,7 @@
 #include "client.h"
 
 void add(char* proj, char* file){
-        int fd = open(file, O_RDWR; //open file
+        int fd = open(file, O_RDWR); //open file
         char buffer[2000];
         read(fd, buffer, 2000); // read the entire file
         size_t length = strlen(buffer);
@@ -18,47 +18,19 @@ void add(char* proj, char* file){
         char* mpath[2000];
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
         close(fd);
-
-        int man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+        fd = open(mpath, O_RDWR); //Open manifest
         char contents[10000];
-        read(man_fd, contents, 10000); //read manifest
+        read(fd, contents, 10000); //read manifest
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
-        
-        char *version = "1"; // The version number. This gets incremented if the number is found
-
-        char *final;
-
         if (fileName == NULL){ //If file isnt in the manifest
-                final = createaManLine(file, version, hash);
-                /*
-                char *file_t = stringAppend(file, "\t", strlen(file));
-
-                char *version_t = stringAppend(version, "\t", strlen(version));
-
-                char *part1 = stringAppend(file_t, version_t, strlen(file_t));
-                free(version_t);
-                free(file_t);
-
-                char *hash_t = stringAppend(hash, "\t", SHA_DIGEST_LENGTH * 2);
-
-                char *part2 = stringAppend(part1, hash_t, strlen(part1));
-
-                free(part1);
-                free(hash_t);
-                char *final = stringAppend(part2, "\n", strlen(part2));
-                */
-                // write(man_fd, file, strlen(file));
-
-                // write(man_fd, "\t", 1);
-                // write(man_fd, "1\t", 2);
-                // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
-                
-                write(man_fd, final, 1);
+                write(fd, file, strlen(file));
+                write(fd, "\t", 1);
+                write(fd, "1\t", 2);
+                write(fd, hash, SHA_DIGEST_LENGTH * 2);
+                write(fd, "\n", 1);
         }
         else{ //If file is in manifest
-                final = createaManLine(file, version, hash);
-                replaceLine(contents, &fileName, final);
-                char *ptr[2];
+                char* ptr[2];
                 ptr[0] = strtok(fileName, "\t");
                 ptr[1] = strtok(NULL, "\t");
                 ptr[2] = strtok(NULL, "\t");
@@ -70,33 +42,13 @@ void add(char* proj, char* file){
         }
 }
 
-// create a thing
-char *createaManLine(char *file, char *version, char *hash){
-        char *file_t = stringAppend(file, "\t", strlen(file));
 
-        char *version_t = stringAppend(version, "\t", strlen(version));
+int findDir(char *dirname){
+    // returns a file descriptor of the file requested.
+    // If it can find the file, it will return a fd, otherwise it will return a number < 0
+    int fd;
 
-        char *part1 = stringAppend(file_t, version_t, strlen(file_t));
-        free(version_t);
-        free(file_t);
+    fd = open(dirname, O_RDWR, 600);
 
-        char *hash_t = stringAppend(hash, "\t", SHA_DIGEST_LENGTH * 2);
-
-        char *part2 = stringAppend(part1, hash_t, strlen(part1));
-
-        free(part1);
-        free(hash_t);
-        char *final = stringAppend(part2, "\n", strlen(part2));
-
-        return final;
+    return fd;
 }
-
-char *replaceLine(char *content, char *line, char *newLine){
-        strcpy(line, newLine);
-        printf("this is the line %s\n", line);
-}
-
-char *removeLine(char *content, char *line){
-
-}
-

@@ -28,14 +28,8 @@ void configure(char* ip, char* port);
 int getFile();
 
 // Add/Remove
-void add(char* proj, char* file);
-char *replaceLine(char *content, char *line, char *newLine);
-char *removeLine(char *content, char *line);
-char *createaManLine(char *file, char *version, char *hash);
 
 // Helping Function
 int findDir(char *dirname);
-char *stringAppend(char *str1, char *str2);
-
 
 #endif
