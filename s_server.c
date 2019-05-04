@@ -6,7 +6,7 @@ void error(char *msg){
 	exit(1);
 }
 
-char* destroy_s(char* buffer){
+void destroy_s(char* buffer){
 	 char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
         int i = 0;
         int p = 6;
@@ -107,6 +107,13 @@ int main(int argc, char* argv[])
 		else{
 			int commStat; // the status of the command (if it was successful or not)
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
+			if(strncmp(buffer, "mkdir:", 6)){
+				create_s(buffer);
+			}
+			if(strncmp(buffer, "rmdir:", 6)){
+                                destroy_s(buffer);
+                        }
+ 
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
