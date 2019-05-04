@@ -37,9 +37,34 @@ char *stringAppend(const char *str1, const char *str2, int len){
 }
 
 char *concat(const char *s1, const char *s2){
-	
-	char *result = (char *)malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
+	unsigned lineLen = (strlen(s1) + strlen(s2) + 1);
+	char *result = (char *)malloc(lineLen * sizeof(char)); // +1 for the null-terminator
+	memcpy(result, "\0", lineLen);						   // to ensure that result is a string.
 	strcpy(result, s1);
 	strcat(result, s2);
 	return result;
+}
+
+/**
+	* Take in an int and convert it to a string
+	* @param num the int to parse
+	* @return str the resulting string. (MUST BE FREED)
+	*/
+char* parseInt(const int num){
+	// printf("%d\n", getLen(num));
+	char *str = malloc(20);
+	sprintf(str, "%d", num);
+	return str;
+
+}
+
+
+//Returns the number of digits in an int. Was needed at one point but not anymore. Havent deleted yet incase it is needed again
+int getLen(int x){
+	int toReturn = 0;
+	while(x > 0){
+		toReturn++;
+		x /= 10;
+	}
+	return toReturn;
 }
