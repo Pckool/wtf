@@ -27,7 +27,7 @@ void add(char* proj, char* file){
         
         int man_fd;
 
-        int man_fd = open(mpath, O_RDONLY | O_APPEND); //Open manifest
+        man_fd = open(mpath, O_RDONLY | O_APPEND); //Open manifest
         if (man_fd < 0){
                 printf("There was an error opening the file...\n");
                 return NULL;
