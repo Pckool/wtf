@@ -151,10 +151,16 @@ int main(int argc, char* argv[])
 			c_remove(argv[2], argv[3]);
 		else
 			error("No Project name /File provided...\n");
-  }
+  	}
 	if(strcmp(argv[1], "destroy") == 0){
 		if(argv[2] != NULL)
 			destroy(argv[2]);
+		else
+			error("No Project name provided...\n");
+	}
+	if(strcmp(argv[1], "checkout") == 0){
+		if(argv[2] != NULL)
+			checkout(argv[2]);
 		else
 			error("No Project name provided...\n");
 	}

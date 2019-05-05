@@ -3,7 +3,7 @@
 void add(char* proj, char* file){
         int fd = open(file, O_RDWR); //open file
         if (fd < 0){
-                printf("There was an error opening the given file...\nError No: %d\n", fd);
+                printf("There was an error opening the %s file...\nError No: %d\n", file, fd);
                 return;
         }
         char buffer[2000];
@@ -29,11 +29,11 @@ void add(char* proj, char* file){
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
         int man_fd;
-        printf("Trying to open/create %s\n", mpath);
+        printf("Trying to open %s\n", mpath);
         man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
         if (man_fd < 0){
-                printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                 return;
         }
 
@@ -53,7 +53,7 @@ void add(char* proj, char* file){
                 man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
                 if (man_fd < 0){
-                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                         return;
                 }
                 final = createaManLine(file, version, hash);
@@ -70,9 +70,9 @@ void add(char* proj, char* file){
                 close(man_fd);
         }
         else{ //If file is in manifest
-                man_fd = open(mpath, O_RDWR); //Open manifest
+                man_fd = open(mpath, O_RDWR | O_TRUNC); //Open manifest
                 if (man_fd < 0){
-                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                         return;
                 }
                 printf("Found a .Manifest...\n");
@@ -103,10 +103,10 @@ void c_remove(char *proj, char *file){
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
         int man_fd;
-        printf("Trying to open/create %s\n", mpath);
+        printf("Trying to open %s\n", mpath);
         man_fd = open(mpath, O_RDWR); //Open manifest
         if (man_fd < 0){
-                printf("There was an error closing the %s file...\nError No: %d\n", file, man_fd);
+                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                 return;
         }
 
@@ -127,7 +127,7 @@ void c_remove(char *proj, char *file){
                 man_fd = open(mpath, O_RDWR | O_TRUNC); //Open manifest
 
                 if (man_fd < 0){
-                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                         return;
                 }
 
