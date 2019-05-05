@@ -42,22 +42,23 @@ void add(char* proj, char* file){
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
 
+        int closed = close(man_fd);
+        if(closed = 0){
+                // the file closed
+        }
         char *final;
 
-        if (man_fd < 0){
-                printf("There was an error opening the file...\n");
-                return;
-        }
-
         if (fileName == NULL){ //If file isnt in the manifest
-                printf("No .Manifest file found...\n");
+
+                man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+
+                if (man_fd < 0){
+                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        return;
+                }
                 final = createaManLine(file, version, hash);
                 printf("Created the line: %s...\n", final);
-                // write(man_fd, file, strlen(file));
 
-                // write(man_fd, "\t", 1);
-                // write(man_fd, "1\t", 2);
-                // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
                 unsigned finalLineSize = strlen(final); // +1 for the null terminator
                 int status = write(man_fd, final, finalLineSize);
                 if (status != finalLineSize){
@@ -66,28 +67,34 @@ void add(char* proj, char* file){
                 else{
                         printf(".Manifest write was successful...\nWrote %d bytes...\n", status);
                 }
-                
+                close(man_fd);
         }
         else{ //If file is in manifest
+                man_fd = open(mpath, O_RDWR); //Open manifest
+                if (man_fd < 0){
+                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        return;
+                }
                 printf("Found a .Manifest...\n");
                 final = createaManLine(file, version, hash);
-                unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
+                
                 replaceLine(&contents, &fileName, final);
                 printf("Replaced the line...\n");
-                /*
-                char *ptr[2];
-                ptr[0] = strtok(fileName, "\t");
-                ptr[1] = strtok(NULL, "\t");
-                ptr[2] = strtok(NULL, "\t");
-                int version = atoi(ptr[1]);
-                if (memcmp(temp, ptr[2], SHA_DIGEST_LENGTH) != 0){ //Compare new manifest to old manifest
-                        int position = fileName - contents;
-                        printf("%d\n", version);
+
+                unsigned contentLineSize = strlen(content);
+                printf("content: %s\n\tWith a size of %d\n", contents, contentLineSize);
+                
+
+                int status = write(man_fd, content, contentLineSize);
+                if (status != contentLineSize){
+                        printf(".Manifest write was not successful...\nError No: %d\n", status);
                 }
-                */
-               printf("content: %s\n", contents);
+                else{
+                        printf(".Manifest write was successful...\nWrote %d bytes...\n", status);
+                }
+                close(man_fd);
         }
-        close(man_fd);
+        
         free(hash);
 }
 
@@ -109,13 +116,11 @@ void c_remove(char *proj, char *file){
 
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
-
-        char *final;
-
-        if (man_fd < 0){
-                printf("There was an error opening the file...\n");
-                return;
+        int closed = close(man_fd);
+        if(closed = 0){
+                // the file closed
         }
+        char *final;
 
         if (fileName != NULL){ //If file is in manifest
                 printf("Found a .Manifest...\n");
@@ -123,20 +128,21 @@ void c_remove(char *proj, char *file){
                 unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
                 removeLine(&contents, &fileName);
                 printf("Removed the line...\n");
-                /*
-                char *ptr[2];
-                ptr[0] = strtok(fileName, "\t");
-                ptr[1] = strtok(NULL, "\t");
-                ptr[2] = strtok(NULL, "\t");
-                int version = atoi(ptr[1]);
-                if (memcmp(temp, ptr[2], SHA_DIGEST_LENGTH) != 0){ //Compare new manifest to old manifest
-                        int position = fileName - contents;
-                        printf("%d\n", version);
+
+                unsigned contentLineSize = strlen(content);
+                printf("content: %s\n\tWith a size of %d\n", contents, contentLineSize);
+                
+
+                int status = write(man_fd, content, contentLineSize);
+                if (status != contentLineSize){
+                        printf(".Manifest write was not successful...\nError No: %d\n", status);
                 }
-                */
-               printf("content: %s\n", contents);
+                else{
+                        printf(".Manifest write was successful...\nWrote %d bytes...\n", status);
+                }
+                close(man_fd);
         }
-        close(man_fd);
+        
 }
 
 // create a thing
@@ -188,15 +194,7 @@ int removeLine(char **content, char **line){
         printf("line to remove: %s\n", lineToRem);
 
         removeSubstring(*content, lineToRem);
-        printf("This is the new content: %s\n", *content);
-        
-        // char *contentCpy = malloc(strlen(*content) * sizeof(char));
-        // memcpy(contentCpy, "\0", strlen(*content) * sizeof(char));
-
-        // char *newContent = malloc( (strlen(content)-lineOnly) * sizeof(char));
-        // memcpy(newContent, "\0", (strlen(content)-lineOnly) * sizeof(char));
-
-        // strcpy(contentCpy, );
+        return 0; // no problems
 }
 
 manLineTokens *tokenizeLine(char *line){
@@ -248,16 +246,6 @@ manLineTokens *tokenizeLine(char *line){
                                 default:
                                         break;
                         }
-			// if(part == 0){
-				
-			// }
-			// // looking for token
-			// else if(part == 1){
-				
-			// }
-                        // else if(part == 2){
-				
-			// }
 		}
         }
         return tokLine;
@@ -274,12 +262,9 @@ char *readLine(char *str){
         for(i=0; i<strlen(str); ++i){
 
                 lett = str[i];
-                if(lett != '\n'){
-                        temp = charAppend(temp, lett);
-                }
-                else{
-                        temp = charAppend(temp, lett);
-                        temp = charAppend(temp, '\0');
+                temp = charAppend(temp, lett);
+
+                if(lett == '\n'){ // if the letter is a new line terminator then we exit the loop
                         i = strlen(str) - 1;
                 }
         }
