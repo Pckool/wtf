@@ -65,16 +65,16 @@ int scanDir_sendFiles(char *path, int sockfd){
     }
     while ((dp = readdir(dir) ) != NULL){
         // this if statement doesn't work. d_type doesn't exist sadly :(
-        if (dp.d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
+        if (dp->d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
             
             char newPath[PATH_MAX];
-            snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
+            snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
             scanDir_sendFiles(newPath, sockfd);
         }
         else{ // this is a file, so send it off to the client
             char newPath[PATH_MAX];
-            snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
+            snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
             int fd = open(newPath, O_RDWR);
 
@@ -106,7 +106,7 @@ void *pushFileToClient(void *dat){
     }
     char *buffer[fileStat.st_size];
 
-    if(read(data.fd, buffer, fileStat.st_size) < 0){
+    if(read(data->fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file %s...\n", data->path);
     }
     
