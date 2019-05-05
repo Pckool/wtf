@@ -7,8 +7,13 @@ void add(char* proj, char* file){
                 printf("There was an error opening the %s file...\nError No: %d\n", file, fd);
                 return;
         }
-        char buffer[2000];
-        read(fd, buffer, 2000); // read the entire file
+        struct stat fileStat__;
+        if(fstat(man_fd, &fileStat__) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+        }
+        char buffer[fileStat__.st_size];
+        read(fd, buffer, fileStat__.st_size); // read the entire file
         size_t length = strlen(buffer);
         unsigned char temp[SHA_DIGEST_LENGTH]; // temporary storage for hash
 
@@ -38,8 +43,13 @@ void add(char* proj, char* file){
                 return;
         }
 
-        char contents[1000000];
-        read(man_fd, contents, 1000000); //read manifest
+        struct stat fileStat;
+        if(fstat(man_fd, &fileStat) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+        }
+        char contents[fileStat.st_size];
+        read(man_fd, contents, fileStat.st_size); //read manifest
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
 
@@ -111,8 +121,13 @@ void c_remove(char *proj, char *file){
                 return;
         }
 
-        char *contents = malloc(1000000);
-        int written = read(man_fd, contents, 1000000); //read manifest
+        struct stat fileStat;
+        if(fstat(man_fd, &fileStat) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+        }
+        char *contents = malloc(fileStat->st_size);
+        int written = read(man_fd, contents, (fileStat->st_size)); //read manifest
 
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
@@ -282,4 +297,14 @@ char *readLine(char *str){
                 }
         }
         return temp;
+}
+int findProject(char *path){
+    char *pwd[PATH_MAX];
+    char *getcwd(pwd, PATH_MAX);
+    char *InProjectDir =strstr(pwd, path);
+    if(InProjectDir == NULL){
+        printf("You are not in the project directory...\n");
+        return;
+    }
+
 }

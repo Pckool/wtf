@@ -22,8 +22,17 @@ int newUser(char **buffer);
 char *create_s(char *buffer);
 void error(char *msg);
 
+// destroy
+void remove_directory_help(const char *buffer);
+int remove_directory(const char *path);
+
 // checkout
 void checkout_s(const char *buffer, int sockfd);
+int findProject(char *path);
+char *getLine(char *str);
+int getProjectCurrVersion(char *ProjectName);
+int scanDir_sendFiles(char *path);
+char *getClientsPath(char *serverPath);
 
 // Threads
 void *newUserCreateThread(void *buffer);

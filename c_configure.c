@@ -7,3 +7,4 @@ void configure(char* ip, char* port){
 	write (fd, "\n", 1);
 	write(fd, port, strlen(port));
 }
+

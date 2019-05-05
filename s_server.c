@@ -1,5 +1,5 @@
-#include "s_server.h"
 #include "h_both.h"
+#include "s_server.h"
 
 pthread_mutex_t mutexCreate = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexDestroy = PTHREAD_MUTEX_INITIALIZER;

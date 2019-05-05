@@ -12,7 +12,7 @@
 // #include "h_both.h"
 #include "s_server.h"
 
-remove_directory_help(const char *buffer){
+void remove_directory_help(const char *buffer){
  	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "rmdir:" is.
    int i = 0;
    int p = 6;
@@ -28,8 +28,7 @@ remove_directory_help(const char *buffer){
 }
 
 
-int remove_directory(const char *path)
-{
+int remove_directory(const char *path){
    DIR *d = opendir(path);
    size_t path_len = strlen(path);
    int r = -1;
