@@ -126,7 +126,7 @@ void c_remove(char *proj, char *file){
                 printf("Could not get filedata, aborting...\n");
                 return;
         }
-        int filesize = fileStat->st_size;
+        int filesize = fileStat.st_size;
         char *contents = malloc(filesize);
         int written = read(man_fd, contents, filesize); //read manifest
 
