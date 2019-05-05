@@ -103,7 +103,7 @@ void connecter(int fileSize){
 	i = 0;
 	int t = ipSize + 1;
 	char* portNum = (char *) malloc(portSize);
-	while (i < portSize){
+	while (i < portSize + 1){
 		portNum[i] = buffer[t];
 		i++;
 		t++;
