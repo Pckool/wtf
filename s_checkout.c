@@ -46,7 +46,7 @@ void checkout_s(const char *buffer, int sockfd){
     //     return;
     // }
     // while ((dp = readdir(dir) ) != NULL){
-    //     if (dp->d_type == DT_DIR){
+    //     if (dp.d_type == DT_DIR){
     //         // this is a dir, so we need to loop through this as well
     //     }
     //     else{
@@ -67,25 +67,25 @@ int scanDir_sendFiles(char *path, int sockfd){
         return;
     }
     while ((dp = readdir(dir) ) != NULL){
-        if (dp->d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
+        if (dp.d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
             
             char newPath[PATH_MAX];
-            snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
+            snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
 
             scanDir_sendFiles(newPath);
         }
         else{ // this is a file, so send it off to the client
             char newPath[PATH_MAX];
-            snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
+            snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
 
             int fd = open(newPath, O_RDWR);
             struct threadData data = malloc(sizeof(struct threadData));
-            data->fd = (int)malloc(4 * sizeof(int));
-            memcpy(data->fd, fd, 4 * sizeof(int));
+            data.fd = (int)malloc(4 * sizeof(int));
+            memcpy(data.fd, fd, 4 * sizeof(int));
 
-            data->path = (char *)malloc(strlen(newPath) * sizeof(char));
-            memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
-            strcpy(data->path, newPath);
+            data.path = (char *)malloc(strlen(newPath) * sizeof(char));
+            memcpy(data.path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
+            strcpy(data.path, newPath);
 
             pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)&data);
 		    pthread_join(thread_id_filePush, NULL);
@@ -98,17 +98,17 @@ int scanDir_sendFiles(char *path, int sockfd){
 void *pushFileToClient(void *dat){
     struct threadData data = (struct threadData)dat;
     struct stat fileStat;
-    if(fstat(data->fd, &fileStat) < 0){
+    if(fstat(data.fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
-    char *buffer[fileStat->st_size];
+    char *buffer[fileStat.st_size];
 
-    if(read(data->fd, buffer, fileStat->st_size) < 0){
+    if(read(data.fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file %s...\n", );
     }
     
-    char *clientPath = getClientsPath(data->path);
+    char *clientPath = getClientsPath(data.path);
     char *message;
     int len = strlen(clientPath) + strlen(buffer) + strlen("file:") + 1;
     // message
