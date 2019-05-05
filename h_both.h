@@ -1,6 +1,19 @@
 #ifndef BOTH_H
 #define BOTH_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <openssl/sha.h>
+#include <dirent.h>
+
 // Helping Function
 int findDir(char *dirname);
 char *stringAppend(const char *str1, const char *str2, int len);
