@@ -74,13 +74,11 @@ void create(char* projectName){
 }
 
 void connecter(int fileSize){
-	printf("%d\n", 1);
     int fd = open(".configure", O_RDONLY); //Opens configure file to read only
 	if (fd == -1){
 		error("Error. Configure file does not exist");
 	}
     int portno;
-	printf("%d\n", 1);
     struct sockaddr_in serverAddressInfo;
     struct hostent *serverIPAddress;
     char buffer[256];
@@ -91,14 +89,12 @@ void connecter(int fileSize){
 		ipSize++;
 		i++;
 	}
-	printf("%d\n", 1);
 	char* ipAddress = (char *) malloc(ipSize - 1);
 	i = 0;
 	while (i < ipSize){
 		ipAddress[i] = buffer[i];
 		i++;
 	}
-	printf("%d\n", 1);
 	int portSize = fileSize - (ipSize + 2);
 	i = 0;
 	int t = ipSize + 1;
@@ -109,8 +105,8 @@ void connecter(int fileSize){
 		t++;
 	}
 	int port = atoi(portNum); //Convert string to int
-	printf("%d\n", port);
-	printf("%s\n", ipAddress);
+	printf("Configuring to port '%d'\n", port);
+	printf("Configuring to IP '%s'\n", ipAddress);
 	serverIPAddress = gethostbyname(ipAddress); //Resolve IP from hostname
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	bzero((char*)&serverAddressInfo, sizeof(serverAddressInfo)); //zero out. After this line I really dont get whats happening but it works
@@ -132,20 +128,35 @@ int main(int argc, char* argv[])
 
 	if (strcmp(argv[1], "configure") == 0){
 		printf("%s\n"," Configuring the IP and port number");
-		configure(argv[2], argv[3]);
+		if(argv[2] != NULL && argv[3] != NULL)
+			configure(argv[2], argv[3]);
+		else
+			error("No Project name/File provided...\n");
 	}
 
 	if (strcmp(argv[1], "create") == 0){
-		create(argv[2]);
+		if(argv[2] != NULL)
+			create(argv[2]);
+		else
+			error("No Project name provided...\n");
 	}
 	if (strcmp(argv[1], "add") == 0){
-    add(argv[2], argv[3]);
-  }
+		if(argv[2] != NULL && argv[3] != NULL)
+    		add(argv[2], argv[3]);
+		else
+			error("No Project name/File provided...\n");
+	}
 	if(strcmp(argv[1], "remove") == 0){
-		c_remove(argv[2], argv[3]);
+		if(argv[2] != NULL && argv[3] != NULL)
+			c_remove(argv[2], argv[3]);
+		else
+			error("No Project name /File provided...\n");
   }
 	if(strcmp(argv[1], "destroy") == 0){
-		destroy(argv[2]);
+		if(argv[2] != NULL)
+			destroy(argv[2]);
+		else
+			error("No Project name provided...\n");
 	}
 
 }
