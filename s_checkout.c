@@ -73,7 +73,7 @@ int scanDir_sendFiles(char *path, int sockfd){
             char newPath[PATH_MAX];
             snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
 
-            scanDir_sendFiles(newPath);
+            scanDir_sendFiles(newPath, sockfd);
         }
         else{ // this is a file, so send it off to the client
             char newPath[PATH_MAX];
@@ -106,7 +106,7 @@ void *pushFileToClient(void *dat){
     char *buffer[fileStat.st_size];
 
     if(read(data.fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file %s...\n", );
+        printf("There was an error reading file %s...\n", dat.file);
     }
     
     char *clientPath = getClientsPath(data.path);
