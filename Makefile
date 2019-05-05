@@ -21,7 +21,7 @@ Client: c_client.o h_helpers.o c_addremove.o c_configure.o c_checkout.o
 	$(CC) -o  $@ c_client.o -lssl -lcrypto h_helpers.o c_addremove.o c_configure.o c_checkout.o
 client.o: c_client.h $(H_DEPS)
 
-Server: h_helpers.o s_server.o s_destroy.o
+Server: h_helpers.o s_server.o s_destroy.o s_checkout.o
 	$(CC) -o $@ -pthread h_helpers.o s_server.o  s_destroy.o s_checkout.o
 server.o: s_server.h $(H_DEPS)
 
