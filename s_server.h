@@ -17,6 +17,12 @@
 #include <fcntl.h>
 #include <pthread.h>
 
+typedef struct threadData{
+    int fd;
+    char *path;
+}threadData;
+
+
 void *newUserThread(void *vargp);
 int newUser(char **buffer);
 char *create_s(char *buffer);

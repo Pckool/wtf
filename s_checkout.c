@@ -5,10 +5,7 @@ int sockfd_local = -1;
 pthread_mutex_t mutextest = PTHREAD_MUTEX_INITIALIZER;
 pthread_t thread_id_filePush;
 
-typedef struct threadData{
-    int fd;
-    char *path;
-}threadData;
+
 
 
 void checkout_s(const char *buffer, int sockfd){
@@ -106,7 +103,7 @@ void *pushFileToClient(void *dat){
     char *buffer[fileStat.st_size];
 
     if(read(data.fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file %s...\n", dat.file);
+        printf("There was an error reading file %s...\n", data.file);
     }
     
     char *clientPath = getClientsPath(data.path);
