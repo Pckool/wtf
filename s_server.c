@@ -31,12 +31,12 @@ char* create_s(char* buffer){
 	}
 	DIR *dir;
 	dir = opendir(proj);
-	snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
-	int fd = open(path, O_RDWR | O_CREAT, 0600);
-	if(fd < 0){
-		printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
-	}
-	close(fd);
+	// snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
+	// int fd = open(path, O_RDWR | O_CREAT, 0600);
+	// if(fd < 0){
+	// 	printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
+	// }
+	// close(fd);
 	char* sendback[2];
 }
 int main(int argc, char* argv[])

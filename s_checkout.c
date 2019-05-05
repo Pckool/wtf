@@ -77,9 +77,11 @@ int scanDir_sendFiles(char *path, int sockfd){
             snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
 
             int fd = open(newPath, O_RDWR);
-            struct threadData *data = malloc(sizeof(struct threadData));
-            data.fd = (int)malloc(4 * sizeof(int));
-            memcpy(data.fd, fd, 4 * sizeof(int));
+
+            struct threadData *data = (struct threadData *)malloc(sizeof(struct threadData));
+            // data.fd = (int)malloc(4 * sizeof(int));
+            // memcpy(data.fd, fd, 4 * sizeof(int));
+            data.fd = fd;
 
             data.path = (char *)malloc(strlen(newPath) * sizeof(char));
             memcpy(data.path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
@@ -89,8 +91,9 @@ int scanDir_sendFiles(char *path, int sockfd){
 		    pthread_join(thread_id_filePush, NULL);
             // launch a thread and mutex it
         }
-        (void) closedir(dir);
+        
     }
+    (void) closedir(dir);
 }
 
 void *pushFileToClient(void *dat){
@@ -115,26 +118,22 @@ void *pushFileToClient(void *dat){
 }
 
 int getProjectCurrVersion(char *ProjectName){
+    DIR *dir;
+    struct dirent *dp;
+    int version = 0;
     char path[PATH_MAX];
     snprintf(path, PATH_MAX, "%s/%s", ".repo", ProjectName);
-    char meta_path[PATH_MAX];
-    snprintf(meta_path, PATH_MAX, "%s/%s", path, ".meta");
-    int meta_fd = open(meta_path, O_RDONLY);
-    if(meta_fd < 0) return;
-    
-    char *mata_buffer[10];
-    char *version_str;
-    int version;
-    char *line1;
-    if(read(meta_fd, mata_buffer, sizeof(mata_buffer)) == mata_buffer){
-        line1 = getLine(mata_buffer); // this will be the version number
-        version = atoi(line1);
-        snprintf(version_str, strlen(line1), "%d", line1);
-        close(meta_fd);
-        free(line1);
-        return version;
+
+
+    if ((dir = opendir (path)) == NULL) {
+        printf("Cannot open path %s...\n", path);
+        return;
     }
-    else return -1;
+    while ((dp = readdir(dir) ) != NULL){
+            ++version;
+        
+    }
+    (void) closedir(dir);
 }
 
 char *getClientsPath(char *serverPath, int versionNo){
