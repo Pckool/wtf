@@ -21,8 +21,8 @@ Client: c_client.o c_addremove.o c_configure.o h_helpers.o
 	$(CC) -o  $@ c_client.o -lssl -lcrypto c_addremove.o c_configure.o h_helpers.o
 client.o: c_client.h h_global.h
 
-Server: s_server.o
-	$(CC) -o $@ -pthread s_server.o h_helpers.o
+Server: s_server.o s_destroy.o
+	$(CC) -o $@ -pthread s_server.o h_helpers.o s_destroy.o
 server.o: s_server.h h_global.h
 
 clean:
