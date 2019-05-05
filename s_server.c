@@ -1,6 +1,7 @@
 #include "s_server.h"
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexCreate = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexDestroy = PTHREAD_MUTEX_INITIALIZER;
 
 void error(char *msg){
 	perror(msg);
@@ -92,24 +93,14 @@ int main(int argc, char* argv[])
 		}
 		else{
 			int commStat; // the status of the command (if it was successful or not)
-			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
-			if(strncmp(buffer, "mkdir:", 6) == 0){
-				create_s(buffer);
-				bzero(buffer,256);
-			}
-			else if(strncmp(buffer, "rmdir:", 6) == 0){ 
-				pthread_mutex_lock(&mutex);
-                                remove_directory_help(buffer);
-				bzero(buffer,256);
-				pthread_mutex_unlock(&mutex);
-                        }
+			commStat = newUser(&buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
+			
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
 			{
 				error("ERROR writing to socket");
 			}
-
 			if(commStat < 0){
 				printf("Something went wrong with the user's requested command...\n");
 			}
@@ -120,21 +111,61 @@ int main(int argc, char* argv[])
 
 }
 
-int newUser(char* buffer){
+int newUser(char **buffer){
+	// buffer now comes in as an address, it must be refrenced with *buffer to access the pointer
 	//create a new thread
 	printf("New User connected...\n");
-	printf("recieved buffer: %s\n", buffer);
-	pthread_t thread_id;
-	pthread_create(&thread_id, NULL, newUserThread, (void*) &buffer);
-	pthread_join(thread_id, NULL);
+	printf("recieved buffer: %s\n", *buffer);
+	pthread_t thread_id_destroy;
+	pthread_t thread_id_create;
+	pthread_t thread_id_push;
+	pthread_t thread_id_checkout;
+
+	if(startsWith(*buffer, "checkout:")){
+		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
+		pthread_join(thread_id_checkout, NULL);
+	}
+	if(startsWith(*buffer, "mkdir:")){
+		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buffer);
+		pthread_join(thread_id_create, NULL);
+		// create_s(buffer);
+		bzero(*buffer,256);
+	}
+	else if(startsWith(*buffer, "rmdir:")){ 
+		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buffer);
+		pthread_join(thread_id_destroy, NULL);
+		// pthread_mutex_lock(&mutexDestroy);
+
+		// remove_directory_help(buffer);
+
+		bzero(*buffer,256);
+		// pthread_mutex_unlock(&mutexDestroy);
+	}
+	
 
 	if(true){
 		return 0;
 	}
 }
 
-void *newUserThread(void *buffer){
-	printf("Created a new Thread...\n");
+void *newUserCreateThread(void *buffer){
+	pthread_mutex_lock(&mutexCreate);
+	printf("Created a new `create` thread for the user...\n");
 	create_s((char *)buffer);
+	pthread_mutex_unlock(&mutexCreate);
+	return NULL;
+}
+
+void *newUserDestroyThread(void *buffer){
+	pthread_mutex_lock(&mutexDestroy);
+	printf("Created a new `create` thread for the user...\n");
+	remove_directory_help((char *)buffer);
+	pthread_mutex_unlock(&mutexDestroy);
+	return NULL;
+}
+
+void *newUserCheckoutThread(void *buffer){
+	printf("Created a new `checkout` thread for the user...\n");
+	checkout_s((char *)buffer);
 	return NULL;
 }

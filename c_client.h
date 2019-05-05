@@ -42,6 +42,9 @@ char *createaManLine(char *file, char *version, char *hash);
 manLineTokens *tokenizeLine(char *line);
 char *readLine(char *str);
 
+// Checkout
+void checkout(char *projectName);
+
 // Helping Function
 int findDir(char *dirname);
 char *stringAppend(const char *str1, const char *str2, int len);

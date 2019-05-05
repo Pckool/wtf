@@ -44,7 +44,7 @@ void create(char* projectName){
         stat(fp, buf); //Gets stats about the file and puts it in the struct buf
         int size = buf->st_size;
 	connecter(size); //Takes the size and goes to connecter
-	printf("%d\n", 1);
+
 	char buffer[256] = "mkdir:"; //This is here because eventually we need to add the networking protocols
 	int i = 6;
 	int p = 0;
