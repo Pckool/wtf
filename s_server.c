@@ -1,4 +1,5 @@
 #include "s_server.h"
+#include "h_global.h"
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -102,7 +103,17 @@ int main(int argc, char* argv[])
                                 remove_directory_help(buffer);
 				bzero(buffer,256);
 				pthread_mutex_unlock(&mutex);
+                        
+			}
+			else if(strncmp(buffer, "currver:", 8) == 0){
+                                pthread_mutex_lock(&mutex);
+                                directoryCounter_s(buffer);
+                                bzero(buffer,256);
+				snprintf(buffer,255, "The current version number of the project is: %d\n", dircount);
+                                pthread_mutex_unlock(&mutex);
+
                         }
+
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)

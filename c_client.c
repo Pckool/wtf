@@ -9,6 +9,27 @@ void error(char *msg){
 	perror(msg);
 	exit(1);
 }
+void current(char *projectName){
+	int n = -1;
+        char message[256];
+        struct stat *buf; //Needed to check the size of the config file
+        buf = malloc(sizeof(struct stat));
+        char* fp = ".configure";
+        stat(fp, buf); //Gets stats about the file and puts it in the struct buf
+        int size = buf->st_size;
+        connecter(size); //Takes the size and goes to connecter
+        char buffer[256] = "currver:"; //This is here because eventually we need to add the networking protocols
+        int i = 8;
+        int p = 0;
+        while (p < strlen(projectName)){
+                buffer[i] = projectName[p];
+                i++;
+                p++;
+        }
+        write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
+	n = read(sockfd, message,255);
+        printf("%s\n", message);
+}
 
 void destroy(char *projectName){
 	int n = -1;
@@ -151,12 +172,19 @@ int main(int argc, char* argv[])
 			c_remove(argv[2], argv[3]);
 		else
 			error("No Project name /File provided...\n");
-  }
+  	}
 	if(strcmp(argv[1], "destroy") == 0){
 		if(argv[2] != NULL)
 			destroy(argv[2]);
 		else
 			error("No Project name provided...\n");
 	}
+	if(strcmp(argv[1], "currentversion") == 0){
+                if(argv[2] != NULL)
+                        current(argv[2]);
+                else
+                        error("No Project name provided...\n");
+        }
 
-}
+
+}	
