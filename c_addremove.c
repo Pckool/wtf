@@ -105,9 +105,8 @@ void c_remove(char *proj, char *file){
         int man_fd;
         printf("Trying to open/create %s\n", mpath);
         man_fd = open(mpath, O_RDWR); //Open manifest
-
         if (man_fd < 0){
-                printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                printf("There was an error closing the %s file...\nError No: %d\n", file, man_fd);
                 return;
         }
 
@@ -118,8 +117,20 @@ void c_remove(char *proj, char *file){
         char *version = "1"; // The version number. This gets incremented if the number is found
         
         char *final;
+        int closed = close(man_fd);
+        if(closed < 0){
+                printf("There was an error closing the %s file...\nError No: %d\n", file, man_fd);
+                return;
+        }
 
         if (fileName != NULL){ //If file is in manifest
+                man_fd = open(mpath, O_RDWR | O_TRUNC); //Open manifest
+
+                if (man_fd < 0){
+                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        return;
+                }
+
                 printf("Found a .Manifest...\n");
                 // final = createaManLine(file, version, hash);
                 unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
