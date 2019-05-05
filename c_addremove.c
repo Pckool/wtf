@@ -188,7 +188,7 @@ int removeLine(char **content, char **line){
         printf("line: %s\n", restOfCont);
 
         char *lineOnly = *line - restOfCont; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
-
+        printf("We are done getting the line pointer...");
         printf("This is the line: %s\n", *lineOnly);
         
         char *contentCpy = malloc(strlen(*content) * sizeof(char));
