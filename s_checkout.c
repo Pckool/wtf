@@ -77,7 +77,7 @@ int scanDir_sendFiles(char *path, int sockfd){
             snprintf(newPath, PATH_MAX, "%s/%s", path, dp.d_name);
 
             int fd = open(newPath, O_RDWR);
-            struct threadData data = malloc(sizeof(struct threadData));
+            struct threadData *data = malloc(sizeof(struct threadData));
             data.fd = (int)malloc(4 * sizeof(int));
             memcpy(data.fd, fd, 4 * sizeof(int));
 
@@ -94,7 +94,7 @@ int scanDir_sendFiles(char *path, int sockfd){
 }
 
 void *pushFileToClient(void *dat){
-    struct threadData data = (struct threadData)dat;
+    struct threadData *data = (struct threadData *)dat;
     struct stat fileStat;
     if(fstat(data.fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
