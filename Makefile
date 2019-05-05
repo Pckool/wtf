@@ -11,7 +11,7 @@ s_%.o: s_%.c $(S_DEPS) $(H_DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 
-h_%.o: h_%.c $(S_DEPS) $(H_DEPS)
+h_%.o: h_%.c $(H_DEPS) # $(S_DEPS) 
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 
