@@ -113,6 +113,13 @@ int main(int argc, char* argv[])
                                 pthread_mutex_unlock(&mutex);
 
                         }
+			else if(strncmp(buffer, "rollback:", 9) == 0){
+                                pthread_mutex_lock(&mutex);
+                                rollback_s(buffer);
+                                bzero(buffer,256);
+                                pthread_mutex_unlock(&mutex);
+
+                        }
 
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);

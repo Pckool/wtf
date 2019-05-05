@@ -9,6 +9,24 @@ void error(char *msg){
 	perror(msg);
 	exit(1);
 }
+void rollback(char *projectName, char *version){
+        int n = -1;
+        char message[256];
+        struct stat *buf; //Needed to check the size of the config file
+        buf = malloc(sizeof(struct stat));
+        char* fp = ".configure";
+        stat(fp, buf); //Gets stats about the file and puts it in the struct buf
+        int size = buf->st_size;
+        connecter(size); //Takes the size and goes to connecter
+        char buffer[256];
+	snprintf(buffer, 256, "rollback:%s:%s", projectName, version);
+	printf("%s\n", buffer);
+        write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
+        n = read(sockfd, message,255);
+        printf("%s\n", message);
+}
+
+
 void current(char *projectName){
 	int n = -1;
         char message[256];
@@ -185,6 +203,13 @@ int main(int argc, char* argv[])
                 else
                         error("No Project name provided...\n");
         }
+	if(strcmp(argv[1], "rollback") == 0){
+                if(argv[2] != NULL)
+                        rollback(argv[2], argv[3]);
+                else
+                        error("No Project name provided...\n");
+        }
+
 
 
 }	
