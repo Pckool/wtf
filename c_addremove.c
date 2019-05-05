@@ -187,8 +187,8 @@ int removeLine(char **content, char **line){
 
         printf("line to remove: %s\n", lineToRem);
 
-        removeSubstring(content, lineToRem);
-        printf("This is the new content: %s\n", content);
+        removeSubstring(*content, lineToRem);
+        printf("This is the new content: %s\n", *content);
         
         // char *contentCpy = malloc(strlen(*content) * sizeof(char));
         // memcpy(contentCpy, "\0", strlen(*content) * sizeof(char));
