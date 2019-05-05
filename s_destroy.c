@@ -1,14 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <dirent.h>
-#include <fcntl.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <strings.h>
+// #include <sys/types.h>
+// #include <sys/socket.h>
+// #include <netinet/in.h>
+// #include <sys/stat.h>
+// #include <unistd.h>
+// #include <pthread.h>
+// #include <dirent.h>
+// #include <fcntl.h>
+// #include "h_both.h"
+#include "s_server.h"
 
 remove_directory_help(const char *buffer){
  	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "rmdir:" is.

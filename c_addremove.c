@@ -1,4 +1,5 @@
 #include "c_client.h"
+#include "h_both.h"
 
 void add(char* proj, char* file){
         int fd = open(file, O_RDWR); //open file

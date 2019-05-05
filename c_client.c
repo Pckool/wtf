@@ -1,4 +1,5 @@
 #include "c_client.h"
+#include "h_both.h"
 
 //char* ipAddr;
 //char* portNo;

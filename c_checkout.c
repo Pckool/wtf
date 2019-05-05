@@ -1,4 +1,5 @@
 #include "c_client.h"
+#include "h_both.h"
 
 void checkout(char *projectName){
     // First we will check top see if the project file already exists on the client side

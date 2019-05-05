@@ -1,6 +1,6 @@
-#include "c_client.h"
-#include "s_server.h"
-
+// #include "c_client.h"
+// #include "s_server.h"
+#include "h_both.h"
 
 char *stringAppend(const char *str1, const char *str2, int len){
 	printf("string1: %d\n", strlen(str1));

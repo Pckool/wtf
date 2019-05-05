@@ -1,4 +1,5 @@
 #include "c_client.h"
+#include "h_both.h"
 
 void configure(char* ip, char* port){
 	int fd = open(".configure", O_WRONLY | O_CREAT | O_TRUNC, 0600); 
