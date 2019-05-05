@@ -96,26 +96,28 @@ int scanDir_sendFiles(char *path, int sockfd){
     (void) closedir(dir);
 }
 
-void *pushFileToClient(void *dat){
-    struct threadData *data = (struct threadData *)dat;
+
+void *pushFileToClient(void *data){
+    // struct threadData *data = (struct threadData *)dat;
     struct stat fileStat;
-    if(fstat(data.fd, &fileStat) < 0){
+    if(fstat((struct threadData)data.fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
     char *buffer[fileStat.st_size];
 
-    if(read(data.fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file %s...\n", data.path);
+    if(read((struct threadData)data.fd, buffer, fileStat.st_size) < 0){
+        printf("There was an error reading file %s...\n", (struct threadData)data.path);
     }
     
-    char *clientPath = getClientsPath(data.path);
+    char *clientPath = getClientsPath((struct threadData)data.path);
     char *message;
     int len = strlen(clientPath) + strlen(buffer) + strlen("file:") + 1;
     // message
     snprintf(message, len, "file:%s:%s", clientPath, buffer);
     write(sockfd_local, message, len);
 }
+
 
 int getProjectCurrVersion(char *ProjectName){
     DIR *dir;
