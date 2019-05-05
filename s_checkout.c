@@ -78,14 +78,14 @@ int scanDir_sendFiles(char *path, int sockfd){
 
             int fd = open(newPath, O_RDWR);
 
-            struct threadData *data = (struct threadData *)malloc(sizeof(struct threadData));
+            threadData *data = (threadData *)malloc(sizeof(threadData));
             // data.fd = (int)malloc(4 * sizeof(int));
             // memcpy(data.fd, fd, 4 * sizeof(int));
-            data.fd = fd;
+            data->fd = fd;
 
-            data.path = (char *)malloc(strlen(newPath) * sizeof(char));
-            memcpy(data.path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
-            strcpy(data.path, newPath);
+            data->path = (char *)malloc(strlen(newPath) * sizeof(char));
+            memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
+            strcpy(data->path, newPath);
 
             pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)&data);
 		    pthread_join(thread_id_filePush, NULL);
