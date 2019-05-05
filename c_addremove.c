@@ -183,16 +183,15 @@ char *replaceLine(char **content, char **line, char *newLine){
 int removeLine(char **content, char **line){
         printf("this is the content %s\n", *content);
         char *restOfCont = strstr(*line, "\n"); // gets the substring of content minus the line and everything before it
-        char *restOfCont2;
-        restOfCont2 = ++restOfCont;
-        printf("line: %s\n", restOfCont);
+        char *lineToRem = readLine(*line);
 
-        char *lineOnly = *line - restOfCont; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
-        printf("We are done getting the line pointer...");
-        printf("This is the line: %s\n", *lineOnly);
+        printf("line to remove: %s\n", lineToRem);
+
+        removeSubstring(content, lineToRem);
+        printf("This is the new content: %s\n", content);
         
-        char *contentCpy = malloc(strlen(*content) * sizeof(char));
-        memcpy(contentCpy, "\0", strlen(*content) * sizeof(char));
+        // char *contentCpy = malloc(strlen(*content) * sizeof(char));
+        // memcpy(contentCpy, "\0", strlen(*content) * sizeof(char));
 
         // char *newContent = malloc( (strlen(content)-lineOnly) * sizeof(char));
         // memcpy(newContent, "\0", (strlen(content)-lineOnly) * sizeof(char));
@@ -262,4 +261,27 @@ manLineTokens *tokenizeLine(char *line){
 		}
         }
         return tokLine;
+}
+
+char *readLine(char *str){
+        char *temp = malloc(sizeof(char));
+        memcpy(temp, "\0", sizeof(char));
+
+        char *final = malloc(sizeof(char));
+        memcpy(final, "\0", sizeof(char));
+        char lett;
+        int i;
+        for(i=0; i<strlen(str); ++i){
+
+                lett = str[i];
+                if(lett != '\n'){
+                        temp = charAppend(temp, lett);
+                }
+                else{
+                        temp = charAppend(temp, lett);
+                        temp = charAppend(temp, '\0');
+                        i = strlen(str) - 1;
+                }
+        }
+        return temp;
 }
