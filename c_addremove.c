@@ -81,11 +81,11 @@ void add(char* proj, char* file){
                 replaceLine(&contents, &fileName, final);
                 printf("Replaced the line...\n");
 
-                unsigned contentLineSize = strlen(content);
-                printf("content: %s\n\tWith a size of %d\n", contents, contentLineSize);
+                unsigned contentLineSize = strlen(contents);
+                printf("contents: %s\n\tWith a size of %d\n", contents, contentLineSize);
                 
 
-                int status = write(man_fd, content, contentLineSize);
+                int status = write(man_fd, contents, contentLineSize);
                 if (status != contentLineSize){
                         printf(".Manifest write was not successful...\nError No: %d\n", status);
                 }
@@ -104,7 +104,7 @@ void c_remove(char *proj, char *file){
 
         int man_fd;
         printf("Trying to open/create %s\n", mpath);
-        man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+        man_fd = open(mpath, O_RDWR); //Open manifest
 
         if (man_fd < 0){
                 printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
@@ -129,11 +129,11 @@ void c_remove(char *proj, char *file){
                 removeLine(&contents, &fileName);
                 printf("Removed the line...\n");
 
-                unsigned contentLineSize = strlen(content);
-                printf("content: %s\n\tWith a size of %d\n", contents, contentLineSize);
+                unsigned contentLineSize = strlen(contents);
+                printf("contents: %s\n\tWith a size of %d\n", contents, contentLineSize);
                 
 
-                int status = write(man_fd, content, contentLineSize);
+                int status = write(man_fd, contents, contentLineSize);
                 if (status != contentLineSize){
                         printf(".Manifest write was not successful...\nError No: %d\n", status);
                 }
