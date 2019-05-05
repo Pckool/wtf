@@ -55,27 +55,28 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
             scanDir_sendFiles(newPath, sockfd, projectName);
         }
         else{ // this is a file, so send it off to the client
-            char newPath[PATH_MAX];
-            snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
+            if(strcmp(dp->d_name, "data") == 0){
+                char newPath[PATH_MAX];
+                snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
-            int fd = open(newPath, O_RDWR);
+                int fd = open(newPath, O_RDWR);
 
-            threadData *data = (threadData *)malloc(sizeof(threadData));
-            // data.fd = (int)malloc(4 * sizeof(int));
-            // memcpy(data.fd, fd, 4 * sizeof(int));
-            data->fd = fd;
+                threadData *data = (threadData *)malloc(sizeof(threadData));
+                data->fd = fd;
 
-            data->path = (char *)malloc(strlen(newPath) * sizeof(char));
-            memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
-            strcpy(data->path, newPath);
+                data->path = (char *)malloc(strlen(newPath) * sizeof(char));
+                memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
+                strcpy(data->path, newPath);
 
-            data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
-            memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
-            strcpy(data->projectName, projectName);
+                data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
+                memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
+                strcpy(data->projectName, projectName);
 
-            pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)&data);
-		    pthread_join(thread_id_filePush, NULL);
-            // launch a thread and mutex it
+                pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)&data);
+                pthread_join(thread_id_filePush, NULL);
+                // launch a thread and mutex it
+            }
+            
         }
         
     }
@@ -98,9 +99,9 @@ void *pushFileToClient(void *dat){
     
     char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
-    int len = strlen(clientPath) + strlen(buffer) + strlen("file:") + 1;
+    int len = strlen(data->projectName) + strlen(buffer) + strlen("file:") + 1;
     // message
-    snprintf(message, len, "file:%s:%s", clientPath, buffer);
+    snprintf(message, len, "file:%s:%s", data->projectName, buffer);
     write(sockfd_local, message, len);
 }
 
@@ -124,6 +125,7 @@ int getProjectCurrVersion(char *ProjectName){
     (void) closedir(dir);
 }
 
+// this will only be used if we decide to compress files one at a time. If we go the tar route, this function will not be used.
 char *getClientsPath(char *serverPath, char *projectName){
     int versionNo = getProjectCurrVersion(projectName);
     char *serverPath_cpy = malloc(strlen(serverPath) * sizeof(char));

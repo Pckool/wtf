@@ -30,7 +30,7 @@ void remove_directory_help(const char *buffer){
 
 int remove_directory(const char *path){
    DIR *d = opendir(path);
-   size_t path_len = strlen(path);
+   size_t path_len = (size_t)strlen(path);
    int r = -1;
    if (d) //Basically if the directory exists
    {
