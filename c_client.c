@@ -161,7 +161,7 @@ int main(int argc, char* argv[])
 	}
 	if(strcmp(argv[1], "checkout") == 0){
 		if(argv[2] != NULL)
-			checkout(argv[2]);
+			checkout(argv[2], sockfd);
 		else
 			error("No Project name provided...\n");
 	}

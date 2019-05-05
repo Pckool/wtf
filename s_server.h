@@ -23,7 +23,7 @@ char *create_s(char *buffer);
 void error(char *msg);
 
 // checkout
-checkout_s(char *buffer);
+void checkout_s(const char *buffer, int sockfd);
 
 
 // Helping Function

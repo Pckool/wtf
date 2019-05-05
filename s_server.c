@@ -169,6 +169,6 @@ void *newUserDestroyThread(void *buffer){
 
 void *newUserCheckoutThread(void *buffer){
 	printf("Created a new `checkout` thread for the user...\n");
-	checkout_s((char *)buffer);
+	checkout_s((char *)buffer, sockfd);
 	return NULL;
 }

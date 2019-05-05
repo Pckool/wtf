@@ -1,7 +1,7 @@
 #include "c_client.h"
 #include "h_both.h"
 
-void checkout(char *projectName){
+void checkout(char *projectName, int sockfd){
     // First we will check top see if the project file already exists on the client side
     // if it does not, then we can proceed
 
