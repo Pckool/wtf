@@ -25,6 +25,11 @@ void error(char *msg);
 // checkout
 void checkout_s(const char *buffer, int sockfd);
 
+// Threads
+void *newUserCreateThread(void *buffer);
+void *newUserDestroyThread(void *buffer);
+void *newUserCheckoutThread(void *buffer);
+
 
 // Helping Function
 int findDir(char *dirname);
