@@ -20,6 +20,7 @@
 typedef struct threadData{
     int fd;
     char *path;
+    char *projectName;
 }threadData;
 
 
@@ -37,7 +38,7 @@ void checkout_s(const char *buffer, int sockfd);
 int findProject(char *path);
 char *getLine(char *str);
 int getProjectCurrVersion(char *ProjectName);
-int scanDir_sendFiles(char *path, int sockfd);
+int scanDir_sendFiles(char *path, int sockfd, char *projectName);
 void *pushFileToClient(void *data);
 char *getClientsPath(char *serverPath, int versionNo);
 

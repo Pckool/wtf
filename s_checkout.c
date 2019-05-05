@@ -33,29 +33,11 @@ void checkout_s(const char *buffer, int sockfd){
     char h_version_path[PATH_MAX];
     snprintf(h_version_path, PATH_MAX, "%s/%s", path, version_str);
 
-    // access the dir
-
-    // DIR *dir;
-    // struct dirent *dp;
-    // ino_t meta_inode;
-    // if ((dir = opendir (h_version_path)) == NULL) {
-    //     printf("Cannot open path %s...\n", h_version_path);
-    //     return;
-    // }
-    // while ((dp = readdir(dir) ) != NULL){
-    //     if (dp.d_type == DT_DIR){
-    //         // this is a dir, so we need to loop through this as well
-    //     }
-    //     else{
-    //         // this is a file, so send it off to the client
-    //     }
-    //     (void) closedir(dir);
-    // }
-    scanDir_sendFiles(h_version_path, sockfd);
+    scanDir_sendFiles(h_version_path, sockfd, proj);
     
 }
 
-int scanDir_sendFiles(char *path, int sockfd){
+int scanDir_sendFiles(char *path, int sockfd, char *projectName){
     DIR *dir;
     struct dirent *dp;
 
@@ -87,6 +69,10 @@ int scanDir_sendFiles(char *path, int sockfd){
             memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
             strcpy(data->path, newPath);
 
+            data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
+            memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
+            strcpy(data->projectName, projectName);
+
             pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)&data);
 		    pthread_join(thread_id_filePush, NULL);
             // launch a thread and mutex it
@@ -110,7 +96,7 @@ void *pushFileToClient(void *dat){
         printf("There was an error reading file %s...\n", data->path);
     }
     
-    char *clientPath = getClientsPath(data->path);
+    char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
     int len = strlen(clientPath) + strlen(buffer) + strlen("file:") + 1;
     // message
@@ -138,7 +124,8 @@ int getProjectCurrVersion(char *ProjectName){
     (void) closedir(dir);
 }
 
-char *getClientsPath(char *serverPath, int versionNo){
+char *getClientsPath(char *serverPath, char *projectName){
+    int versionNo = getProjectCurrVersion(projectName);
     char *serverPath_cpy = malloc(strlen(serverPath) * sizeof(char));
     memcpy(serverPath_cpy, "\0", (strlen(serverPath) * sizeof(char)) );
 
