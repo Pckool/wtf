@@ -15,6 +15,7 @@
 #include <pthread.h> 
 #include <dirent.h>
 #include <fcntl.h>
+#include <pthread.h>
 
 void *newUserThread(void *vargp);
 int newUser(char* buffer);

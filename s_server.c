@@ -1,33 +1,12 @@
 #include "s_server.h"
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void error(char *msg){
 	perror(msg);
 	exit(1);
 }
-
-void destroy_s(char* buffer){
-	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
-        int i = 0;
-        int p = 6;
-        int x = 0;
-        while (i < sizeof(proj)){
-                proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
-                i++;
-                p++;
-        }
-	char path[PATH_MAX];
-        snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
-        int check = rmdir(path); //tries to make the directory
-        bzero(path, PATH_MAX);
-        if(!check){ //If check passes
-                printf("%s\n", "Directory Destroyed!");
-        }
-	else{
-		printf("%s\n", "failed");
-	}
-
-} 
+ 
 char* create_s(char* buffer){
 	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
@@ -118,20 +97,11 @@ int main(int argc, char* argv[])
 				create_s(buffer);
 				bzero(buffer,256);
 			}
-			else if(strncmp(buffer, "rmdir:", 6) == 0){
-				char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
-        			int i = 0;
-        			int p = 6;
-        			int x = 0;
-        			while (i < sizeof(proj)){
-                		proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
-                		i++;
-                		p++;
-        			}
-				char path[PATH_MAX];
-        			snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
-                                remove_directory(path);
+			else if(strncmp(buffer, "rmdir:", 6) == 0){ 
+				pthread_mutex_lock(&mutex);
+                                remove_directory_help(buffer);
 				bzero(buffer,256);
+				pthread_mutex_unlock(&mutex);
                         }
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
