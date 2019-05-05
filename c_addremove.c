@@ -8,7 +8,7 @@ void add(char* proj, char* file){
                 return;
         }
         struct stat fileStat__;
-        if(fstat(man_fd, &fileStat__) < 0){
+        if(fstat(fd, &fileStat__) < 0){
                 printf("Could not get filedata, aborting...\n");
                 return;
         }
@@ -126,8 +126,9 @@ void c_remove(char *proj, char *file){
                 printf("Could not get filedata, aborting...\n");
                 return;
         }
-        char *contents = malloc(fileStat->st_size);
-        int written = read(man_fd, contents, (fileStat->st_size)); //read manifest
+        int filesize = fileStat->st_size;
+        char *contents = malloc(filesize);
+        int written = read(man_fd, contents, filesize); //read manifest
 
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
@@ -298,9 +299,10 @@ char *readLine(char *str){
         }
         return temp;
 }
+
 int findProject(char *path){
     char *pwd[PATH_MAX];
-    char *getcwd(pwd, PATH_MAX);
+    getcwd(pwd, PATH_MAX);
     char *InProjectDir =strstr(pwd, path);
     if(InProjectDir == NULL){
         printf("You are not in the project directory...\n");
