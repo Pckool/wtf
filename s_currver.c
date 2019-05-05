@@ -34,6 +34,5 @@ int directoryCounter_s(char* buffer){
                         }
 		}
        	}
-        printf("%d\n", dircount);
 	return dircount;
 }
