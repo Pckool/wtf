@@ -31,7 +31,7 @@ void checkout_s(const char *buffer, int sockfd);
 int findProject(char *path);
 char *getLine(char *str);
 int getProjectCurrVersion(char *ProjectName);
-int scanDir_sendFiles(char *path);
+int scanDir_sendFiles(char *path, int sockfd);
 char *getClientsPath(char *serverPath);
 
 // Threads

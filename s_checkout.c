@@ -55,7 +55,7 @@ void checkout_s(const char *buffer, int sockfd){
     //     (void) closedir(dir);
     // }
     scanDir_sendFiles(h_version_path, sockfd);
-    free(line1);
+    
 }
 
 int scanDir_sendFiles(char *path, int sockfd){
@@ -67,6 +67,7 @@ int scanDir_sendFiles(char *path, int sockfd){
         return;
     }
     while ((dp = readdir(dir) ) != NULL){
+        // this if statement doesn't work. d_type doesn't exist sadly :(
         if (dp.d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
             
             char newPath[PATH_MAX];
@@ -118,7 +119,7 @@ void *pushFileToClient(void *dat){
 
 int getProjectCurrVersion(char *ProjectName){
     char path[PATH_MAX];
-    snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
+    snprintf(path, PATH_MAX, "%s/%s", ".repo", ProjectName);
     char meta_path[PATH_MAX];
     snprintf(meta_path, PATH_MAX, "%s/%s", path, ".meta");
     int meta_fd = open(meta_path, O_RDONLY);
@@ -133,6 +134,7 @@ int getProjectCurrVersion(char *ProjectName){
         version = atoi(line1);
         snprintf(version_str, strlen(line1), "%d", line1);
         close(meta_fd);
+        free(line1);
         return version;
     }
     else return -1;
@@ -147,9 +149,9 @@ char *getClientsPath(char *serverPath){
     char lett;
     int i;
     int side = 0;
-    for(i=0; i<strlen(str); ++i){
+    for(i=0; i<strlen(serverPath); ++i){
         if(side = 0){
-            lett = str[i];
+            lett = serverPath[i];
             temp = charAppend(temp, lett);
 
         }
