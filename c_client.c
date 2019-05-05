@@ -2,7 +2,7 @@
 
 //char* ipAddr;
 //char* portNo;
-int sockfd = -1; //File Descriptor for socket
+
 
 
 void error(char *msg){

@@ -23,6 +23,8 @@ typedef struct manLineTokens{
 	char *hash;
 }manLineTokens;
 
+int sockfd = -1; //File Descriptor for socket
+
 // main
 void error(char *msg);
 
