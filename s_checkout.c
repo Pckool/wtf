@@ -103,7 +103,7 @@ void *pushFileToClient(void *dat){
     char *buffer[fileStat.st_size];
 
     if(read(data.fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file %s...\n", data.file);
+        printf("There was an error reading file %s...\n", data.path);
     }
     
     char *clientPath = getClientsPath(data.path);
