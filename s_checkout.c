@@ -100,17 +100,17 @@ int scanDir_sendFiles(char *path, int sockfd){
 void *pushFileToClient(void *dat){
     threadData *data = (threadData *)dat;
     struct stat fileStat;
-    if(fstat(data.fd, &fileStat) < 0){
+    if(fstat(data->fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
     char *buffer[fileStat.st_size];
 
     if(read(data.fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file %s...\n", data.path);
+        printf("There was an error reading file %s...\n", data->path);
     }
     
-    char *clientPath = getClientsPath(data.path);
+    char *clientPath = getClientsPath(data->path);
     char *message;
     int len = strlen(clientPath) + strlen(buffer) + strlen("file:") + 1;
     // message
