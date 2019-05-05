@@ -116,10 +116,7 @@ void c_remove(char *proj, char *file){
 
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
-        int closed = close(man_fd);
-        if(closed = 0){
-                // the file closed
-        }
+        
         char *final;
 
         if (fileName != NULL){ //If file is in manifest
@@ -140,7 +137,11 @@ void c_remove(char *proj, char *file){
                 else{
                         printf(".Manifest write was successful...\nWrote %d bytes...\n", status);
                 }
-                close(man_fd);
+                int closed = close(man_fd);
+                if(closed = 0){
+
+                        // the file closed
+                }
         }
         
 }
