@@ -52,7 +52,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
             char newPath[PATH_MAX];
             snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
-            scanDir_sendFiles(newPath, sockfd);
+            scanDir_sendFiles(newPath, sockfd, projectName);
         }
         else{ // this is a file, so send it off to the client
             char newPath[PATH_MAX];

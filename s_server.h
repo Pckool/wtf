@@ -40,7 +40,7 @@ char *getLine(char *str);
 int getProjectCurrVersion(char *ProjectName);
 int scanDir_sendFiles(char *path, int sockfd, char *projectName);
 void *pushFileToClient(void *data);
-char *getClientsPath(char *serverPath, int versionNo);
+char *getClientsPath(char *serverPath, char *projectName);
 
 // Threads
 void *newUserCreateThread(void *buffer);
