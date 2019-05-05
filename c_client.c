@@ -44,6 +44,7 @@ void create(char* projectName){
         stat(fp, buf); //Gets stats about the file and puts it in the struct buf
         int size = buf->st_size;
 	connecter(size); //Takes the size and goes to connecter
+	printf("%d\n", 1);
 	char buffer[256] = "mkdir:"; //This is here because eventually we need to add the networking protocols
 	int i = 6;
 	int p = 0;
@@ -73,11 +74,13 @@ void create(char* projectName){
 }
 
 void connecter(int fileSize){
+	printf("%d\n", 1);
     int fd = open(".configure", O_RDONLY); //Opens configure file to read only
 	if (fd == -1){
 		error("Error. Configure file does not exist");
 	}
     int portno;
+	printf("%d\n", 1);
     struct sockaddr_in serverAddressInfo;
     struct hostent *serverIPAddress;
     char buffer[256];
@@ -88,12 +91,14 @@ void connecter(int fileSize){
 		ipSize++;
 		i++;
 	}
+	printf("%d\n", 1);
 	char* ipAddress = (char *) malloc(ipSize - 1);
 	i = 0;
 	while (i < ipSize){
 		ipAddress[i] = buffer[i];
 		i++;
 	}
+	printf("%d\n", 1);
 	int portSize = fileSize - (ipSize + 2);
 	i = 0;
 	int t = ipSize + 1;
@@ -104,6 +109,8 @@ void connecter(int fileSize){
 		t++;
 	}
 	int port = atoi(portNum); //Convert string to int
+	printf("%d\n", port);
+	printf("%s\n", ipAddress);
 	serverIPAddress = gethostbyname(ipAddress); //Resolve IP from hostname
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	bzero((char*)&serverAddressInfo, sizeof(serverAddressInfo)); //zero out. After this line I really dont get whats happening but it works
