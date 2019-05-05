@@ -45,7 +45,7 @@ manLineTokens *tokenizeLine(char *line);
 char *readLine(char *str);
 
 // Checkout
-void checkout(char *projectName);
+void checkout(char *projectName, int sockfd);
 
 // Helping Function
 int findDir(char *dirname);
