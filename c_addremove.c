@@ -58,7 +58,7 @@ void add(char* proj, char* file){
                 // write(man_fd, "\t", 1);
                 // write(man_fd, "1\t", 2);
                 // write(man_fd, hash, SHA_DIGEST_LENGTH * 2);
-                unsigned finalLineSize = strlen(final) + 1; // +1 for the null terminator
+                unsigned finalLineSize = strlen(final); // +1 for the null terminator
                 int status = write(man_fd, final, finalLineSize);
                 if (status != finalLineSize){
                         printf(".Manifest write was not successful...\nError No: %d\n", status);
@@ -181,13 +181,15 @@ char *replaceLine(char **content, char **line, char *newLine){
 
 
 int removeLine(char **content, char **line){
+        printf("this is the content %s\n", *content);
         char *restOfCont = strstr(*line, "\n"); // gets the substring of content minus the line and everything before it
         char *restOfCont2;
         restOfCont2 = ++restOfCont;
+        printf("line: %s\n", restOfCont);
 
-        char *lineOnly = line - &restOfCont2; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
-
-        printf("This is the line: %s\n", lineOnly);
+        char *lineOnly = *line - restOfCont; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
+        printf("We are done getting the line pointer...");
+        printf("This is the line: %s\n", *lineOnly);
         
         char *contentCpy = malloc(strlen(*content) * sizeof(char));
         memcpy(contentCpy, "\0", strlen(*content) * sizeof(char));
