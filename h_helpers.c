@@ -57,8 +57,8 @@ int getLen(int x){
 }
 
 void removeSubstring(char *s,const char *toremove){
-  while( s=strstr(s,toremove) )
-    memmove(s,s+strlen(toremove),1+strlen(s+strlen(toremove)));
+  while( s=strstr(s, toremove) )
+    memmove(s, s+strlen(toremove), 1+strlen(s+strlen(toremove)));
 }
 
 /**

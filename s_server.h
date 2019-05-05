@@ -38,7 +38,7 @@ int findProject(char *path);
 char *getLine(char *str);
 int getProjectCurrVersion(char *ProjectName);
 int scanDir_sendFiles(char *path, int sockfd);
-char *getClientsPath(char *serverPath);
+char *getClientsPath(char *serverPath, int versionNo);
 
 // Threads
 void *newUserCreateThread(void *buffer);

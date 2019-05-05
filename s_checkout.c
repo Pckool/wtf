@@ -137,29 +137,49 @@ int getProjectCurrVersion(char *ProjectName){
     else return -1;
 }
 
-char *getClientsPath(char *serverPath){
-    char *temp = malloc(sizeof(char));
-    memcpy(temp, "\0", sizeof(char));
+char *getClientsPath(char *serverPath, int versionNo){
+    char *serverPath_cpy = malloc(strlen(serverPath) * sizeof(char));
+    memcpy(serverPath_cpy, "\0", (strlen(serverPath) * sizeof(char)) );
 
-    char *final = malloc(sizeof(char));
-    memcpy(final, "\0", sizeof(char));
-    char lett;
-    int i;
-    int side = 0;
-    for(i=0; i<strlen(serverPath); ++i){
-        if(side = 0){
-            lett = serverPath[i];
-            temp = charAppend(temp, lett);
+    memcpy(serverPath_cpy, serverPath, (strlen(serverPath) * sizeof(char)) );
 
-        }
-        if(lett == '/'){ // if the letter is a new line terminator then we exit the loop
-            if(side == 0)
-                side = 1;
-            else
-                side = 0;
-        }
-    }
-    return temp;
+    char *Version_str[10];
+    memcpy(Version_str, "\0", (10) );
+
+    snprintf(Version_str, 10, "%d", versionNo);
+
+    strcpy(serverPath_cpy, serverPath);
+    removeSubstring(serverPath_cpy, ".repo/");
+
+    removeSubstring(serverPath_cpy, ".repo/");
+    removeSubstring(serverPath_cpy, "Version_str/");
+    return serverPath_cpy;
+    // char *temp = malloc(sizeof(char));
+    // memcpy(temp, "\0", sizeof(char));
+
+
+
+    
+
+    // char *final = malloc(sizeof(char));
+    // memcpy(final, "\0", sizeof(char));
+    // char lett;
+    // int i;
+    // int side = 0;
+    // for(i=0; i<strlen(serverPath); ++i){
+    //     if(side = 0){
+    //         lett = serverPath[i];
+    //         temp = charAppend(temp, lett);
+
+    //     }
+    //     if(lett == '/'){ // if the letter is a new line terminator then we exit the loop
+    //         if(side == 0)
+    //             side = 1;
+    //         else
+    //             side = 0;
+    //     }
+    // }
+    // return temp;
 }
 
 
