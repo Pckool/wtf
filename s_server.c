@@ -3,6 +3,8 @@
 
 pthread_mutex_t mutexCreate = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexDestroy = PTHREAD_MUTEX_INITIALIZER;
+int sockfd = -1;
+
 
 void error(char *msg){
 	perror(msg);
@@ -42,7 +44,7 @@ int main(int argc, char* argv[])
 
 	/*Most of this code except like two lines near the bottom is from the lecture 4/11/19
  	* server.c */
-	int sockfd = -1;
+
 	int newsockfd = -1;
 	int portno = -1;
 	int clilen = -1;
