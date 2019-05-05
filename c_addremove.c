@@ -181,14 +181,13 @@ char *replaceLine(char **content, char **line, char *newLine){
 
 
 int removeLine(char **content, char **line){
-        printf("this is the line %s\n", *content);
+        printf("this is the content %s\n", *content);
         char *restOfCont = strstr(*line, "\n"); // gets the substring of content minus the line and everything before it
         char *restOfCont2;
         restOfCont2 = ++restOfCont;
         printf("line: %s\n", restOfCont);
-        printf("line ptr: %s\n", *restOfCont);
 
-        char *lineOnly = line - &restOfCont2; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
+        char *lineOnly = *line - restOfCont; // this should be a pointer to THE LINE AND ONLY THE LINE to use it, to use it refrence lineOnly
 
         printf("This is the line: %s\n", lineOnly);
         
