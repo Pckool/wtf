@@ -244,13 +244,9 @@ int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 		int file_size;
 		while(i < numFiles){
 			if(currToken != NULL){
-				
-				DIR *dir;
-				dir = opendir(projectName);
-				closedir(dir);
 
 				// waiting for the server to send us the file through the socket.
-				while(waiting){
+				while(true){
 					loading();
 
 					if(ioctl(sockfd, FIONREAD, &file_size) < 0){
@@ -271,7 +267,6 @@ int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 					printf("Error reading file %s from socket...\n", currToken->token);
 				}
 					
-				//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
 				int fd_file = open(currToken->token, O_RDWR | O_CREAT, 0600);
 				if (fd_file < 0){
 					printf("Failed to create the file clientside...\nError No: %d\n", fd_file);
@@ -280,11 +275,11 @@ int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 				if(write(fd_file, file_buffer, file_size) < 0){
 					printf("There was a problem reading compressed data to local dir.\n");
 				}
-				system("tar -xzvf data.tar.gz");
+				
 				close(fd_file);
 				currToken = currToken->next; // go to the next file
 			}
-			
+			return 0; // success!
 		}
 		
 		// this means we are recieving the correct message...

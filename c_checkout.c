@@ -62,11 +62,22 @@ void checkout(char *projectName, int sockfd){
 	}
 	printf("size of socket now: %d\n", msg_length);
 	///
-	int status = prot_fileRecieve(message, msg_length, sockfd2);
+	DIR *dir;
+	dir = opendir(projectName);
+	if(dir == NULL){
+		int status = prot_fileRecieve(message, msg_length, sockfd2);
 
-	if(status < 0 ){
-		// the 
+		if(status < 0 ){
+			// the 
+			return;
+		}
+		system("tar -xzvf data.tar.gz");
 	}
+	else{
+		printf("You already have a version downlaoded in this directory. Please move to another subdirectory or delete the project localy.\n")
+	}
+	closedir(dir);
+	
 	
 
 		
