@@ -9,6 +9,7 @@
 #include <string.h>
 #include <strings.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/socket.h>

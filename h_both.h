@@ -13,6 +13,7 @@
 #include <netdb.h>
 #include <openssl/sha.h>
 #include <dirent.h>
+#include <sys/ioctl.h>
 
 #define MAX_FILE_SIZE 52428800  // this is the maximum file size we will allow. 50MB
 

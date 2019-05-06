@@ -15,6 +15,7 @@
 #include <pthread.h> 
 #include <dirent.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
 #include <pthread.h>
 
 typedef struct threadData{
