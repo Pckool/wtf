@@ -148,10 +148,10 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 	int i = 0;
 	int lenOfMsg = strlen(inputMsg);
 
-	char copyToManipulate[lenOfMsg+1];
+	char *copyToManipulate = (char *)malloc(lenOfMsg+1);
 	strcpy(copyToManipulate, inputMsg);
 
-	char copyToManipulate2[lenOfMsg+1];
+	char *copyToManipulate2 = (char *)malloc(lenOfMsg+1);
 	strcpy(copyToManipulate2, inputMsg);
 
 	printf("3\n");
