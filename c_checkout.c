@@ -62,95 +62,20 @@ void checkout(char *projectName, int sockfd){
 	}
 	printf("size of socket now: %d\n", msg_length);
 	///
-	ProtocolLink *msg_tokens = newProtocolLink("_START_"); // initializing link-list
-	printf("About to tokenize data...\n");
-	tokenizeProtocolMessage(message, msg_tokens);
-	printf("Data tokenized...\n");
+	int status = prot_fileRecieve(message, msg_length, sockfd2);
 
-	printTokenLinks(msg_tokens);
-	ProtocolLink *currToken = (ProtocolLink *)malloc(sizeof(ProtocolLink));
-	currToken = msg_tokens->next;
-	if(strcmp(currToken->token, "file") == 0){ // if the first token is `file`
-		currToken = currToken->next; // Project name
-		char *projName = currToken->token;
-		currToken = currToken->next; // number of files
-		int numFiles = atoi(currToken->token);
-
-		currToken = currToken->next; // File1Name
-
-		int i = 0;
-		int file_size;
-		while(i < numFiles){
-			if(currToken != NULL){
-				
-				DIR *dir;
-				dir = opendir(projectName);
-				closedir(dir);
-
-				// waiting for the server to send us the file through the socket.
-				while(waiting){
-					loading();
-
-					if(ioctl(sockfd2, FIONREAD, &file_size) < 0){
-						return;
-					}
-					if(file_size == 0){
-						continue;
-					}
-					else if(file_size > 0){
-						printf("The file size is %d...\n", file_size);
-						break;
-					}
-				}
-				
-				char *file_buffer = (char *)malloc(file_size);
-				if(read(sockfd2, file_buffer, file_size) < 0){
-					printf("Error reading file %s from socket...\n", currToken->token);
-				}
-					
-				//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
-				int fd_file = open(currToken->token, O_RDWR | O_CREAT, 0600);
-				if (fd_file < 0){
-					printf("Failed to create the file clientside...\nError No: %d\n", fd_file);
-				}
-				printf("I was able to create the tarfile!\n");
-				if(write(fd_file, file_buffer, file_size) < 0){
-					printf("There was a problem reading compressed data to local dir.\n");
-				}
-				system("tar -xzvf data.tar.gz");
-				close(fd_file);
-				currToken = currToken->next; // go to the next file
-			}
-			
-		}
-		
-		// this means we are recieving the correct message...
-		// tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message, msg_length);
-		
-		
-		
-
-		
-
+	if(status < 0 ){
+		// the 
 	}
-	else if(startsWith(message, "checkout:fail:")){
-		// The project doesn't exist
-		int reason_len = msg_length - 14;
-		char reason_msg[reason_len];
-		int k = 0;
-		int msg_counter = msg_length - reason_len;
-		for(k = 0; k<reason_len; k++){
-			reason_msg[k] = message[msg_counter];
-			++msg_counter;
-		}
-		printf("Checkout Failed...\n\tReason: %s\n", reason_msg);
-	}
+	
 
 		
 	
 	printf("Either we are done, or we gave up.\n");
 	
 }
+
+
 
 tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));

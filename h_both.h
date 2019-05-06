@@ -39,5 +39,6 @@ char *getByteContent(char *filePath);
 ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head);
 ProtocolLink *newProtocolLink(char *token);
 void printTokenLinks(ProtocolLink *head);
+int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd);
 
 #endif
