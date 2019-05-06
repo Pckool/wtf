@@ -28,7 +28,7 @@ void checkout(char *projectName, int sockfd){
 	write(sockfd2, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 	
 	int msg_length = 0;
-	int recieved = false;
+	int waiting = true;
 
 	printf("waiting for server...\n");
 	// this will loop through until it recieves a readable responce from the socket.
@@ -39,7 +39,7 @@ void checkout(char *projectName, int sockfd){
 			continue;
 		}
 		printf("\n%d is the size of the incomming data...\n", msg_length);
-		recieved = true;
+		recieved = false;
 
 		char message[msg_length];
 		n = read(sockfd2, message, msg_length);
