@@ -172,7 +172,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			copyToManipulate = strstr(++copyToManipulate, nextLetter);
 			
 		}
-		else if(strcmp(frontLetter,"\0") != 0 || i == lenOfMsg){
+		else if(strcmp(frontLetter,"\0") == 0 || i == lenOfMsg){
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
 			printf("4\n");
 			head->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));
