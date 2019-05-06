@@ -144,7 +144,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 				else{
 					newTokens->data = (char *)malloc(strlen(data));
 					memcpy(newTokens->data, data, strlen(data));
-					printf("assigned data...\n")
+					printf("assigned data...\n");
 					++part;
 				}
 				++i;
