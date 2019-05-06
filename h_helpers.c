@@ -159,7 +159,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 
 			printf("\tREMOVING FIRST LETTER IN STRING\n");
 			// remove the first char
-			char *frontLetter = {copyToManipulate[0], '\0'};
+			char frontLetter[2] = {copyToManipulate[0], '\0'};
 			printf("\tCREATED FIRST LETTER AS STRING: %s\n", frontLetter);
 			removeSubstring(copyToManipulate, frontLetter);
 			
