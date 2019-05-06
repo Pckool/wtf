@@ -115,7 +115,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	char *data = "";
 
 
-	while(i < lenOfMsg && part <= 2){
+	while( part <= 2){
 		
 		switch(part){
 			case 0:
