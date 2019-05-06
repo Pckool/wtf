@@ -34,7 +34,7 @@ void checkout(char *projectName, int sockfd){
 	while( msg_length == 0){
 		printf(".");
 		if(ioctl(sockfd2, FIONREAD, &msg_length) == 0){
-			printf("No data recieved from the server...\n");
+			// printf("No data recieved from the server...\n");
 			continue;
 		}
 		printf("\n%d is the size of the incomming data...\n", msg_length);
@@ -92,7 +92,7 @@ void checkout(char *projectName, int sockfd){
 
 		
 	}
-	
+	printf("Either we are done, or we gave up.\n");
 	
 }
 
