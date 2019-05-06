@@ -82,7 +82,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
                 strcpy(data->projectName, projectName);
 
-                pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)&data);
+                pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)data);
                 pthread_join(thread_id_filePush, NULL);
                 // launch a thread and mutex it
             }
