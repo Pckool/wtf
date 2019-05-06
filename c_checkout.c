@@ -45,7 +45,7 @@ void checkout(char *projectName, int sockfd){
 			continue;
 		}
 
-		printf("\n%d is the size of the incomming data...\n", msg_length);
+		// printf("\n%d is the size of the incomming data...\n", msg_length);
 		waiting = false;
 
 		char message[msg_length];
@@ -53,7 +53,7 @@ void checkout(char *projectName, int sockfd){
 		printf("%s with length %d\n", message, msg_length);
 
 		if(startsWith(message, "file:")){
-			printf("Recieved a file from the server!\n");
+			printf("Recieved a file from the server of length %d!\n", strlen(message));
 			// this means we are recieving the correct message...
 			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message);
 			printf("Data tokenized...\n");
@@ -115,6 +115,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 	unsigned lenOfMsg = strlen(msgToTokenize);
 
 	while(i < lenOfMsg){
+		printf("YIKES\n");
 		switch(part){
 			case 0:
 				removeSubstring(msgCpy, "file:");
