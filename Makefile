@@ -17,8 +17,8 @@ h_%.o: h_%.c $(H_DEPS) # $(S_DEPS)
 
 all: Client Server
 
-Client: c_client.o h_helpers.o c_addremove.o c_configure.o c_checkout.o
-	$(CC) -o  $@ c_client.o -lssl -lcrypto h_helpers.o c_addremove.o c_configure.o c_checkout.o
+Client: c_client.o h_helpers.o c_addremove.o c_configure.o c_checkout.o c_compression.o
+	$(CC) -o  $@ c_client.o -lssl -lcrypto h_helpers.o c_addremove.o c_configure.o c_checkout.o c_compression.o
 client.o: c_client.h $(H_DEPS)
 
 Server: h_helpers.o s_server.o s_destroy.o s_checkout.o

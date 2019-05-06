@@ -23,6 +23,11 @@ typedef struct manLineTokens{
 	char *hash;
 }manLineTokens;
 
+typedef struct tokenizeFileMsg{
+	char *projectName;
+	char *data;
+}tokenizeFileMsg;
+
 // int sockfd = -1; //File Descriptor for socket
 
 // main
@@ -46,6 +51,7 @@ char *readLine(char *str);
 
 // Checkout
 void checkout(char *projectName, int sockfd);
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize);
 
 // Helping Function
 int findDir(char *dirname);

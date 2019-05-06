@@ -8,8 +8,8 @@ void checkout(char *projectName, int sockfd){
     // then we check to see if the server has the file
         // send a req to the server to let us know if the project exists
         // if it does, then we will recieve a 
-	int n = -1;
-	char message[256];
+	int n = -1; // the fd we will recieve 
+	
 	struct stat *buf; //Needed to check the size of the config file
 	buf = malloc(sizeof(struct stat));
 	char* fp = ".configure";
@@ -26,21 +26,115 @@ void checkout(char *projectName, int sockfd){
 		p++;
 	}
 	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
-	n = read(sockfd, message,255);
-	printf("%s\n", message);
+	
+	int msg_length = 0;
 
-	int dirStat = mkdir(projectName, S_IRWXU);
-	if (!dirStat){ //If check passes
-		printf("%s\n", "Project Created!");
-	}
-	DIR *dir;
-	dir = opendir(projectName);
-	char path[PATH_MAX];
+	// this will loop through until it recieves a readable responce from the socket.
+	while( msg_length != 0){
+		if(ioctl(sockfd, FIONREAD, &msg_length) < 0){
+			printf("No data recieved from the server")
+			contnue;
+		}
+			
 
-	snprintf(path, PATH_MAX, "%s/%s", projectName, ".Manifest");
-	int fd = open(path, O_RDWR | O_CREAT, 0600);
-	if (fd < 0){
-		printf("Failed to create .Manifest clientside...\nError No: %d\n", fd);
+		char message[msg_length];
+		n = read(sockfd, message, msg_length);
+		printf("%s with length %d\n", message, msg_length);
+
+		if(startsWith(message, "file:")){
+			// this means we are recieving the correct message...
+			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message);
+
+			int data_len = strlen(tokenizedData->data) - 15;
+			// char data_msg[data_len];
+			// int k = 0;
+			// int data_counter = msg_length - data_len;
+			// for(k = 0; k<reason_len; k++){
+			// 	data_msg[k] = message[data_counter];
+			// 	++data_counter;
+			// }
+			// int dirStat = mkdir(projectName, S_IRWXU);
+			// if (!dirStat){ //If check passes
+			// 	printf("%s\n", "Project Created!");
+			// }
+
+			DIR *dir;
+			dir = opendir(projectName);
+			closedir(dir);
+			//char path[PATH_MAX];
+
+			//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
+			int fd = open("./data.tar.gz", O_RDWR | O_CREAT, 0600);
+			if (fd < 0){
+				printf("Failed to create .Manifest clientside...\nError No: %d\n", fd);
+			}
+			if(write(fd, tokenizedData->data, data_len) < 0){
+				printf("There was a problem writing compressed data to local dir.\n");
+			}
+			system("tar -xzvf data.tar.gz");
+			close(fd);
+
+		}
+		else if(startsWith(message, "checkout:fail:")){
+			// The project doesn't exist
+			int reason_len = msg_length - 14;
+			char reason_msg[reason_len];
+			int k = 0;
+			int msg_counter = msg_length - reason_len;
+			for(k = 0; k<reason_len; k++){
+				reason_msg[k] = message[msg_counter];
+				++msg_counter;
+			}
+			printf("Checkout Failed...\n\tReason: %s\n", reason_msg);
+		}
+
+		
 	}
-	close(fd);
+	
+	
+}
+
+// a protocol function to accept a file string sent over the network and tokenize it
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
+	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
+	int i = 0;
+	int part = 0;
+	char msgCpy[strlen(msgToTokenize)] = msgToTokenize;
+	char *projectName = "";
+	char *data = "";
+
+	unsigned lenOfMsg = strLen(msgToTokenize);
+
+	while(i < lenOfMsg){
+		switch(part){
+			case 0:
+				removeSubstring(msgCpy, "file:");
+				++part;
+				break;
+			case 1:
+				if(msgCpy[i] != ':'){
+					charAppend(projectName, msgCpy[i]);
+				}
+				else{
+					newTokens->projectName = (char *)malloc(strlen(projectName));
+					memcpy(newTokens->projectName, projectName, strlen(projectName));
+					++part;
+				}
+				++i;
+				break;
+			case 2:
+				if(msgCpy[i] != ':'){
+					charAppend(data, msgCpy[i]);
+				}
+				else{
+					newTokens->data = (char *)malloc(strlen(data));
+					memcpy(newTokens->data, data, strlen(data));
+					++part;
+				}
+				++i;
+				break;
+		}
+	}
+	return newTokens;
+	
 }

@@ -55,7 +55,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
             scanDir_sendFiles(newPath, sockfd, projectName);
         }
         else{ // this is a file, so send it off to the client
-            if(strcmp(dp->d_name, "data") == 0){
+            if(strcmp(dp->d_name, "data.tar.gz") == 0){
                 char newPath[PATH_MAX];
                 snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
