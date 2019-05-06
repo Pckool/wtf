@@ -133,7 +133,7 @@ int getProjectCurrVersion(char *ProjectName){
                 continue;
             }
             else{
-                printf("Found Dir: %s\n", dp->d_name);
+                printf("Found Dir: %s with a difference of %d from '.'\n", dp->d_name, strcmp(dp->d_name, "."));
                 ++version;
             }
                 
