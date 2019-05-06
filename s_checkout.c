@@ -9,9 +9,9 @@ pthread_t thread_id_filePush;
 
 
 void checkout_s(const char *buffer, int sockfd){
-    printf("Starting fetch routine...\n");
+    printf("Starting fetch routine with buffer %s...\n", buffer);
     sockfd_local = sockfd;
-    char *proj = malloc(sizeof(buffer - 9)); //The reason its - 6 is because thats how many bytes "rmdir:" is.
+    char *proj = malloc(sizeof(buffer - 9)); //The reason its - 9 is because thats how many bytes "rmdir:" is.
     int i = 0;
     int p = 9;
     int x = 0;
