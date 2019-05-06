@@ -46,7 +46,8 @@ char *getClientsPath(char *serverPath, char *projectName);
 void *newUserCreateThread(void *buffer);
 void *newUserDestroyThread(void *buffer);
 void *newUserCheckoutThread(void *buffer);
-
+void *newUserCurrverThread(void *buffer);
+void *newUserRollbackThread(void *buffer);
 
 // Helping Function
 int findDir(char *dirname);

@@ -1,3 +1,5 @@
 .configure
 .repo/
 *.o
+Server
+Client
