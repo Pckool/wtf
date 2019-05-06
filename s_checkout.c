@@ -128,6 +128,7 @@ int getProjectCurrVersion(char *ProjectName){
     }
     while ((dp = readdir(dir) ) != NULL){
         if(dp->d_type == DT_DIR){
+            printf("Found Dir: %s\n", dp->d_name);
             ++version;
         }   
     }
