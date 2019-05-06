@@ -99,20 +99,23 @@ void *pushFileToClient(void *dat){
     threadData *data = (threadData *)dat;
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", data->fd, data->path);
+
     if(fstat(data->fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
+    printf("check");
     char *buffer[fileStat.st_size];
 
     if(read(data->fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", data->path);
     }
-    
+    printf("check2");
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
     int len = strlen(data->projectName) + strlen(buffer) + strlen("file:") + 1;
     // message
+    printf("check3");
     snprintf(message, len, "file:%s:%s", data->projectName, buffer);
     write(sockfd_local, message, len);
 }
