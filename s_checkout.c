@@ -125,12 +125,13 @@ void *pushFileToClient(void *dat){
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
     int len = strlen(data->projectName) + strlen(buffer) + strlen("file:") + 1;
-    message = (char *)malloc(len*sizeof(char));
-    memcpy(message, "\0", len*sizeof(char));
+    message = (char *)malloc(len * sizeof(char));
+    memcpy(message, "\0", len * sizeof(char));
     
     printf("check3\n");
     snprintf(message, len, "file:%s:%s", data->projectName, buffer);
-    printf("check4\n");
+    printf("This is sending to the client: %s\n", message);
+    
     write(sockfd_local, message, len);
     printf("check5\n");
 }
