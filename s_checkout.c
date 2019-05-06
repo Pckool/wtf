@@ -9,6 +9,7 @@ pthread_t thread_id_filePush;
 
 
 void checkout_s(const char *buffer, int sockfd){
+    printf("Starting fetch routine...\n");
     sockfd_local = sockfd;
     char *proj = malloc(sizeof(buffer - 9)); //The reason its - 6 is because thats how many bytes "rmdir:" is.
     int i = 0;
@@ -38,6 +39,7 @@ void checkout_s(const char *buffer, int sockfd){
 }
 
 int scanDir_sendFiles(char *path, int sockfd, char *projectName){
+    printf("Scanning to find the file(s) to send to the user.\n");
     DIR *dir;
     struct dirent *dp;
 
@@ -48,13 +50,15 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
     while ((dp = readdir(dir) ) != NULL){
         // this if statement doesn't work. d_type doesn't exist sadly :(
         if (dp->d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
-            
+            printf("A directory %s has been found...\n", dp->d_name);
             char newPath[PATH_MAX];
             snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
             scanDir_sendFiles(newPath, sockfd, projectName);
         }
         else{ // this is a file, so send it off to the client
+            printf("A file %s has been found...\n", dp->d_name);
+
             if(strcmp(dp->d_name, "data.tar.gz") == 0){
                 char newPath[PATH_MAX];
                 snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
@@ -85,6 +89,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
 
 
 void *pushFileToClient(void *dat){
+    printf("Sending file to client...\n");
     threadData *data = (threadData *)dat;
     struct stat fileStat;
     if(fstat(data->fd, &fileStat) < 0){
@@ -107,6 +112,7 @@ void *pushFileToClient(void *dat){
 
 
 int getProjectCurrVersion(char *ProjectName){
+    printf("What is the latest version?\n");
     DIR *dir;
     struct dirent *dp;
     int version = 0;
@@ -119,8 +125,9 @@ int getProjectCurrVersion(char *ProjectName){
         return;
     }
     while ((dp = readdir(dir) ) != NULL){
+        if(dp->d_type == DT_DIR){
             ++version;
-        
+        }   
     }
     (void) closedir(dir);
 }
@@ -174,6 +181,7 @@ char *getClientsPath(char *serverPath, char *projectName){
 
 
 char *getLine(char *str){
+    printf("Extracting the first line from %s\n", str);
     char *temp = malloc(sizeof(char));
     memcpy(temp, "\0", sizeof(char));
 
