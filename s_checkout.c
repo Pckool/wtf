@@ -79,7 +79,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
 
                 data->path = (char *)malloc(strlen(newPath) * sizeof(char)-1);
                 memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
-                strcpy(data->path, newPath);
+                memcpy(data->path, newPath, strlen(newPath) * sizeof(char));
 
                 data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
