@@ -39,7 +39,7 @@ void checkout_s(const char *buffer, int sockfd){
 }
 
 int scanDir_sendFiles(char *path, int sockfd, char *projectName){
-    printf("Scanning to find the file(s) to send to the user.\n");
+    printf("Scanning to find the file(s) in %s to send to the user.\n", path);
     DIR *dir;
     struct dirent *dp;
 
@@ -102,7 +102,7 @@ void *pushFileToClient(void *dat){
         printf("There was an error reading file %s...\n", data->path);
     }
     
-    char *clientPath = getClientsPath(data->path, data->projectName);
+    // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
     int len = strlen(data->projectName) + strlen(buffer) + strlen("file:") + 1;
     // message
@@ -134,6 +134,7 @@ int getProjectCurrVersion(char *ProjectName){
 
 // this will only be used if we decide to compress files one at a time. If we go the tar route, this function will not be used.
 char *getClientsPath(char *serverPath, char *projectName){
+    printf("Figuring out the correct path...");
     int versionNo = getProjectCurrVersion(projectName);
     char *serverPath_cpy = malloc(strlen(serverPath) * sizeof(char));
     memcpy(serverPath_cpy, "\0", (strlen(serverPath) * sizeof(char)) );
@@ -149,7 +150,7 @@ char *getClientsPath(char *serverPath, char *projectName){
     removeSubstring(serverPath_cpy, ".repo/");
 
     removeSubstring(serverPath_cpy, ".repo/");
-    removeSubstring(serverPath_cpy, "Version_str/");
+    removeSubstring(serverPath_cpy, Version_str);
     return serverPath_cpy;
     // char *temp = malloc(sizeof(char));
     // memcpy(temp, "\0", sizeof(char));
