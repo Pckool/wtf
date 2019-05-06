@@ -9,6 +9,7 @@
 #include <string.h>
 #include <strings.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/socket.h>
@@ -23,11 +24,18 @@ typedef struct manLineTokens{
 	char *hash;
 }manLineTokens;
 
+typedef struct tokenizeFileMsg{
+	char *projectName;
+	char *data;
+}tokenizeFileMsg;
+
+// int sockfd = -1; //File Descriptor for socket
+
 // main
 void error(char *msg);
 
 void create(char* projectName);
-void connecter(int fileSize);
+int connecter(int fileSize);
 
 // Configure
 void configure(char* ip, char* port);
@@ -41,6 +49,10 @@ void c_remove(char *proj, char *file);
 char *createaManLine(char *file, char *version, char *hash);
 manLineTokens *tokenizeLine(char *line);
 char *readLine(char *str);
+
+// Checkout
+void checkout(char *projectName, int sockfd);
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize);
 
 // Helping Function
 int findDir(char *dirname);

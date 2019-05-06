@@ -1,7 +1,11 @@
+#include "h_both.h"
 #include "s_server.h"
 #include "h_global.h"
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexCreate = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexDestroy = PTHREAD_MUTEX_INITIALIZER;
+int sockfd = -1;
+
 
 void error(char *msg){
 	perror(msg);
@@ -28,12 +32,12 @@ char* create_s(char* buffer){
 	}
 	DIR *dir;
 	dir = opendir(proj);
-	snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
-	int fd = open(path, O_RDWR | O_CREAT, 0600);
-	if(fd < 0){
-		printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
-	}
-	close(fd);
+	// snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
+	// int fd = open(path, O_RDWR | O_CREAT, 0600);
+	// if(fd < 0){
+	// 	printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
+	// }
+	// close(fd);
 	char* sendback[2];
 }
 int main(int argc, char* argv[])
@@ -41,7 +45,7 @@ int main(int argc, char* argv[])
 
 	/*Most of this code except like two lines near the bottom is from the lecture 4/11/19
  	* server.c */
-	int sockfd = -1;
+
 	int newsockfd = -1;
 	int portno = -1;
 	int clilen = -1;
@@ -94,40 +98,12 @@ int main(int argc, char* argv[])
 		else{
 			int commStat; // the status of the command (if it was successful or not)
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
-			if(strncmp(buffer, "mkdir:", 6) == 0){
-				create_s(buffer);
-				bzero(buffer,256);
-			}
-			else if(strncmp(buffer, "rmdir:", 6) == 0){ 
-				pthread_mutex_lock(&mutex);
-                                remove_directory_help(buffer);
-				bzero(buffer,256);
-				pthread_mutex_unlock(&mutex);
-                        
-			}
-			else if(strncmp(buffer, "currver:", 8) == 0){
-                                pthread_mutex_lock(&mutex);
-                                directoryCounter_s(buffer);
-                                bzero(buffer,256);
-				snprintf(buffer,255, "The current version number of the project is: %d\n", dircount);
-                                pthread_mutex_unlock(&mutex);
-
-                        }
-			else if(strncmp(buffer, "rollback:", 9) == 0){
-                                pthread_mutex_lock(&mutex);
-                                rollback_s(buffer);
-                                bzero(buffer,256);
-                                pthread_mutex_unlock(&mutex);
-
-                        }
-
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
 			{
 				error("ERROR writing to socket");
 			}
-
 			if(commStat < 0){
 				printf("Something went wrong with the user's requested command...\n");
 			}
@@ -138,21 +114,95 @@ int main(int argc, char* argv[])
 
 }
 
-int newUser(char* buffer){
+int newUser(char *buffer){
+	// buffer now comes in as an address, it must be refrenced with *buffer to access the pointer
 	//create a new thread
 	printf("New User connected...\n");
 	printf("recieved buffer: %s\n", buffer);
-	pthread_t thread_id;
-	pthread_create(&thread_id, NULL, newUserThread, (void*) &buffer);
-	pthread_join(thread_id, NULL);
+	pthread_t thread_id_destroy;
+	pthread_t thread_id_create;
+	pthread_t thread_id_push;
+	pthread_t thread_id_checkout;
+
+	if(startsWith(buffer, "checkout:")){
+		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
+		pthread_join(thread_id_checkout, NULL);
+	}
+	else if(startsWith(buffer, "mkdir:")){
+		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buffer);
+		pthread_join(thread_id_create, NULL);
+		// create_s(buffer);
+		bzero(buffer,256);
+	}
+	else if(startsWith(buffer, "rmdir:")){ 
+		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buffer);
+		pthread_join(thread_id_destroy, NULL);
+		// pthread_mutex_lock(&mutexDestroy);
+
+		// remove_directory_help(buffer);
+
+		bzero(buffer,256);
+		// pthread_mutex_unlock(&mutexDestroy);
+	}
+  else if(startsWith(buffer, "currver:") ){
+    pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buffer);
+		pthread_join(thread_id_currver, NULL);
+    
+//     pthread_mutex_lock(&mutex);
+//     directoryCounter_s(buffer);
+//     bzero(buffer,256);
+// 		snprintf(buffer,255, "The current version number of the project is: %d\n", dircount);
+//     pthread_mutex_unlock(&mutex);
+
+  }
+  else if(startsWith(buffer, "rollback:") ){
+    
+    pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buffer);
+		pthread_join(thread_id_rollback, NULL);
+    
+//     pthread_mutex_lock(&mutex);
+//     rollback_s(buffer);
+//     bzero(buffer,256);
+//     pthread_mutex_unlock(&mutex);
+
+  }
+	
 
 	if(true){
 		return 0;
 	}
 }
 
-void *newUserThread(void *buffer){
-	printf("Created a new Thread...\n");
+void *newUserCreateThread(void *buffer){
+	pthread_mutex_lock(&mutexCreate);
+	printf("Created a new `create` thread for the user...\n");
 	create_s((char *)buffer);
+	pthread_mutex_unlock(&mutexCreate);
+	return NULL;
+}
+
+void *newUserDestroyThread(void *buffer){
+	pthread_mutex_lock(&mutexDestroy);
+	printf("Created a new `destroy` thread for the user...\n");
+	remove_directory_help((char *)buffer);
+	pthread_mutex_unlock(&mutexDestroy);
+	return NULL;
+}
+
+void *newUserCheckoutThread(void *buffer){
+	printf("Created a new `checkout` thread for the user...\n");
+	checkout_s((char *)buffer, sockfd);
+	return NULL;
+}
+
+void *newUserCurrverThread(void *buffer){
+	printf("Created a new `currversion` thread for the user...\n");
+  directoryCounter_s((char *)buffer);
+	return NULL;
+}
+
+void *newUserRollbackThread(void *buffer){
+	printf("Created a new `rollback` thread for the user...\n");
+  rollback_s((char *)buffer);
 	return NULL;
 }

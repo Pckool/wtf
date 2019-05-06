@@ -1,6 +1,6 @@
-#include "c_client.h"
-#include "s_server.h"
-
+// #include "c_client.h"
+// #include "s_server.h"
+#include "h_both.h"
 
 char *stringAppend(const char *str1, const char *str2, int len){
 	printf("string1: %d\n", strlen(str1));
@@ -57,8 +57,8 @@ int getLen(int x){
 }
 
 void removeSubstring(char *s,const char *toremove){
-  while( s=strstr(s,toremove) )
-    memmove(s,s+strlen(toremove),1+strlen(s+strlen(toremove)));
+  while( s=strstr(s, toremove) )
+    memmove(s, s+strlen(toremove), 1+strlen(s+strlen(toremove)));
 }
 
 /**
@@ -73,4 +73,33 @@ char *charAppend(char *str, char charr){
 	newStr[strlen(str)] = charr;
 	newStr[strlen(str)+1] = '\0';
 	return newStr;
+}
+
+int startsWith(const char *pre, const char *str){
+    // size_t lenpre = strlen(pre),
+    //        lenstr = strlen(str);
+    // return lenstr < lenpre ? false : strncmp(pre, str, lenpre) == 0;
+	if(strncmp(pre, str, strlen(str)) == 0) return 1;
+   	return 0;
+}
+
+char *getLine(char *str){
+    printf("Extracting the first line from %s\n", str);
+    char *temp = malloc(sizeof(char));
+    memcpy(temp, "\0", sizeof(char));
+
+    char *final = malloc(sizeof(char));
+    memcpy(final, "\0", sizeof(char));
+    char lett;
+    int i;
+    for(i=0; i<strlen(str); ++i){
+
+        lett = str[i];
+        temp = charAppend(temp, lett);
+
+        if(lett == '\n'){ // if the letter is a new line terminator then we exit the loop
+            i = strlen(str) - 1;
+        }
+    }
+    return temp;
 }

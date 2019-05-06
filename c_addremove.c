@@ -1,13 +1,19 @@
 #include "c_client.h"
+#include "h_both.h"
 
 void add(char* proj, char* file){
         int fd = open(file, O_RDWR); //open file
         if (fd < 0){
-                printf("There was an error opening the given file...\nError No: %d\n", fd);
+                printf("There was an error opening the %s file...\nError No: %d\n", file, fd);
                 return;
         }
-        char buffer[2000];
-        read(fd, buffer, 2000); // read the entire file
+        struct stat fileStat__;
+        if(fstat(fd, &fileStat__) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+        }
+        char buffer[fileStat__.st_size];
+        read(fd, buffer, fileStat__.st_size); // read the entire file
         size_t length = strlen(buffer);
         unsigned char temp[SHA_DIGEST_LENGTH]; // temporary storage for hash
 
@@ -29,16 +35,21 @@ void add(char* proj, char* file){
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
         int man_fd;
-        printf("Trying to open/create %s\n", mpath);
+        printf("Trying to open %s\n", mpath);
         man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
         if (man_fd < 0){
-                printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                 return;
         }
 
-        char contents[1000000];
-        read(man_fd, contents, 1000000); //read manifest
+        struct stat fileStat;
+        if(fstat(man_fd, &fileStat) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+        }
+        char contents[fileStat.st_size];
+        read(man_fd, contents, fileStat.st_size); //read manifest
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
 
@@ -53,7 +64,7 @@ void add(char* proj, char* file){
                 man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
                 if (man_fd < 0){
-                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                         return;
                 }
                 final = createaManLine(file, version, hash);
@@ -70,9 +81,9 @@ void add(char* proj, char* file){
                 close(man_fd);
         }
         else{ //If file is in manifest
-                man_fd = open(mpath, O_RDWR); //Open manifest
+                man_fd = open(mpath, O_RDWR | O_TRUNC); //Open manifest
                 if (man_fd < 0){
-                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                         return;
                 }
                 printf("Found a .Manifest...\n");
@@ -103,15 +114,21 @@ void c_remove(char *proj, char *file){
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
         int man_fd;
-        printf("Trying to open/create %s\n", mpath);
+        printf("Trying to open %s\n", mpath);
         man_fd = open(mpath, O_RDWR); //Open manifest
         if (man_fd < 0){
-                printf("There was an error closing the %s file...\nError No: %d\n", file, man_fd);
+                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                 return;
         }
 
-        char *contents = malloc(1000000);
-        int written = read(man_fd, contents, 1000000); //read manifest
+        struct stat fileStat;
+        if(fstat(man_fd, &fileStat) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+        }
+        int filesize = fileStat.st_size;
+        char *contents = malloc(filesize);
+        int written = read(man_fd, contents, filesize); //read manifest
 
         char *fileName = strstr(contents, file); //makes pointer to filename in the manifest contents if it can find it
         char *version = "1"; // The version number. This gets incremented if the number is found
@@ -127,7 +144,7 @@ void c_remove(char *proj, char *file){
                 man_fd = open(mpath, O_RDWR | O_TRUNC); //Open manifest
 
                 if (man_fd < 0){
-                        printf("There was an error opening .Manifest the file...\nError No: %d\n", man_fd);
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
                         return;
                 }
 
@@ -281,4 +298,15 @@ char *readLine(char *str){
                 }
         }
         return temp;
+}
+
+int findProject(char *path){
+    char *pwd[PATH_MAX];
+    getcwd(pwd, PATH_MAX);
+    char *InProjectDir =strstr(pwd, path);
+    if(InProjectDir == NULL){
+        printf("You are not in the project directory...\n");
+        return;
+    }
+
 }

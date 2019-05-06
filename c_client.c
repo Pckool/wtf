@@ -1,9 +1,10 @@
 #include "c_client.h"
+#include "h_both.h"
 
 //char* ipAddr;
 //char* portNo;
-int sockfd = -1; //File Descriptor for socket
 
+int sockfd = -1; //File Descriptor for socket
 
 void error(char *msg){
 	perror(msg);
@@ -83,7 +84,7 @@ void create(char* projectName){
         stat(fp, buf); //Gets stats about the file and puts it in the struct buf
         int size = buf->st_size;
 	connecter(size); //Takes the size and goes to connecter
-	printf("%d\n", 1);
+
 	char buffer[256] = "mkdir:"; //This is here because eventually we need to add the networking protocols
 	int i = 6;
 	int p = 0;
@@ -112,7 +113,8 @@ void create(char* projectName){
 	close(fd);
 }
 
-void connecter(int fileSize){
+// sets the global socket fd and also returns it
+int connecter(int fileSize){
     int fd = open(".configure", O_RDONLY); //Opens configure file to read only
 	if (fd == -1){
 		error("Error. Configure file does not exist");
@@ -155,7 +157,9 @@ void connecter(int fileSize){
 
 	if (connect(sockfd, (struct sockaddr *)&serverAddressInfo, sizeof(serverAddressInfo)) < 0){
 		error("ERROR connecting");
+		return -1;
 	}
+	return sockfd;
 }
 
 
@@ -197,19 +201,23 @@ int main(int argc, char* argv[])
 		else
 			error("No Project name provided...\n");
 	}
-	if(strcmp(argv[1], "currentversion") == 0){
-                if(argv[2] != NULL)
-                        current(argv[2]);
-                else
-                        error("No Project name provided...\n");
-        }
+	if(strcmp(argv[1], "checkout") == 0){
+		if(argv[2] != NULL)
+			checkout(argv[2], sockfd);
+		else
+			error("No Project name provided...\n");
+	}
+  if(strcmp(argv[1], "currentversion") == 0){
+    if(argv[2] != NULL)
+      current(argv[2]);
+    else
+      error("No Project name provided...\n");
+  }
 	if(strcmp(argv[1], "rollback") == 0){
-                if(argv[2] != NULL)
-                        rollback(argv[2], argv[3]);
-                else
-                        error("No Project name provided...\n");
-        }
-
-
+    if(argv[2] != NULL)
+      rollback(argv[2], argv[3]);
+    else
+      error("No Project name provided...\n");
+  }
 
 }	
