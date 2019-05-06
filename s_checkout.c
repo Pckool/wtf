@@ -121,6 +121,8 @@ void *pushFileToClient(void *dat){
     if(read(fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", data->path);
     }
+    close(fd);
+
     printf("\nRead data with %d bytes...\n\n", fileStat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
@@ -128,14 +130,19 @@ void *pushFileToClient(void *dat){
     message = (char *)malloc(len * sizeof(char));
     memcpy(message, "\0", len * sizeof(char));
     
-    snprintf(message, len, "file:%s:%s", data->projectName, buffer);
+    char *byte_content = getByteContent(data->path);
+    
+    snprintf(message, len, "file:%s:%s", data->projectName, byte_content);
+
+    
+    
     printf("This is sending to the client: %s\n", message);
 
     if(write(sockfd_local, message, len) < 0){
         printf("There was an issue writing to the socket...\n");
         return;
     }
-    close(fd);
+    
     printf("Message sent successfully...\n");
 }
 

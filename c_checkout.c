@@ -35,16 +35,16 @@ void checkout(char *projectName, int sockfd){
 	fflush(stdout);
 
 	while(waiting){
-		// loading();
+		loading();
 
 		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
 			return;
 		}
 		if(msg_length == 0){
-			printf("%d\b\n", msg_length);
+			//printf("%d\b\n", msg_length);
 			continue;
 		}
-		
+
 		printf("\n%d is the size of the incomming data...\n", msg_length);
 		waiting = false;
 
