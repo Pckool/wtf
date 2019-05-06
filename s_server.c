@@ -129,13 +129,13 @@ int newUser(char *buffer){
 		pthread_join(thread_id_checkout, NULL);
 	}
 	if(startsWith(buffer, "mkdir:")){
-		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) &buffer);
+		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buffer);
 		pthread_join(thread_id_create, NULL);
 		// create_s(buffer);
 		bzero(buffer,256);
 	}
 	else if(startsWith(buffer, "rmdir:")){ 
-		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) &buffer);
+		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buffer);
 		pthread_join(thread_id_destroy, NULL);
 		// pthread_mutex_lock(&mutexDestroy);
 

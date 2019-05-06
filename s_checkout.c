@@ -131,7 +131,10 @@ int getProjectCurrVersion(char *ProjectName){
             ++version;
         }   
     }
+    
     (void) closedir(dir);
+    
+    return version;
 }
 
 // this will only be used if we decide to compress files one at a time. If we go the tar route, this function will not be used.
@@ -154,32 +157,6 @@ char *getClientsPath(char *serverPath, char *projectName){
     removeSubstring(serverPath_cpy, ".repo/");
     removeSubstring(serverPath_cpy, Version_str);
     return serverPath_cpy;
-    // char *temp = malloc(sizeof(char));
-    // memcpy(temp, "\0", sizeof(char));
-
-
-
-    
-
-    // char *final = malloc(sizeof(char));
-    // memcpy(final, "\0", sizeof(char));
-    // char lett;
-    // int i;
-    // int side = 0;
-    // for(i=0; i<strlen(serverPath); ++i){
-    //     if(side = 0){
-    //         lett = serverPath[i];
-    //         temp = charAppend(temp, lett);
-
-    //     }
-    //     if(lett == '/'){ // if the letter is a new line terminator then we exit the loop
-    //         if(side == 0)
-    //             side = 1;
-    //         else
-    //             side = 0;
-    //     }
-    // }
-    // return temp;
 }
 
 
