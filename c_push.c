@@ -22,7 +22,7 @@ void push_c(char *projectName){
     snprintf(commitPath, lenComm, "%s/%s", projectDir, ".Commit");
 
     int fd_comm = open(commitPath, O_RDWR);
-    if(fd < 0){
+    if(fd_comm < 0){
         printf("ERROR There was a problem opening .Commit. Did you commit already?");
     }
     struct stat fileStat_comm;
@@ -33,7 +33,7 @@ void push_c(char *projectName){
     // reading .commit
     char comm_buffer[fileStat_comm.st_size];
     if(read(fd_comm, comm_buffer, fileStat_comm.st_size) < 0){
-        printf("There was an error reading file `%s`...\n", newPath_Dat);
+        printf("There was an error reading file `%s`...\n", commitPath);
     }
 
     // We now have a buffer called comm_buffer that contains the data from .Commit
