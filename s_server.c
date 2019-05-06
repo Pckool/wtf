@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 			buff->sockfd = newsockfd;
 			buff->buffer = (char *)malloc(sizeof(buffer) * sizeof(char) + 1);
 			memcpy(buff->buffer, "\0", sizeof(buffer) * sizeof(char) + 1);
-			strcpy_s(buff->buffer, buffer);
+			strcpy(buff->buffer, buffer);
 
 			commStat = newUser(buff); // will create a new thread and eventually will determine what the command the client is trying to use.
 			
