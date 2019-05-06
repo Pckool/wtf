@@ -74,7 +74,8 @@ void create(char* projectName){
 	close(fd);
 }
 
-void connecter(int fileSize){
+// sets the global socket fd and also returns it
+int connecter(int fileSize){
     int fd = open(".configure", O_RDONLY); //Opens configure file to read only
 	if (fd == -1){
 		error("Error. Configure file does not exist");
@@ -117,7 +118,9 @@ void connecter(int fileSize){
 
 	if (connect(sockfd, (struct sockaddr *)&serverAddressInfo, sizeof(serverAddressInfo)) < 0){
 		error("ERROR connecting");
+		return -1;
 	}
+	return sockfd;
 }
 
 

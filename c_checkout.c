@@ -15,7 +15,7 @@ void checkout(char *projectName, int sockfd){
 	char* fp = ".configure";
         stat(fp, buf); //Gets stats about the file and puts it in the struct buf
         int size = buf->st_size;
-	connecter(size); //Takes the size and goes to connecter
+	int sockfd2 = connecter(size); //Takes the size and goes to connecter
 
 	char buffer[256] = "checkout:"; //This is here because eventually we need to add the networking protocols
 	int bufferStartLen = 9;
@@ -25,20 +25,20 @@ void checkout(char *projectName, int sockfd){
 		bufferStartLen++;
 		p++;
 	}
-	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
+	write(sockfd2, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 	
 	int msg_length = 0;
 
 	// this will loop through until it recieves a readable responce from the socket.
 	while( msg_length != 0){
-		if(ioctl(sockfd, FIONREAD, &msg_length) < 0){
+		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
 			printf("No data recieved from the server");
 			continue;
 		}
 			
 
 		char message[msg_length];
-		n = read(sockfd, message, msg_length);
+		n = read(sockfd2, message, msg_length);
 		printf("%s with length %d\n", message, msg_length);
 
 		if(startsWith(message, "file:")){
@@ -66,7 +66,7 @@ void checkout(char *projectName, int sockfd){
 			//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
 			int fd = open("./data.tar.gz", O_RDWR | O_CREAT, 0600);
 			if (fd < 0){
-				printf("Failed to create .Manifest clientside...\nError No: %d\n", fd);
+				printf("Failed to create compressed data clientside...\nError No: %d\n", fd);
 			}
 			if(write(fd, tokenizedData->data, data_len) < 0){
 				printf("There was a problem writing compressed data to local dir.\n");
