@@ -6,7 +6,7 @@ pthread_mutex_t mutextest = PTHREAD_MUTEX_INITIALIZER;
 pthread_t thread_id_filePush;
 
 
-
+// add a response protocol to let the client know if they can recieve or not
 
 void checkout_s(const char *buffer, int sockfd){
     printf("Starting fetch routine with buffer %s...\n", buffer);
@@ -137,12 +137,12 @@ void *pushFileToClient(void *dat){
     }
     // for data
     struct stat fileStat_dat;
-    if(fstat(fd_dat, &fileStat_dat) < 0){
+    if(fstat(fd_data, &fileStat_dat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
     char manifest_buffer[fileStat_dat.st_size];
-    if(read(fd_dat, manifest_buffer, fileStat_dat.st_size) < 0){
+    if(read(fd_data, manifest_buffer, fileStat_dat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", newPath_Man);
     }
     

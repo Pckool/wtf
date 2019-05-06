@@ -49,6 +49,9 @@ void c_remove(char *proj, char *file);
 char *createaManLine(char *file, char *version, char *hash);
 manLineTokens *tokenizeLine(char *line);
 char *readLine(char *str);
+//  push
+void push_c(char *projectName);
+char *getProjectDir(char *projectName);
 
 // Checkout
 void checkout(char *projectName, int sockfd);
