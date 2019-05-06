@@ -40,7 +40,11 @@ void push_c(char *projectName){
     // let's tokenize this
     DataLink *lineData = (DataLink *)malloc(sizeof(DataLink));
     lineData = newDataLink("_START_");
+
+    DataLink *lineData = (DataLink *)malloc(sizeof(DataLink));
+    lineData = newDataLink("_START_");
     int i = 0;
+
     while(i <strlen(comm_buffer)){ // loop to go through each line
         char *line = getLine(comm_buffer);
         tokenizeString(line, '\t', lineData);
@@ -49,7 +53,24 @@ void push_c(char *projectName){
             continue;
         }
         // if it is not the version number
-        int f = open(lineData->token, O_RDONLY);
+        
+        if(strcmp(lineData->next->token, "U") || strcmp(lineData->next->token, "A")){ // if the line is U or M or A
+            int fd = open(lineData->token, O_RDONLY); // file listed in the .Commit
+
+            struct stat fileStat_file;
+            if(fstat(fd, &fileStat_file) < 0){
+                printf("Could not get filedata, aborting...\n");
+                return;
+            }
+            char file_buffer[fileStat_file.st_size];
+            if(read(fd, comm_buffer, fileStat_file.st_size) < 0){
+                printf("There was an error reading file `%s`...\n", lineData->token);
+            }
+            // ew have now read the file, get ready to send it to the server
+            lineData = lineData+strlen(line);
+        }
+        
+
         free(lineData);
     }
     
