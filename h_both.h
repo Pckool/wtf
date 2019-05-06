@@ -27,8 +27,8 @@ typedef struct ProtocolLink{
 
 typedef struct DataLink{
 	char *token;
-	struct ProtocolLink *next;
-}ProtocolLink;
+	struct DataLink *next;
+}DataLink;
 
 // Helping Function
 int findDir(char *dirname);
