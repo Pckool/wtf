@@ -3,6 +3,7 @@
 
 
 void sendTar(char *projectName){
+    int sockfd = -1;
     FILE *fp;
     int ret,len;
     char buf[2000000] = {0};
