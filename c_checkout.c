@@ -28,94 +28,81 @@ void checkout(char *projectName, int sockfd){
 	write(sockfd2, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 	
 	int msg_length = 0;
+	int waiting = true;
 
 	// this will loop through until it recieves a readable responce from the socket.
-	while( msg_length != 0){
+	printf("waiting for server... |");
+	fflush(stdout);
+
+	while(waiting){
+		loading();
+
 		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
-			printf("No data recieved from the server");
+			return;
+		}
+		if(msg_length == 0){
+			//printf("%d\b\n", msg_length);
 			continue;
 		}
-			
-
-		char message[msg_length];
-		n = read(sockfd2, message, msg_length);
-		printf("%s with length %d\n", message, msg_length);
-
-		if(startsWith(message, "file:")){
-			// this means we are recieving the correct message...
-			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message);
-
-			int data_len = strlen(tokenizedData->data) - 15;
-			// char data_msg[data_len];
-			// int k = 0;
-			// int data_counter = msg_length - data_len;
-			// for(k = 0; k<reason_len; k++){
-			// 	data_msg[k] = message[data_counter];
-			// 	++data_counter;
-			// }
-			// int dirStat = mkdir(projectName, S_IRWXU);
-			// if (!dirStat){ //If check passes
-			// 	printf("%s\n", "Project Created!");
-			// }
-
-			DIR *dir;
-			dir = opendir(projectName);
-			closedir(dir);
-			//char path[PATH_MAX];
-
-			//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
-			int fd = open("./data.tar.gz", O_RDWR | O_CREAT, 0600);
-			if (fd < 0){
-				printf("Failed to create compressed data clientside...\nError No: %d\n", fd);
-			}
-			if(write(fd, tokenizedData->data, data_len) < 0){
-				printf("There was a problem writing compressed data to local dir.\n");
-			}
-			system("tar -xzvf data.tar.gz");
-			close(fd);
-
+		else if(msg_length > 0){
+			printf("The message size is %d...\n", msg_length);
+			break;
 		}
-		else if(startsWith(message, "checkout:fail:")){
-			// The project doesn't exist
-			int reason_len = msg_length - 14;
-			char reason_msg[reason_len];
-			int k = 0;
-			int msg_counter = msg_length - reason_len;
-			for(k = 0; k<reason_len; k++){
-				reason_msg[k] = message[msg_counter];
-				++msg_counter;
-			}
-			printf("Checkout Failed...\n\tReason: %s\n", reason_msg);
-		}
+	}	
 
-		
+	// printf("\n%d is the size of the incomming data...\n", msg_length);
+
+	char message[msg_length];
+	n = read(sockfd2, message, msg_length);
+	
+	printf("%s with length %d\n", message, msg_length);
+	///
+	if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
+		return;
+	}
+	printf("size of socket now: %d\n", msg_length);
+	///
+	int status = prot_fileRecieve(message, msg_length, sockfd2);
+
+	if(status < 0 ){
+		// the 
 	}
 	
+
+		
+	
+	printf("Either we are done, or we gave up.\n");
 	
 }
 
-// a protocol function to accept a file string sent over the network and tokenize it
-tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
+
+
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
 	int part = 0;
-	int len = strlen(msgToTokenize);
-	char *msgCpy = (char *)malloc(len * sizeof(char));
-	memcpy(msgCpy, "\0", len);
+
+	unsigned lenOfMsg = strlen(msgToTokenize);
+	printf("This is the length of the string recieved: %d\n",lenOfMsg);
+	char *msgCpy = (char *)malloc(lenOfMsg * sizeof(char));
+	memcpy(msgCpy, "\0", lenOfMsg);
 	strcpy(msgCpy, msgToTokenize);
 
 	char *projectName = "";
 	char *data = "";
 
-	unsigned lenOfMsg = strlen(msgToTokenize);
 
-	while(i < lenOfMsg){
+	while( i < lenOfMsg){
+		
 		switch(part){
 			case 0:
+				printf("Case 0\n");
 				removeSubstring(msgCpy, "file:");
 				++part;
+				
 				break;
 			case 1:
+				printf("Case 1\n");
 				if(msgCpy[i] != ':'){
 					charAppend(projectName, msgCpy[i]);
 				}
@@ -130,11 +117,16 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 				if(msgCpy[i] != ':'){
 					charAppend(data, msgCpy[i]);
 				}
-				else{
+				++i;
+				if(i == lenOfMsg){
 					newTokens->data = (char *)malloc(strlen(data));
 					memcpy(newTokens->data, data, strlen(data));
+					printf("assigned data...\n");
 					++part;
 				}
+				
+				break;
+			default:
 				++i;
 				break;
 		}
