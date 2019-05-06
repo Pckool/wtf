@@ -127,8 +127,17 @@ void *pushFileToClient(void *dat){
 
     // for manifest
     struct stat fileStat_man;
-    // printf("This is the data:\tfd: %d\tpath: %s\n", fd_data, data->path);
     if(fstat(fd_man, &fileStat_man) < 0){
+        printf("Could not get filedata, aborting...\n");
+        return;
+    }
+    char project_buffer[fileStat_man.st_size];
+    if(read(fd_man, project_buffer, fileStat_man.st_size) < 0){
+        printf("There was an error reading file `%s`...\n", newPath_Dat);
+    }
+    // for data
+    struct stat fileStat_dat;
+    if(fstat(fd_dat, &fileStat_dat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
@@ -136,24 +145,13 @@ void *pushFileToClient(void *dat){
     if(read(fd_dat, manifest_buffer, fileStat_dat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", newPath_Man);
     }
-    // for data
-    char project_buffer[fileStat_man.st_size];
-    if(read(fd_man, project_buffer, fileStat_man.st_size) < 0){
-        printf("There was an error reading file `%s`...\n", newPath_Dat);
-    }
-    
-    struct stat fileStat_dat;
-    if(fstat(fd_dat, &fileStat_dat) < 0){
-        printf("Could not get filedata, aborting...\n");
-        return;
-    }
     
     
 
     printf("\nRead data with %d bytes...\n\n", fileStat_dat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
-    int len = strlen(data->projectName) + sizeof("2") + sizeof("data.tar.gz") + sizeof("file:"), sizeof(".Manifest") ;
+    int len = strlen(data->projectName) + sizeof("2") + sizeof("data.tar.gz") + sizeof("file:") + sizeof(".Manifest") ;
     message = (char *)malloc(len * sizeof(char));
     memcpy(message, "\0", len * sizeof(char));
     
