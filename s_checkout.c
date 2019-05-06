@@ -77,10 +77,9 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 printf("This is the appended path: `%s`\n", newPath);
                 threadData *data = (threadData *)malloc(sizeof(threadData));
 
-                data->path = (char *)malloc(strlen(newPath) * sizeof(char)-1);
-                printf("yeeeee: %d\n", strlen(newPath));
-                memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
-                memcpy(data->path, newPath, strlen(newPath) * sizeof(char));
+                data->path = (char *)malloc(strlen(newPath) * sizeof(char) + 1);
+                memcpy(data->path,"\0", strlen(newPath) * sizeof(char) + 1); // ensure it is a string
+                strcpy(data->path, newPath);
 
                 data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
