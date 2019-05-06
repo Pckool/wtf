@@ -29,13 +29,15 @@ void checkout(char *projectName, int sockfd){
 	
 	int msg_length = 0;
 
+	printf("waiting for server...\n");
 	// this will loop through until it recieves a readable responce from the socket.
 	while( msg_length != 0){
+		printf(".");
 		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
 			printf("No data recieved from the server");
 			continue;
 		}
-			
+		printf("\n");
 
 		char message[msg_length];
 		n = read(sockfd2, message, msg_length);
