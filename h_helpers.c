@@ -150,6 +150,10 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 
 	char *copyToManipulate[lenOfMsg+1];
 	strcpy(copyToManipulate, inputMsg);
+
+	char *copyToManipulate2[lenOfMsg+1];
+	strcpy(copyToManipulate2, inputMsg);
+
 	printf("3\n");
 	while(true){
 
@@ -164,7 +168,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			// remove the first char
 			
 			printf("\tCREATED FIRST LETTER `%c` AS STRING: %s\n", copyToManipulate[0], frontLetter);
-			removeSubstring(copyToManipulate, frontLetter);
+			copyToManipulate2 = strstr(copyToManipulate, frontLetter);
 			
 		}
 		else{ // we have found the token char
@@ -174,9 +178,9 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			free(tempToken);
 
 			// remove the first char
-			removeSubstring(copyToManipulate, frontLetter);
+			copyToManipulate2 = strstr(copyToManipulate, frontLetter);
 			printf("5\n");
-			tokenizeProtocolMessage(copyToManipulate, head->next);
+			tokenizeProtocolMessage(copyToManipulate2, head->next);
 			break;
 
 		}
