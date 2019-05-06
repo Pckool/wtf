@@ -70,6 +70,11 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
                 int fd = open(newPath, O_RDWR);
+                if(fd < 0) {
+                    printf("Something went wrong opening `%s`\n", newPath);
+                    return;
+                }
+                printf("This is the appended path: `%s`\n", newPath);
 
                 threadData *data = (threadData *)malloc(sizeof(threadData));
                 data->fd = fd;
@@ -85,6 +90,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)data);
                 pthread_join(thread_id_filePush, NULL);
                 // launch a thread and mutex it
+                close(fd);
             }
             
         }
@@ -97,6 +103,8 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
 void *pushFileToClient(void *dat){
     printf("Sending file to client...\n");
     threadData *data = (threadData *)dat;
+    int fd = open(data->path, O_RDWR);
+
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", data->fd, data->path);
 
