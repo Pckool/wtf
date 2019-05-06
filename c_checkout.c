@@ -100,7 +100,7 @@ void checkout(char *projectName, int sockfd){
 }
 
 // a protocol function to accept a file string sent over the network and tokenize it
-tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, int msgSize){
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
 	int part = 0;
