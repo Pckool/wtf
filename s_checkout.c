@@ -78,6 +78,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 threadData *data = (threadData *)malloc(sizeof(threadData));
 
                 data->path = (char *)malloc(strlen(newPath) * sizeof(char)-1);
+                printf("yeeeee: %d\n", strlen(newPath));
                 memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
                 memcpy(data->path, newPath, strlen(newPath) * sizeof(char));
 
