@@ -6,7 +6,7 @@ pthread_mutex_t mutextest = PTHREAD_MUTEX_INITIALIZER;
 pthread_t thread_id_filePush;
 
 
-
+// add a response protocol to let the client know if they can recieve or not
 
 void checkout_s(const char *buffer, int sockfd){
     printf("Starting fetch routine with buffer %s...\n", buffer);
@@ -119,14 +119,14 @@ void *pushFileToClient(void *dat){
     }
 
     int fd_man = open(newPath_Man, O_RDWR);
-    if(fd_dman < 0){
+    if(fd_man < 0){
         printf("there was a problem opening %s; aborting...\n", newPath_Man);
         return;
     }
 
 
+    // for manifest
     struct stat fileStat_man;
-    // printf("This is the data:\tfd: %d\tpath: %s\n", fd_data, data->path);
     if(fstat(fd_man, &fileStat_man) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
@@ -135,22 +135,23 @@ void *pushFileToClient(void *dat){
     if(read(fd_man, project_buffer, fileStat_man.st_size) < 0){
         printf("There was an error reading file `%s`...\n", newPath_Dat);
     }
-    
+    // for data
     struct stat fileStat_dat;
-    if(fstat(fd_dat, &fileStat_dat) < 0){
+    if(fstat(fd_data, &fileStat_dat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
     char manifest_buffer[fileStat_dat.st_size];
-    if(read(fd_dat, manifest_buffer, fileStat_dat.st_size) < 0){
+    if(read(fd_data, manifest_buffer, fileStat_dat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", newPath_Man);
     }
+    
     
 
     printf("\nRead data with %d bytes...\n\n", fileStat_dat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
-    int len = strlen(data->projectName) + sizeof("2") +sizeof("data.tar.gz") + sizeof("file:"), sizeof(".Manifest");
+    int len = strlen(data->projectName) + sizeof("2") + sizeof("data.tar.gz") + sizeof("file:") + sizeof(".Manifest") ;
     message = (char *)malloc(len * sizeof(char));
     memcpy(message, "\0", len * sizeof(char));
     
@@ -177,7 +178,7 @@ void *pushFileToClient(void *dat){
     printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat_dat.st_size);
 
     // sending .Manifest
-    int amm = write(sockfd_local, buffer, fileStat_man.st_size);
+    amm = write(sockfd_local, manifest_buffer, fileStat_man.st_size);
     if(amm < 0){
         printf("There was an issue writing to the socket...\n");
         return;

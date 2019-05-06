@@ -306,7 +306,8 @@ int findProject(char *path){
     char *InProjectDir =strstr(pwd, path);
     if(InProjectDir == NULL){
         printf("You are not in the project directory...\n");
-        return;
+        return -1;
     }
+    return 0;
 
 }
