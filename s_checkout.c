@@ -121,7 +121,7 @@ void *pushFileToClient(void *dat){
     if(read(fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", data->path);
     }
-    close(fd);
+    
 
     printf("\nRead data with %d bytes...\n\n", fileStat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
@@ -132,7 +132,8 @@ void *pushFileToClient(void *dat){
     
     char *byte_content = getByteContent(data->path);
     
-    snprintf(message, len, "file:%s:%s", data->projectName, byte_content);
+    // snprintf(message, len, "file:%s:%s", data->projectName, byte_content);
+    snprintf(message, len, "file:%s:%s:%s", data->projectName, "1", "data.tar.gz");
 
     
     
@@ -142,8 +143,13 @@ void *pushFileToClient(void *dat){
         printf("There was an issue writing to the socket...\n");
         return;
     }
+    if(sendfile(sockfd_local, fd, NULL, fileStat.st_size) < 0){
+        printf("There was an issue writing to the socket...\n");
+        return;
+    }
     
     printf("Message sent successfully...\n");
+    close(fd);
 }
 
 

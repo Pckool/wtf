@@ -55,8 +55,8 @@ int getLen(int x){
 	}
 	return toReturn;
 }
-
-void removeSubstring(char *s,const char *toremove){
+// removes the first occurance of the string
+void removeSubstring(char *s, const char *toremove){
   while( s=strstr(s, toremove) )
     memmove(s, s+strlen(toremove), 1+strlen(s+strlen(toremove)));
 }
@@ -131,4 +131,60 @@ char *getByteContent(char *filePath){
 	fread(buffer, filelen, 1, fileptr); // Read in the entire file
 	fclose(fileptr); // Close the file
 	return buffer;
+}
+
+
+/**
+	* This function is essential in understanding and working with the 
+	* netowrk protocol. It takes in a string (the buffer) and a pointer to a
+	* head (of type ProtocolLink) and returns a pointer (of type ProtocolLink) 
+	* that is a linked list of all of the tokens in a protocol message.
+	*/
+ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
+	char *tempToken = (char *)malloc(sizeof(char));
+	memcpy(tempToken, "\0", sizeof(char));
+
+	int i = 0;
+	int lenOfMsg = strlen(inputMsg);
+
+	char *copyToManipulate[lenOfMsg+1];
+	strcpy(copyToManipulate, inputMsg);
+	
+	while( i < lenOfMsg){
+		if(copyToManipulate[i] != ':'){ // while we don't have the token char
+			// append the char to the temp string
+			tempToken = charAppend(tempToken, copyToManipulate[0]);
+
+			// remove the first char
+			char *frontLetter = {copyToManipulate[0], '\0'}
+			removeSubstring(copyToManipulate, frontLetter);
+			
+		}
+		else{ // we have found the token char
+			head->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));
+			head->next = newProtocolLink(tempToken);
+			free(tempToken);
+
+			// remove the first char
+			char *frontLetter = {copyToManipulate[0], '\0'}
+			removeSubstring(copyToManipulate, frontLetter);
+
+			tokenizeProtocolMessage(copyToManipulate, head->next);
+			break;
+
+		}
+	}
+	return head;
+}
+
+ProtocolLink *newProtocolLink(char *token){
+	ProtocolLink *link = (ProtocolLink *)malloc(sizeof(ProtocolLink));
+	link->token = (char *)malloc(strlen(inputMsg) * sizeof(char) + 1);
+	memcpy(link->token, "\0", strlen(inputMsg) * sizeof(char) + 1);
+	strcpy(link->token, token);
+
+	// link->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));
+	// memcpy(link->next, 0x0, sizeof(ProtocolLink));
+	link->next = NULL;
+	return link;
 }

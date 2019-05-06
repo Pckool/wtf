@@ -44,40 +44,82 @@ void checkout(char *projectName, int sockfd){
 			//printf("%d\b\n", msg_length);
 			continue;
 		}
+		// int zero = 0;
+		// if(ioctl(sockfd2, FIONBIO, &zero) < 0){
+		// 	return;
+		// }
+		
 
 		// printf("\n%d is the size of the incomming data...\n", msg_length);
 		waiting = false;
 
 		char message[msg_length];
 		n = read(sockfd2, message, msg_length);
+		
 		printf("%s with length %d\n", message, msg_length);
+		///
+		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
+			return;
+		}
+		printf("size of socket now: %d\n", msg_length);
+		///
+		ProtocolLink *msg_tokens = newProtocolLink("_START_"); // initializing link-list
+		tokenizeProtocolMessage(message, msg_tokens);
+		printf("Data tokenized...\n");
 
-		if(startsWith(message, "file:")){
+
+		ProtocolLink *currToken;
+		if(strcmp(msg_tokens->next->token, "file") == 0){ // if the first token is `file`
+			currToken = currToken->next->next; // go to the next link
 			printf("Recieved a file from the server of length %d!\n", strlen(message));
-			// this means we are recieving the correct message...
-			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message, msg_length);
-			printf("Data tokenized...\n");
+			char *projName = currToken->token;
+			currToken = currToken->next; // number of files?
+			int numFiles = atoi(currToken->token);
 
-			int data_len = strlen(tokenizedData->data) - 15;
+			currToken = currToken->next; // File1Name
+
+			int i = 0;
+			int file_size;
+			while(i < numFiles){
+				int(currToken != NULL){
+					
+					DIR *dir;
+					dir = opendir(projectName);
+					closedir(dir);
+					//char path[PATH_MAX];
+					// printf("Opened path...\n");
+					if(ioctl(sockfd2, FIONREAD, &file_size) < 0){
+						return;
+					}
+					if(file_size == 0){
+						//printf("%d\b\n", msg_length);
+						continue;
+					}
+					char *file_buffer = (char *)malloc(file_size);
+					if(read(sockfd2, file_buffer, file_size);)
+					//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
+					int fd = open(currToken->token, O_RDWR | O_CREAT, 0600);
+					if (fd < 0){
+						printf("Failed to create the file clientside...\nError No: %d\n", fd);
+					}
+					printf("I was able to create the tarfile!\n");
+					if(write(fd, file_buffer, data_len) < 0){
+						printf("There was a problem writing compressed data to local dir.\n");
+					}
+					system("tar -xzvf data.tar.gz");
+					close(fd);
+					currToken = currToken->next; // go to the next link
+				}
+				
+			}
+			
+			// this means we are recieving the correct message...
+			// tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message, msg_length);
+			
+			
 			
 
-			DIR *dir;
-			dir = opendir(projectName);
-			closedir(dir);
-			//char path[PATH_MAX];
-			printf("Opened path...\n");
-
-			//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
-			int fd = open("data.tar.gz", O_RDWR | O_CREAT, 0600);
-			if (fd < 0){
-				printf("Failed to create compressed data clientside...\nError No: %d\n", fd);
-			}
-			printf("I was able to create the tarfile!\n");
-			if(write(fd, tokenizedData->data, data_len) < 0){
-				printf("There was a problem writing compressed data to local dir.\n");
-			}
-			system("tar -xzvf data.tar.gz");
-			close(fd);
+			
 
 		}
 		else if(startsWith(message, "checkout:fail:")){
@@ -100,22 +142,81 @@ void checkout(char *projectName, int sockfd){
 }
 
 // a protocol function to accept a file string sent over the network and tokenize it
+// tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
+// 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
+// 	int i = 0;
+// 	int part = 0;
+
+// 	unsigned lenOfMsg = sizeOfMsg-5;
+// 	printf("This is the length of the string recieved: %d\n",sizeOfMsg);
+// 	char *msgCpy = (char *)malloc(sizeOfMsg * sizeof(char));
+// 	memcpy(msgCpy, "\0", sizeOfMsg);
+// 	strcpy(msgCpy, msgToTokenize);
+
+// 	char *projectName = "";
+// 	char *data = "";
+
+
+// 	while( part <= 2){
+		
+// 		switch(part){
+// 			case 0:
+// 				printf("Case 0\n");
+// 				removeSubstring(msgCpy, "file:");
+// 				++part;
+				
+// 				break;
+// 			case 1:
+// 				printf("Case 1\n");
+// 				if(msgCpy[i] != ':'){
+// 					charAppend(projectName, msgCpy[i]);
+// 				}
+// 				else{
+// 					newTokens->projectName = (char *)malloc(strlen(projectName));
+// 					memcpy(newTokens->projectName, projectName, strlen(projectName));
+// 					++part;
+// 				}
+// 				++i;
+// 				break;
+// 			case 2:
+// 				printf("%d < %d\n", i, lenOfMsg);
+// 				if(msgCpy[i] != ':' || i < lenOfMsg){
+// 					charAppend(data, msgCpy[i]);
+// 				}
+// 				++i;
+// 				if(i == lenOfMsg){
+// 					newTokens->data = (char *)malloc(strlen(data));
+// 					memcpy(newTokens->data, data, strlen(data));
+// 					printf("assigned data...\n");
+// 					++part;
+// 				}
+				
+// 				break;
+// 			default:
+// 				++i;
+// 				printf("WENIS\n");
+// 				break;
+// 		}
+// 	}
+// 	return newTokens;
+	
+// }
 tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
 	int part = 0;
 
-	unsigned lenOfMsg = sizeOfMsg-5;
-	printf("This is the length of the string recieved: %d\n",sizeOfMsg);
-	char *msgCpy = (char *)malloc(sizeOfMsg * sizeof(char));
-	memcpy(msgCpy, "\0", sizeOfMsg);
+	unsigned lenOfMsg = strlen(msgToTokenize);
+	printf("This is the length of the string recieved: %d\n",lenOfMsg);
+	char *msgCpy = (char *)malloc(lenOfMsg * sizeof(char));
+	memcpy(msgCpy, "\0", lenOfMsg);
 	strcpy(msgCpy, msgToTokenize);
 
 	char *projectName = "";
 	char *data = "";
 
 
-	while( part <= 2){
+	while( i < lenOfMsg){
 		
 		switch(part){
 			case 0:
@@ -137,8 +238,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 				++i;
 				break;
 			case 2:
-				printf("%d < %d\n", i, lenOfMsg);
-				if(msgCpy[i] != ':' || i < lenOfMsg){
+				if(msgCpy[i] != ':'){
 					charAppend(data, msgCpy[i]);
 				}
 				++i;
@@ -152,7 +252,6 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 				break;
 			default:
 				++i;
-				printf("WENIS\n");
 				break;
 		}
 	}

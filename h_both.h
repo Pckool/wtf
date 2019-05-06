@@ -14,8 +14,13 @@
 #include <openssl/sha.h>
 #include <dirent.h>
 #include <sys/ioctl.h>
+#include <sys/sendfile.h>
 
 #define MAX_FILE_SIZE 52428800  // this is the maximum file size we will allow. 50MB
+typedef struct ProtocolLink{
+	char *token;
+	struct ProtocolLink *next;
+}ProtocolLink;
 
 // Helping Function
 int findDir(char *dirname);
@@ -28,5 +33,7 @@ char *charAppend(char *str, char charr);
 char *getLine(char *str);
 void loading();
 char *getByteContent(char *filePath);
+ProtocolLink *tokenizeProtocolMessage(char *inputMsg);
+ProtocolLink *newProtocolLink(char *token);
 
 #endif
