@@ -113,12 +113,12 @@ void *pushFileToClient(void *dat){
 
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
-
+    printf("PPRRRR\n");
     if(fstat(fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
-    printf("check");
+    printf("check\n");
     char *buffer[fileStat.st_size];
 
     if(read(fd, buffer, fileStat.st_size) < 0){
