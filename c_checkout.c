@@ -28,16 +28,18 @@ void checkout(char *projectName, int sockfd){
 	write(sockfd2, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 	
 	int msg_length = 0;
+	int recieved = false;
 
 	printf("waiting for server...\n");
 	// this will loop through until it recieves a readable responce from the socket.
-	while( msg_length == 0){
+	while(recieved){
 		printf(".");
 		if(ioctl(sockfd2, FIONREAD, &msg_length) == 0){
 			// printf("No data recieved from the server...\n");
 			continue;
 		}
 		printf("\n%d is the size of the incomming data...\n", msg_length);
+		recieved = true;
 
 		char message[msg_length];
 		n = read(sockfd2, message, msg_length);
