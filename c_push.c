@@ -41,14 +41,16 @@ void push_c(char *projectName){
     DataLink *lineData = (DataLink *)malloc(sizeof(DataLink));
     lineData = newDataLink("_START_");
     int i = 0;
-    while(i <strlen(comm_buffer)){
+    while(i <strlen(comm_buffer)){ // loop to go through each line
         char *line = getLine(comm_buffer);
         tokenizeString(line, '\t', lineData);
-        if(lineData->next == NULL) // This is to check if it is a version number (at the top of the file)
-            return;
-        while(false){
-
+        if(lineData->next == NULL){ // This is to check if it is a version number (at the top of the file)
+            lineData = lineData+strlen(line);
+            continue;
         }
+        // if it is not the version number
+        int f = open(lineData->token, O_RDONLY);
+        free(lineData);
     }
     
 }
