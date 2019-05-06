@@ -1,5 +1,6 @@
 #include "h_both.h"
 #include "s_server.h"
+#include "h_global.h"
 
 pthread_mutex_t mutexCreate = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutexDestroy = PTHREAD_MUTEX_INITIALIZER;
@@ -97,7 +98,6 @@ int main(int argc, char* argv[])
 		else{
 			int commStat; // the status of the command (if it was successful or not)
 			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
-			
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
@@ -128,7 +128,7 @@ int newUser(char *buffer){
 		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
 		pthread_join(thread_id_checkout, NULL);
 	}
-	if(startsWith(buffer, "mkdir:")){
+	else if(startsWith(buffer, "mkdir:")){
 		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buffer);
 		pthread_join(thread_id_create, NULL);
 		// create_s(buffer);
@@ -144,6 +144,28 @@ int newUser(char *buffer){
 		bzero(buffer,256);
 		// pthread_mutex_unlock(&mutexDestroy);
 	}
+  else if(startsWith(buffer, "currver:") ){
+    pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buffer);
+		pthread_join(thread_id_currver, NULL);
+    
+//     pthread_mutex_lock(&mutex);
+//     directoryCounter_s(buffer);
+//     bzero(buffer,256);
+// 		snprintf(buffer,255, "The current version number of the project is: %d\n", dircount);
+//     pthread_mutex_unlock(&mutex);
+
+  }
+  else if(startsWith(buffer, "rollback:") ){
+    
+    pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buffer);
+		pthread_join(thread_id_rollback, NULL);
+    
+//     pthread_mutex_lock(&mutex);
+//     rollback_s(buffer);
+//     bzero(buffer,256);
+//     pthread_mutex_unlock(&mutex);
+
+  }
 	
 
 	if(true){
@@ -170,5 +192,17 @@ void *newUserDestroyThread(void *buffer){
 void *newUserCheckoutThread(void *buffer){
 	printf("Created a new `checkout` thread for the user...\n");
 	checkout_s((char *)buffer, sockfd);
+	return NULL;
+}
+
+void *newUserCurrverThread(void *buffer){
+	printf("Created a new `currversion` thread for the user...\n");
+  directoryCounter_s((char *)buffer);
+	return NULL;
+}
+
+void *newUserRollbackThread(void *buffer){
+	printf("Created a new `rollback` thread for the user...\n");
+  rollback_s((char *)buffer);
 	return NULL;
 }
