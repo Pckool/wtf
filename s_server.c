@@ -125,7 +125,7 @@ int newUser(char *buffer){
 	pthread_t thread_id_checkout;
 
 	if(startsWith(buffer, "checkout:")){
-		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) &buffer);
+		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
 		pthread_join(thread_id_checkout, NULL);
 	}
 	if(startsWith(buffer, "mkdir:")){
