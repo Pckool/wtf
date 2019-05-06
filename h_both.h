@@ -38,5 +38,6 @@ void loading();
 char *getByteContent(char *filePath);
 ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head);
 ProtocolLink *newProtocolLink(char *token);
+void printTokenLinks(ProtocolLink *head);
 
 #endif

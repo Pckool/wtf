@@ -200,3 +200,13 @@ ProtocolLink *newProtocolLink(char *token){
 	link->next = NULL;
 	return link;
 }
+
+void printTokenLinks(ProtocolLink *head){
+	if(head->token != NULL){
+		printf("%d\n", head->token);
+		if(head->next != NULL){
+			printTokenLinks(head->next);
+		}
+	}
+	
+}
