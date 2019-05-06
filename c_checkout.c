@@ -105,10 +105,10 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	int i = 0;
 	int part = 0;
 
-	unsigned lenOfMsg = strlen(msgToTokenize);
-	printf("This is the length of the string recieved: %d\n",lenOfMsg);
-	char *msgCpy = (char *)malloc(lenOfMsg * sizeof(char));
-	memcpy(msgCpy, "\0", lenOfMsg);
+	unsigned lenOfMsg = sizeOfMsg-5;
+	printf("This is the length of the string recieved: %d\n",sizeOfMsg);
+	char *msgCpy = (char *)malloc(sizeOfMsg * sizeof(char));
+	memcpy(msgCpy, "\0", sizeOfMsg);
 	strcpy(msgCpy, msgToTokenize);
 
 	char *projectName = "";
@@ -144,6 +144,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 				else{
 					newTokens->data = (char *)malloc(strlen(data));
 					memcpy(newTokens->data, data, strlen(data));
+					++part;
 				}
 				++i;
 				break;
