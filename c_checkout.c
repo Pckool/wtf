@@ -45,7 +45,7 @@ void checkout(char *projectName, int sockfd){
 			continue;
 		}
 		else if(msg_length > 0){
-			printf("The file size is %d...", file_size);
+			printf("The file size is %d...", msg_length);
 			break;
 		}
 	}	
