@@ -76,10 +76,11 @@ void checkout(char *projectName, int sockfd){
 			//char path[PATH_MAX];
 
 			//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
-			int fd = open("./data.tar.gz", O_RDWR | O_CREAT, 0600);
+			int fd = open("data.tar.gz", O_RDWR | O_CREAT, 0600);
 			if (fd < 0){
 				printf("Failed to create compressed data clientside...\nError No: %d\n", fd);
 			}
+			printf("I was able to create the tarfile!\n");
 			if(write(fd, tokenizedData->data, data_len) < 0){
 				printf("There was a problem writing compressed data to local dir.\n");
 			}
