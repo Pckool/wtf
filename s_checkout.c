@@ -113,7 +113,6 @@ void *pushFileToClient(void *dat){
 
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
-    printf("PPRRRR\n");
     if(fstat(fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
@@ -128,12 +127,13 @@ void *pushFileToClient(void *dat){
     message = (char *)malloc(len * sizeof(char));
     memcpy(message, "\0", len * sizeof(char));
     
-    printf("check3\n");
     snprintf(message, len, "file:%s:%s", data->projectName, buffer);
     printf("This is sending to the client: %s\n", message);
 
-    write(sockfd_local, message, len);
-    printf("check5\n");
+    if(write(sockfd_local, message, len) < 0){
+        printf("There was an issue writing to the socket...\n");
+    }
+    
 }
 
 

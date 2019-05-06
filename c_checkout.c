@@ -44,6 +44,7 @@ void checkout(char *projectName, int sockfd){
 		printf("%s with length %d\n", message, msg_length);
 
 		if(startsWith(message, "file:")){
+			printf("Recieved a file from the server!\n");
 			// this means we are recieving the correct message...
 			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message);
 
