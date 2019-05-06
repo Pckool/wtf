@@ -203,7 +203,7 @@ ProtocolLink *newProtocolLink(char *token){
 
 void printTokenLinks(ProtocolLink *head){
 	if(head->token != NULL){
-		printf("%d\n", head->token);
+		printf("%s\n", head->token);
 		if(head->next != NULL){
 			printTokenLinks(head->next);
 		}
