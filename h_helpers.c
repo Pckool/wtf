@@ -180,7 +180,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			// remove the first char
 			copyToManipulate = strstr(copyToManipulate, nextLetter);
 			printf("5\n");
-			tokenizeProtocolMessage(copyToManipulate2, head->next);
+			tokenizeProtocolMessage(copyToManipulate, head->next);
 			break;
 
 		}
