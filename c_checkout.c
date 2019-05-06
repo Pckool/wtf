@@ -70,7 +70,6 @@ void checkout(char *projectName, int sockfd){
 	printTokenLinks(msg_tokens);
 	ProtocolLink *currToken = (ProtocolLink *)malloc(sizeof(ProtocolLink));
 	currToken = msg_tokens->next;
-	printf("Looking\n");
 	if(strcmp(currToken->token, "file") == 0){ // if the first token is `file`
 		currToken = currToken->next; // Project name
 		char *projName = currToken->token;

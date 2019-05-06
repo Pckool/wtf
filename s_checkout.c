@@ -151,7 +151,7 @@ void *pushFileToClient(void *dat){
         return;
     }
     
-    printf("File sent successfully with %d bytes...\n", amm);
+    printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat.st_size);
     close(fd);
 }
 
