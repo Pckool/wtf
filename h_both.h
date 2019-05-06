@@ -26,5 +26,6 @@ char* parseInt(const int num);
 void removeSubstring(char *s, const char *toremove);
 char *charAppend(char *str, char charr);
 char *getLine(char *str);
+void loading();
 
 #endif

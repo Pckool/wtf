@@ -103,3 +103,15 @@ char *getLine(char *str){
     }
     return temp;
 }
+
+void loading(){
+	// do something
+	printf("\b/");
+	fflush(stdout);
+	// do some more
+	printf("\b-");
+	fflush(stdout);
+
+	printf("\b\\");
+	fflush(stdout);
+}

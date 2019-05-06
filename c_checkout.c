@@ -30,21 +30,15 @@ void checkout(char *projectName, int sockfd){
 	int msg_length = 0;
 	int waiting = true;
 
-	printf("waiting for server...\n");
 	// this will loop through until it recieves a readable responce from the socket.
-	printf("processing... |");
+	printf("waiting for server... |");
 	fflush(stdout);
 
 	while(waiting){
-		// do something
-		printf("\b/");
-		fflush(stdout);
-		// do some more
-		printf("\b-");
-		fflush(stdout);
+		// loading();
 
 		if(ioctl(sockfd2, FIONREAD, &msg_length) == 0){
-			// printf("No data recieved from the server...\n");
+			printf("%d\b\n", msg_length);
 			continue;
 		}
 		printf("\n%d is the size of the incomming data...\n", msg_length);
