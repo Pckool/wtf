@@ -74,7 +74,7 @@ void checkout(char *projectName, int sockfd){
 		system("tar -xzvf data.tar.gz");
 	}
 	else{
-		printf("You already have a version downlaoded in this directory. Please move to another subdirectory or delete the project localy.\n")
+		printf("You already have a version downlaoded in this directory. Please move to another subdirectory or delete the project localy.\n");
 	}
 	closedir(dir);
 	
