@@ -96,18 +96,21 @@ void checkout(char *projectName, int sockfd){
 						continue;
 					}
 					char *file_buffer = (char *)malloc(file_size);
-					if(read(sockfd2, file_buffer, file_size);)
+					if(read(sockfd2, file_buffer, file_size) < 0){
+						printf("Error reading file %s from socket...\n", currToken->token);
+					}
+						
 					//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
-					int fd = open(currToken->token, O_RDWR | O_CREAT, 0600);
-					if (fd < 0){
-						printf("Failed to create the file clientside...\nError No: %d\n", fd);
+					int fd_file = open(currToken->token, O_RDWR | O_CREAT, 0600);
+					if (fd_file < 0){
+						printf("Failed to create the file clientside...\nError No: %d\n", fd_file);
 					}
 					printf("I was able to create the tarfile!\n");
-					if(write(fd, file_buffer, data_len) < 0){
+					if(write(fd_file, file_buffer, file_size) < 0){
 						printf("There was a problem writing compressed data to local dir.\n");
 					}
 					system("tar -xzvf data.tar.gz");
-					close(fd);
+					close(fd_file);
 					currToken = currToken->next; // go to the next link
 				}
 				
