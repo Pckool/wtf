@@ -132,8 +132,9 @@ void *pushFileToClient(void *dat){
 
     if(write(sockfd_local, message, len) < 0){
         printf("There was an issue writing to the socket...\n");
+        return;
     }
-    
+    printf("message sendt successfully...\n");
 }
 
 
