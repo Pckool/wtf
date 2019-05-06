@@ -218,6 +218,7 @@ void printTokenLinks(ProtocolLink *head){
 	
 }
 
+// this function will tokenize and string you give it by the delimiter in arg 2. You must provixe a pointer to a header DataLink struct.
 DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 	char separatorStr[2] = {separator, '\0'};
 
@@ -320,7 +321,7 @@ int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 			if(currToken != NULL){
 
 				// waiting for the server to send us the file through the socket.
-				file_size = waitForSocketMessage(sockfd2);
+				file_size = waitForSocketMessage(sockfd);
 				
 				char *file_buffer = (char *)malloc(file_size);
 				if(read(sockfd, file_buffer, file_size) < 0){
