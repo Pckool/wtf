@@ -152,7 +152,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 	strcpy(copyToManipulate, inputMsg);
 	printf("3\n");
 	while( i < lenOfMsg){
-		if(copyToManipulate[i] != ':'){ // while we don't have the token char
+		if(copyToManipulate[0] != ':'){ // while we don't have the token char
 			printf("\tAPPENDING STRING\n");
 			// append the char to the temp string
 			tempToken = charAppend(tempToken, copyToManipulate[0]);
