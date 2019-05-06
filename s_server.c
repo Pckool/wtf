@@ -78,6 +78,7 @@ int main(int argc, char* argv[])
 	}
 	printf("Server Started...\n");
 	// Main loop of the server. This will never exit until we recieve ctrl-c
+	newBuffer *buff = (newBuffer *)malloc(sizeof(newBuffer));
 	while(k == true){
 		
 
@@ -98,7 +99,7 @@ int main(int argc, char* argv[])
 		else{
 			int commStat; // the status of the command (if it was successful or not)
 
-			newBuffer *buff = (newBuffer *)malloc(sizeof(newBuffer));
+			
 			buff->sockfd = newsockfd;
 			buff->buffer = (char *)malloc(sizeof(buffer) * sizeof(char) + 1);
 			memcpy(buff->buffer, "\0", sizeof(buffer) * sizeof(char) + 1);
@@ -117,7 +118,7 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
-
+	free(buff);
 	return 0;
 
 }
@@ -142,40 +143,42 @@ int newUser(newBuffer *buff){
 		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buff);
 		pthread_join(thread_id_create, NULL);
 		// create_s(buffer);
-		bzero(buffer,256);
+		// bzero(buff,256);
+		free(buffer->buffer);
 	}
-	else if(startsWith(buffer, "rmdir:")){ 
+	else if(startsWith(buff->buffer, "rmdir:")){ 
 		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buff);
 		pthread_join(thread_id_destroy, NULL);
 		// pthread_mutex_lock(&mutexDestroy);
 
 		// remove_directory_help(buffer);
 
-		bzero(buffer,256);
+		// bzero(buffer,256);
+		free(buffer->buffer);
 		// pthread_mutex_unlock(&mutexDestroy);
 	}
-  else if(startsWith(buff->buffer, "currver:") ){
-    pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buff);
+	else if(startsWith(buff->buffer, "currver:") ){
+		pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buff);
 		pthread_join(thread_id_currver, NULL);
-    
-//     pthread_mutex_lock(&mutex);
-//     directoryCounter_s(buffer);
-//     bzero(buffer,256);
+		free(buffer->buffer);
+//  	pthread_mutex_lock(&mutex);
+//  	directoryCounter_s(buffer);
+//  	bzero(buffer,256);
 // 		snprintf(buffer,255, "The current version number of the project is: %d\n", dircount);
-//     pthread_mutex_unlock(&mutex);
+//  	pthread_mutex_unlock(&mutex);
 
-  }
-  else if(startsWith(buff->buffer, "rollback:") ){
+  	}
+  	else if(startsWith(buff->buffer, "rollback:") ){
     
-    pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buff);
+    	pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buff);
 		pthread_join(thread_id_rollback, NULL);
-    
-//     pthread_mutex_lock(&mutex);
-//     rollback_s(buffer);
-//     bzero(buffer,256);
-//     pthread_mutex_unlock(&mutex);
+		free(buffer->buffer);
+//     	pthread_mutex_lock(&mutex);
+//     	rollback_s(buffer);
+//     	bzero(buffer,256);
+//     	pthread_mutex_unlock(&mutex);
 
-  }
+  	}
 	
 
 	if(true){
