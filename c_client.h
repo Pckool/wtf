@@ -52,7 +52,7 @@ char *readLine(char *str);
 
 // Checkout
 void checkout(char *projectName, int sockfd);
-tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize);
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg);
 
 // Helping Function
 int findDir(char *dirname);

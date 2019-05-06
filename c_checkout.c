@@ -55,7 +55,7 @@ void checkout(char *projectName, int sockfd){
 		if(startsWith(message, "file:")){
 			printf("Recieved a file from the server of length %d!\n", strlen(message));
 			// this means we are recieving the correct message...
-			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message);
+			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message, msg_length);
 			printf("Data tokenized...\n");
 
 			int data_len = strlen(tokenizedData->data) - 15;
@@ -100,23 +100,22 @@ void checkout(char *projectName, int sockfd){
 }
 
 // a protocol function to accept a file string sent over the network and tokenize it
-tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
 	int part = 0;
 
-	int len = sizeof(msgToTokenize);
-	printf("This is the length of the string recieved: %d\n",len);
-	char *msgCpy = (char *)malloc(len * sizeof(char));
-	memcpy(msgCpy, "\0", len);
+	unsigned lenOfMsg = strlen(msgToTokenize);
+	printf("This is the length of the string recieved: %d\n",lenOfMsg);
+	char *msgCpy = (char *)malloc(lenOfMsg * sizeof(char));
+	memcpy(msgCpy, "\0", lenOfMsg);
 	strcpy(msgCpy, msgToTokenize);
 
 	char *projectName = "";
 	char *data = "";
 
-	unsigned lenOfMsg = len;
 
-	while(i < len || part <= 2){
+	while(i < lenOfMsg || part <= 2){
 		
 		switch(part){
 			case 0:
@@ -138,14 +137,13 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 				++i;
 				break;
 			case 2:
-				// printf("Case 2\n");
-				if(msgCpy[i] != ':'){
+				printf("Case 2\n");
+				if(msgCpy[i] != ':' || i < lenOfMsg){
 					charAppend(data, msgCpy[i]);
 				}
 				else{
 					newTokens->data = (char *)malloc(strlen(data));
 					memcpy(newTokens->data, data, strlen(data));
-					
 				}
 				++i;
 				break;
