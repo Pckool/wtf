@@ -100,12 +100,13 @@ void checkout(char *projectName, int sockfd){
 }
 
 // a protocol function to accept a file string sent over the network and tokenize it
-tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
+tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, int msgSize){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
 	int part = 0;
 
-	int len = strlen(msgToTokenize);
+	int len = sizeof(msgToTokenize);
+	printf("This is the length of the string recieved: %d\n",len);
 	char *msgCpy = (char *)malloc(len * sizeof(char));
 	memcpy(msgCpy, "\0", len);
 	strcpy(msgCpy, msgToTokenize);
@@ -144,7 +145,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 				else{
 					newTokens->data = (char *)malloc(strlen(data));
 					memcpy(newTokens->data, data, strlen(data));
-					++part;
+					
 				}
 				++i;
 				break;
