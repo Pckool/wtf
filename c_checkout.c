@@ -104,6 +104,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
 	int part = 0;
+
 	int len = strlen(msgToTokenize);
 	char *msgCpy = (char *)malloc(len * sizeof(char));
 	memcpy(msgCpy, "\0", len);
@@ -114,7 +115,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 
 	unsigned lenOfMsg = strlen(msgToTokenize);
 
-	while(i < lenOfMsg){
+	while(i < lenOfMsg || part <= 2){
 		
 		switch(part){
 			case 0:
@@ -148,6 +149,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 				++i;
 				break;
 			default:
+				++i;
 				printf("WENIS\n");
 				break;
 		}
