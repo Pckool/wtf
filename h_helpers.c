@@ -286,7 +286,7 @@ DataLink *newDataLink(char *token){
 	return link;
 }
 
-void printTokenLinks(DataLink *head){
+void printDataLinks(DataLink *head){
 	if(head->token != NULL){
 		printf("%s\n", head->token);
 		if(head->next != NULL){
