@@ -56,24 +56,16 @@ void checkout(char *projectName, int sockfd){
 			printf("Recieved a file from the server!\n");
 			// this means we are recieving the correct message...
 			tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message);
+			printf("Data tokenized...\n");
 
 			int data_len = strlen(tokenizedData->data) - 15;
-			// char data_msg[data_len];
-			// int k = 0;
-			// int data_counter = msg_length - data_len;
-			// for(k = 0; k<reason_len; k++){
-			// 	data_msg[k] = message[data_counter];
-			// 	++data_counter;
-			// }
-			// int dirStat = mkdir(projectName, S_IRWXU);
-			// if (!dirStat){ //If check passes
-			// 	printf("%s\n", "Project Created!");
-			// }
+			
 
 			DIR *dir;
 			dir = opendir(projectName);
 			closedir(dir);
 			//char path[PATH_MAX];
+			printf("Opened path...\n");
 
 			//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
 			int fd = open("data.tar.gz", O_RDWR | O_CREAT, 0600);
