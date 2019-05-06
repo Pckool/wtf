@@ -121,6 +121,7 @@ void *pushFileToClient(void *dat){
     if(read(fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", data->path);
     }
+    printf("\nRead data with %s bytes...\n\n", fileStat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
     int len = strlen(data->projectName) + strlen(buffer) + strlen("file:") + 1;
