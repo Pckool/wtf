@@ -44,7 +44,7 @@ char *getByteContent(char *filePath);
 //tokenizing
 DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head);
 DataLink *newDataLink(char *token);
-void printTokenLinks(DataLink *head);
+void printDataLinks(DataLink *head);
 ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head);
 ProtocolLink *newProtocolLink(char *token);
 void printTokenLinks(ProtocolLink *head);
