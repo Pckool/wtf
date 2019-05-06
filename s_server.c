@@ -144,7 +144,7 @@ int newUser(newBuffer *buff){
 		pthread_join(thread_id_create, NULL);
 		// create_s(buffer);
 		// bzero(buff,256);
-		free(buffer->buffer);
+		free(buff->buffer);
 	}
 	else if(startsWith(buff->buffer, "rmdir:")){ 
 		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buff);
@@ -154,13 +154,13 @@ int newUser(newBuffer *buff){
 		// remove_directory_help(buffer);
 
 		// bzero(buffer,256);
-		free(buffer->buffer);
+		free(buff->buffer);
 		// pthread_mutex_unlock(&mutexDestroy);
 	}
 	else if(startsWith(buff->buffer, "currver:") ){
 		pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buff);
 		pthread_join(thread_id_currver, NULL);
-		free(buffer->buffer);
+		free(buff->buffer);
 //  	pthread_mutex_lock(&mutex);
 //  	directoryCounter_s(buffer);
 //  	bzero(buffer,256);
@@ -172,7 +172,7 @@ int newUser(newBuffer *buff){
     
     	pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buff);
 		pthread_join(thread_id_rollback, NULL);
-		free(buffer->buffer);
+		free(buff->buffer);
 //     	pthread_mutex_lock(&mutex);
 //     	rollback_s(buffer);
 //     	bzero(buffer,256);
