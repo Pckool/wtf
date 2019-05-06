@@ -156,7 +156,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			tempToken = charAppend(tempToken, copyToManipulate[0]);
 
 			// remove the first char
-			char *frontLetter = {copyToManipulate[0], '\0'}
+			char *frontLetter = {copyToManipulate[0], '\0'};
 			removeSubstring(copyToManipulate, frontLetter);
 			
 		}
@@ -166,7 +166,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			free(tempToken);
 
 			// remove the first char
-			char *frontLetter = {copyToManipulate[0], '\0'}
+			char *frontLetter = {copyToManipulate[0], '\0'};
 			removeSubstring(copyToManipulate, frontLetter);
 
 			tokenizeProtocolMessage(copyToManipulate, head->next);
@@ -179,8 +179,8 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 
 ProtocolLink *newProtocolLink(char *token){
 	ProtocolLink *link = (ProtocolLink *)malloc(sizeof(ProtocolLink));
-	link->token = (char *)malloc(strlen(inputMsg) * sizeof(char) + 1);
-	memcpy(link->token, "\0", strlen(inputMsg) * sizeof(char) + 1);
+	link->token = (char *)malloc(strlen(token) * sizeof(char) + 1);
+	memcpy(link->token, "\0", strlen(token) * sizeof(char) + 1);
 	strcpy(link->token, token);
 
 	// link->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));

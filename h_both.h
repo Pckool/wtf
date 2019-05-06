@@ -33,7 +33,7 @@ char *charAppend(char *str, char charr);
 char *getLine(char *str);
 void loading();
 char *getByteContent(char *filePath);
-ProtocolLink *tokenizeProtocolMessage(char *inputMsg);
+ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head);
 ProtocolLink *newProtocolLink(char *token);
 
 #endif
