@@ -41,7 +41,7 @@ void checkout_s(const char *buffer, int sockfd){
 }
 
 int scanDir_sendFiles(char *path, int sockfd, char *projectName){
-    printf("Scanning to find the file(s) in %s to send to the user.\n", path);
+    printf("Scanning to find the file(s) in `%s` to send to the user.\n", path);
     DIR *dir;
     struct dirent *dp;
 
@@ -52,9 +52,9 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
     while ((dp = readdir(dir) ) != NULL){
         // this if statement doesn't work. d_type doesn't exist sadly :(
         if (dp->d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
-            printf("A directory %s has been found...\n", dp->d_name);
+            printf("A directory `%s` has been found...\n", dp->d_name);
             if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0){
-                printf("skipping `%s`...", dp->d_name);
+                printf("skipping `%s`...\n", dp->d_name);
                 continue;
             }
             char newPath[PATH_MAX];
@@ -63,7 +63,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
             scanDir_sendFiles(newPath, sockfd, projectName);
         }
         else{ // this is a file, so send it off to the client
-            printf("A file %s has been found...\n", dp->d_name);
+            printf("A file `%s` has been found...\n", dp->d_name);
 
             if(strcmp(dp->d_name, "data.tar.gz") == 0){
                 char newPath[PATH_MAX];
@@ -98,6 +98,7 @@ void *pushFileToClient(void *dat){
     printf("Sending file to client...\n");
     threadData *data = (threadData *)dat;
     struct stat fileStat;
+    printf("This is the data:\tfd: %d\tpath: %s\n", data->fd, data->path);
     if(fstat(data->fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
@@ -105,7 +106,7 @@ void *pushFileToClient(void *dat){
     char *buffer[fileStat.st_size];
 
     if(read(data->fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file %s...\n", data->path);
+        printf("There was an error reading file `%s`...\n", data->path);
     }
     
     // char *clientPath = getClientsPath(data->path, data->projectName);
@@ -127,16 +128,16 @@ int getProjectCurrVersion(char *ProjectName){
 
 
     if ((dir = opendir (path)) == NULL) {
-        printf("Cannot open path %s...\n", path);
+        printf("Cannot open path `%s`...\n", path);
         return;
     }
     while ((dp = readdir(dir) ) != NULL){
         if(dp->d_type == DT_DIR){
             if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0){
-                printf("skipping %s...", dp->d_name);
+                printf("skipping `%s`...\n", dp->d_name);
                 continue;
             }
-            printf("Found Dir: %s\n", dp->d_name);
+            printf("Found Dir: `%s`\n", dp->d_name);
             ++version;
                 
             
@@ -150,7 +151,7 @@ int getProjectCurrVersion(char *ProjectName){
 
 // this will only be used if we decide to compress files one at a time. If we go the tar route, this function will not be used.
 char *getClientsPath(char *serverPath, char *projectName){
-    printf("Figuring out the correct path...");
+    printf("Figuring out the correct path...\n");
     int versionNo = getProjectCurrVersion(projectName);
     char *serverPath_cpy = malloc(strlen(serverPath) * sizeof(char));
     memcpy(serverPath_cpy, "\0", (strlen(serverPath) * sizeof(char)) );
