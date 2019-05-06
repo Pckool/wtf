@@ -45,7 +45,7 @@ void checkout(char *projectName, int sockfd){
 			continue;
 		}
 		else if(msg_length > 0){
-			printf("The file size is %d...", msg_length);
+			printf("The message size is %d...\n", msg_length);
 			break;
 		}
 	}	
@@ -63,6 +63,7 @@ void checkout(char *projectName, int sockfd){
 	printf("size of socket now: %d\n", msg_length);
 	///
 	ProtocolLink *msg_tokens = newProtocolLink("_START_"); // initializing link-list
+	printf("About to tokenize data...\n");
 	tokenizeProtocolMessage(message, msg_tokens);
 	printf("Data tokenized...\n");
 
@@ -97,7 +98,7 @@ void checkout(char *projectName, int sockfd){
 						continue;
 					}
 					else if(file_size > 0){
-						printf("The file size is %d...", file_size);
+						printf("The file size is %d...\n", file_size);
 						break;
 					}
 				}

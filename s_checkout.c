@@ -126,7 +126,7 @@ void *pushFileToClient(void *dat){
     printf("\nRead data with %d bytes...\n\n", fileStat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
-    int len = strlen(data->projectName) + fileStat.st_size + strlen("file:") + 1;
+    int len = strlen(data->projectName) + strlen("1") + strlen("file:") + 1;
     message = (char *)malloc(len * sizeof(char));
     memcpy(message, "\0", len * sizeof(char));
     
