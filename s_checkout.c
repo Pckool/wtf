@@ -118,17 +118,16 @@ void *pushFileToClient(void *dat){
         printf("Could not get filedata, aborting...\n");
         return;
     }
-    printf("check %d\n", fileStat.st_size);
     char buffer[fileStat.st_size];
-    printf("check1\n");
     if(read(fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", data->path);
     }
-    printf("check2\n");
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
     int len = strlen(data->projectName) + strlen(buffer) + strlen("file:") + 1;
-    // message
+    message = (char *)malloc(len*sizeof(char));
+    memcpy(message, "\0", len*sizeof(char));
+    
     printf("check3\n");
     snprintf(message, len, "file:%s:%s", data->projectName, buffer);
     printf("check4\n");
