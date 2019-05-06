@@ -37,7 +37,7 @@ void checkout(char *projectName, int sockfd){
 			printf("No data recieved from the server");
 			continue;
 		}
-		printf("\n");
+		printf("\n%d is the size of the incomming data...", msg_length);
 
 		char message[msg_length];
 		n = read(sockfd2, message, msg_length);
