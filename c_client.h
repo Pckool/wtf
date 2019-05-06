@@ -35,7 +35,7 @@ typedef struct tokenizeFileMsg{
 void error(char *msg);
 
 void create(char* projectName);
-void connecter(int fileSize);
+int connecter(int fileSize);
 
 // Configure
 void configure(char* ip, char* port);
