@@ -81,7 +81,7 @@ void checkout(char *projectName, int sockfd){
 			int i = 0;
 			int file_size;
 			while(i < numFiles){
-				int(currToken != NULL){
+				if(currToken != NULL){
 					
 					DIR *dir;
 					dir = opendir(projectName);
