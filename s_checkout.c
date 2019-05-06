@@ -134,7 +134,7 @@ void *pushFileToClient(void *dat){
         printf("There was an issue writing to the socket...\n");
         return;
     }
-    printf("message sendt successfully...\n");
+    printf("Message sent successfully...\n");
 }
 
 
