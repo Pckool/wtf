@@ -53,6 +53,10 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
         // this if statement doesn't work. d_type doesn't exist sadly :(
         if (dp->d_type == DT_DIR){ // this is a dir, so we need to loop through this as well
             printf("A directory %s has been found...\n", dp->d_name);
+            if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0){
+                printf("skipping `%s`...", dp->d_name);
+                continue;
+            }
             char newPath[PATH_MAX];
             snprintf(newPath, PATH_MAX, "%s/%s", path, dp->d_name);
 
@@ -128,7 +132,7 @@ int getProjectCurrVersion(char *ProjectName){
     }
     while ((dp = readdir(dir) ) != NULL){
         if(dp->d_type == DT_DIR){
-            if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0 || strcmp(dp->d_name, ".Manifest") == 0){
+            if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0){
                 printf("skipping %s...", dp->d_name);
                 continue;
             }
