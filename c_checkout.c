@@ -69,8 +69,9 @@ void checkout(char *projectName, int sockfd){
 
 	printTokenLinks(msg_tokens);
 	ProtocolLink *currToken = (ProtocolLink *)malloc(sizeof(ProtocolLink));
+	currToken = currToken->next;
 	if(strcmp(msg_tokens->next->token, "file") == 0){ // if the first token is `file`
-		currToken = currToken->next->next; // go to the next link
+		currToken = currToken->next; // go to the next link
 		printf("Recieved a file from the server of length %d!\n", strlen(message));
 		char *projName = currToken->token;
 		currToken = currToken->next; // number of files?
