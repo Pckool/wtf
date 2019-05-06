@@ -131,7 +131,9 @@ void *pushFileToClient(void *dat){
     // message
     printf("check3\n");
     snprintf(message, len, "file:%s:%s", data->projectName, buffer);
+    printf("check4\n");
     write(sockfd_local, message, len);
+    printf("check5\n");
 }
 
 
