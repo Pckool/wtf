@@ -138,7 +138,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 				++i;
 				break;
 			case 2:
-				printf("Case 2\n");
+				// printf("Case 2\n");
 				if(msgCpy[i] != ':'){
 					charAppend(data, msgCpy[i]);
 				}
