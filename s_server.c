@@ -97,7 +97,15 @@ int main(int argc, char* argv[])
 		}
 		else{
 			int commStat; // the status of the command (if it was successful or not)
-			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
+
+			newBuffer *buff = (newBuffer *)malloc(sizeof(newBuffer));
+			buff->sockfd = newsockfd;
+			buff->buffer = (char *)malloc(sizeof(buffer) * sizeof(char) + 1);
+			memcpy(buff->buffer, "\0", sizeof(buffer) * sizeof(char) + 1);
+			strcpy_s(buff->buffer, buffer);
+
+			commStat = newUser(buff); // will create a new thread and eventually will determine what the command the client is trying to use.
+			
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
 			if(n < 0)
@@ -114,11 +122,11 @@ int main(int argc, char* argv[])
 
 }
 
-int newUser(char *buffer){
+int newUser(newBuffer *buff){
 	// buffer now comes in as an address, it must be refrenced with *buffer to access the pointer
 	//create a new thread
 	printf("New User connected...\n");
-	printf("recieved buffer: %s\n", buffer);
+	printf("recieved buffer: %s\n", buff->buffer);
 	pthread_t thread_id_destroy;
 	pthread_t thread_id_create;
 	pthread_t thread_id_push;
@@ -126,18 +134,18 @@ int newUser(char *buffer){
 	pthread_t thread_id_rollback;
 	pthread_t thread_id_currver;
 
-	if(startsWith(buffer, "checkout:")){
-		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
+	if(startsWith(buff->buffer, "checkout:")){
+		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buff);
 		pthread_join(thread_id_checkout, NULL);
 	}
-	else if(startsWith(buffer, "mkdir:")){
-		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buffer);
+	else if(startsWith(buff->buffer, "mkdir:")){
+		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buff);
 		pthread_join(thread_id_create, NULL);
 		// create_s(buffer);
 		bzero(buffer,256);
 	}
 	else if(startsWith(buffer, "rmdir:")){ 
-		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buffer);
+		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buff);
 		pthread_join(thread_id_destroy, NULL);
 		// pthread_mutex_lock(&mutexDestroy);
 
@@ -146,8 +154,8 @@ int newUser(char *buffer){
 		bzero(buffer,256);
 		// pthread_mutex_unlock(&mutexDestroy);
 	}
-  else if(startsWith(buffer, "currver:") ){
-    pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buffer);
+  else if(startsWith(buff->buffer, "currver:") ){
+    pthread_create(&thread_id_currver, NULL, newUserCurrverThread, (void*) buff);
 		pthread_join(thread_id_currver, NULL);
     
 //     pthread_mutex_lock(&mutex);
@@ -157,9 +165,9 @@ int newUser(char *buffer){
 //     pthread_mutex_unlock(&mutex);
 
   }
-  else if(startsWith(buffer, "rollback:") ){
+  else if(startsWith(buff->buffer, "rollback:") ){
     
-    pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buffer);
+    pthread_create(&thread_id_rollback, NULL, newUserRollbackThread, (void*) buff);
 		pthread_join(thread_id_rollback, NULL);
     
 //     pthread_mutex_lock(&mutex);
@@ -175,36 +183,41 @@ int newUser(char *buffer){
 	}
 }
 
-void *newUserCreateThread(void *buffer){
+void *newUserCreateThread(void *buff){
+	newBuffer *buffer = (newBuffer *)buff;
 	pthread_mutex_lock(&mutexCreate);
 	printf("Created a new `create` thread for the user...\n");
-	create_s((char *)buffer);
+	create_s((buffer->buffer));
 	pthread_mutex_unlock(&mutexCreate);
 	return NULL;
 }
 
-void *newUserDestroyThread(void *buffer){
+void *newUserDestroyThread(void *buff){
+	newBuffer *buffer = (newBuffer *)buff;
 	pthread_mutex_lock(&mutexDestroy);
 	printf("Created a new `destroy` thread for the user...\n");
-	remove_directory_help((char *)buffer);
+	remove_directory_help((buffer->buffer));
 	pthread_mutex_unlock(&mutexDestroy);
 	return NULL;
 }
 
-void *newUserCheckoutThread(void *buffer){
+void *newUserCheckoutThread(void *buff){
+	newBuffer *buffer = (newBuffer *)buff;
 	printf("Created a new `checkout` thread for the user...\n");
-	checkout_s((char *)buffer, sockfd);
+	checkout_s((buffer->buffer), buffer->sockfd);
 	return NULL;
 }
 
-void *newUserCurrverThread(void *buffer){
+void *newUserCurrverThread(void *buff){
+	newBuffer *buffer = (newBuffer *)buff;
 	printf("Created a new `currversion` thread for the user...\n");
-  directoryCounter_s((char *)buffer);
+  directoryCounter_s((buffer->buffer));
 	return NULL;
 }
 
-void *newUserRollbackThread(void *buffer){
+void *newUserRollbackThread(void *buff){
+	newBuffer *buffer = (newBuffer *)buff;
 	printf("Created a new `rollback` thread for the user...\n");
-  rollback_s((char *)buffer);
+  rollback_s((buffer->buffer));
 	return NULL;
 }

@@ -18,6 +18,11 @@
 #include <sys/ioctl.h>
 #include <pthread.h>
 
+typedef struct newBuffer{
+    int sockfd;
+    char *buffer;
+}newBuffer;
+
 typedef struct threadData{
     char *path;
     char *projectName;
