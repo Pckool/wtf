@@ -74,6 +74,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                     printf("Something went wrong opening `%s`\n", newPath);
                     return -1;
                 }
+                close(fd);
                 printf("This is the appended path: `%s`\n", newPath);
                 threadData *data = (threadData *)malloc(sizeof(threadData));
 
@@ -81,8 +82,8 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 memcpy(data->path,"\0", strlen(newPath) * sizeof(char) + 1); // ensure it is a string
                 strcpy(data->path, newPath);
 
-                data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
-                memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
+                data->projectName = (char *)malloc(strlen(projectName) * sizeof(char) + 1);
+                memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char) + 1); // ensure it is a string
                 strcpy(data->projectName, projectName);
 
                 printf("This is the data before sending:\tfd: %d\tpath: %s\n", fd, data->path);
@@ -90,7 +91,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)data);
                 pthread_join(thread_id_filePush, NULL);
                 // launch a thread and mutex it
-                close(fd);
+                
             }
             
         }
@@ -105,6 +106,12 @@ void *pushFileToClient(void *dat){
     printf("Sending file to client...\n");
     threadData *data = (threadData *)dat;
     int fd = open(data->path, O_RDWR);
+
+    if(fd < 0){
+        printf("there was a problem opening %s; aborting...\n", data->path);
+        return;
+    }
+
 
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
