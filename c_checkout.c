@@ -115,7 +115,7 @@ void checkout(char *projectName, int sockfd){
 				}
 				printf("I was able to create the tarfile!\n");
 				if(write(fd_file, file_buffer, file_size) < 0){
-					printf("There was a problem writing compressed data to local dir.\n");
+					printf("There was a problem reading compressed data to local dir.\n");
 				}
 				system("tar -xzvf data.tar.gz");
 				close(fd_file);
