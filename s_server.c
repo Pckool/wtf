@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 		}
 		else{
 			int commStat; // the status of the command (if it was successful or not)
-			commStat = newUser(&buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
+			commStat = newUser(buffer); // will create a new thread and eventually will determine what the command the client is trying to use.
 			
 			n = write(newsockfd, buffer, 255);
 			bzero(buffer, 255);
@@ -114,34 +114,34 @@ int main(int argc, char* argv[])
 
 }
 
-int newUser(char **buffer){
+int newUser(char *buffer){
 	// buffer now comes in as an address, it must be refrenced with *buffer to access the pointer
 	//create a new thread
 	printf("New User connected...\n");
-	printf("recieved buffer: %s\n", *buffer);
+	printf("recieved buffer: %s\n", buffer);
 	pthread_t thread_id_destroy;
 	pthread_t thread_id_create;
 	pthread_t thread_id_push;
 	pthread_t thread_id_checkout;
 
-	if(startsWith(*buffer, "checkout:")){
-		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
+	if(startsWith(buffer, "checkout:")){
+		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) &buffer);
 		pthread_join(thread_id_checkout, NULL);
 	}
-	if(startsWith(*buffer, "mkdir:")){
-		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) buffer);
+	if(startsWith(buffer, "mkdir:")){
+		pthread_create(&thread_id_create, NULL, newUserCreateThread, (void*) &buffer);
 		pthread_join(thread_id_create, NULL);
 		// create_s(buffer);
-		bzero(*buffer,256);
+		bzero(buffer,256);
 	}
-	else if(startsWith(*buffer, "rmdir:")){ 
-		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) buffer);
+	else if(startsWith(buffer, "rmdir:")){ 
+		pthread_create(&thread_id_destroy, NULL, newUserDestroyThread, (void*) &buffer);
 		pthread_join(thread_id_destroy, NULL);
 		// pthread_mutex_lock(&mutexDestroy);
 
 		// remove_directory_help(buffer);
 
-		bzero(*buffer,256);
+		bzero(buffer,256);
 		// pthread_mutex_unlock(&mutexDestroy);
 	}
 	
@@ -161,7 +161,7 @@ void *newUserCreateThread(void *buffer){
 
 void *newUserDestroyThread(void *buffer){
 	pthread_mutex_lock(&mutexDestroy);
-	printf("Created a new `create` thread for the user...\n");
+	printf("Created a new `destroy` thread for the user...\n");
 	remove_directory_help((char *)buffer);
 	pthread_mutex_unlock(&mutexDestroy);
 	return NULL;
