@@ -143,12 +143,15 @@ void *pushFileToClient(void *dat){
         printf("There was an issue writing to the socket...\n");
         return;
     }
-    if(sendfile(sockfd_local, fd, NULL, fileStat.st_size) < 0){
+    printf("Message sent successfully...\n");
+
+    int amm = sendfile(sockfd_local, fd, NULL, fileStat.st_size);
+    if(amm < 0){
         printf("There was an issue writing to the socket...\n");
         return;
     }
     
-    printf("Message sent successfully...\n");
+    printf("File sent successfully with %d bytes...\n", amm);
     close(fd);
 }
 

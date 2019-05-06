@@ -69,15 +69,12 @@ void checkout(char *projectName, int sockfd){
 
 	printTokenLinks(msg_tokens);
 	ProtocolLink *currToken = (ProtocolLink *)malloc(sizeof(ProtocolLink));
-	//memcpy(currToken, msg_tokens->next, sizeof(ProtocolLink));
 	currToken = msg_tokens->next;
 	printf("Looking\n");
 	if(strcmp(currToken->token, "file") == 0){ // if the first token is `file`
-		printf("here\n");
-		memcpy(currToken, currToken->next, sizeof(ProtocolLink)); // go to the next link
-		printf("Recieved a file from the server of length %d!\n", strlen(message));
+		currToken = currToken->next; // Project name
 		char *projName = currToken->token;
-		currToken = currToken->next; // number of files?
+		currToken = currToken->next; // number of files
 		int numFiles = atoi(currToken->token);
 
 		currToken = currToken->next; // File1Name
@@ -123,7 +120,7 @@ void checkout(char *projectName, int sockfd){
 				}
 				system("tar -xzvf data.tar.gz");
 				close(fd_file);
-				currToken = currToken->next; // go to the next link
+				currToken = currToken->next; // go to the next file
 			}
 			
 		}
