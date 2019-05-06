@@ -123,6 +123,8 @@ int newUser(char *buffer){
 	pthread_t thread_id_create;
 	pthread_t thread_id_push;
 	pthread_t thread_id_checkout;
+	pthread_t thread_id_rollback;
+	pthread_t thread_id_currver;
 
 	if(startsWith(buffer, "checkout:")){
 		pthread_create(&thread_id_checkout, NULL, newUserCheckoutThread, (void*) buffer);
