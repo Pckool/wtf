@@ -31,24 +31,7 @@ void checkout(char *projectName, int sockfd){
 	int waiting = true;
 
 	// this will loop through until it recieves a readable responce from the socket.
-	printf("waiting for server... |");
-	fflush(stdout);
-
-	while(waiting){
-		loading();
-
-		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
-			return;
-		}
-		if(msg_length == 0){
-			//printf("%d\b\n", msg_length);
-			continue;
-		}
-		else if(msg_length > 0){
-			printf("The message size is %d...\n", msg_length);
-			break;
-		}
-	}	
+	msg_length = waitForSocketMessage(sockfd2);
 
 	// printf("\n%d is the size of the incomming data...\n", msg_length);
 
@@ -74,7 +57,7 @@ void checkout(char *projectName, int sockfd){
 		system("tar -xzvf data.tar.gz");
 	}
 	else{
-		printf("You already have a version downlaoded in this directory. Please move to another subdirectory or delete the project localy.\n")
+		printf("You already have a version downlaoded in this directory. Please move to another subdirectory or delete the project localy.\n");
 	}
 	closedir(dir);
 	
