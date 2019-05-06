@@ -141,15 +141,16 @@ char *getByteContent(char *filePath){
 	* that is a linked list of all of the tokens in a protocol message.
 	*/
 ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
+	printf("1\n");
 	char *tempToken = (char *)malloc(sizeof(char));
 	memcpy(tempToken, "\0", sizeof(char));
-
+	printf("2\n");
 	int i = 0;
 	int lenOfMsg = strlen(inputMsg);
 
 	char *copyToManipulate[lenOfMsg+1];
 	strcpy(copyToManipulate, inputMsg);
-	
+	printf("3\n");
 	while( i < lenOfMsg){
 		if(copyToManipulate[i] != ':'){ // while we don't have the token char
 			// append the char to the temp string
@@ -161,6 +162,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			
 		}
 		else{ // we have found the token char
+			printf("4\n");
 			head->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));
 			head->next = newProtocolLink(tempToken);
 			free(tempToken);
@@ -168,7 +170,7 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			// remove the first char
 			char *frontLetter = {copyToManipulate[0], '\0'};
 			removeSubstring(copyToManipulate, frontLetter);
-
+			printf("5\n");
 			tokenizeProtocolMessage(copyToManipulate, head->next);
 			break;
 
