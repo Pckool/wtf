@@ -30,7 +30,7 @@ typedef struct threadData{
 
 
 void *newUserThread(void *vargp);
-int newUser(char *buffer);
+int newUser(newBuffer *buff);
 char *create_s(char *buffer);
 void error(char *msg);
 
