@@ -44,166 +44,113 @@ void checkout(char *projectName, int sockfd){
 			//printf("%d\b\n", msg_length);
 			continue;
 		}
-		// int zero = 0;
-		// if(ioctl(sockfd2, FIONBIO, &zero) < 0){
-		// 	return;
-		// }
-		
-
-		// printf("\n%d is the size of the incomming data...\n", msg_length);
-		waiting = false;
-
-		char message[msg_length];
-		n = read(sockfd2, message, msg_length);
-		
-		printf("%s with length %d\n", message, msg_length);
-		///
-		if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
-			return;
+		else if(msg_length > 0){
+			printf("The file size is %d...", file_size);
+			break;
 		}
-		printf("size of socket now: %d\n", msg_length);
-		///
-		ProtocolLink *msg_tokens = newProtocolLink("_START_"); // initializing link-list
-		tokenizeProtocolMessage(message, msg_tokens);
-		printf("Data tokenized...\n");
+	}	
+
+	// printf("\n%d is the size of the incomming data...\n", msg_length);
+
+	char message[msg_length];
+	n = read(sockfd2, message, msg_length);
+	
+	printf("%s with length %d\n", message, msg_length);
+	///
+	if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
+		return;
+	}
+	printf("size of socket now: %d\n", msg_length);
+	///
+	ProtocolLink *msg_tokens = newProtocolLink("_START_"); // initializing link-list
+	tokenizeProtocolMessage(message, msg_tokens);
+	printf("Data tokenized...\n");
 
 
-		ProtocolLink *currToken;
-		if(strcmp(msg_tokens->next->token, "file") == 0){ // if the first token is `file`
-			currToken = currToken->next->next; // go to the next link
-			printf("Recieved a file from the server of length %d!\n", strlen(message));
-			char *projName = currToken->token;
-			currToken = currToken->next; // number of files?
-			int numFiles = atoi(currToken->token);
+	ProtocolLink *currToken;
+	if(strcmp(msg_tokens->next->token, "file") == 0){ // if the first token is `file`
+		currToken = currToken->next->next; // go to the next link
+		printf("Recieved a file from the server of length %d!\n", strlen(message));
+		char *projName = currToken->token;
+		currToken = currToken->next; // number of files?
+		int numFiles = atoi(currToken->token);
 
-			currToken = currToken->next; // File1Name
+		currToken = currToken->next; // File1Name
 
-			int i = 0;
-			int file_size;
-			while(i < numFiles){
-				if(currToken != NULL){
-					
-					DIR *dir;
-					dir = opendir(projectName);
-					closedir(dir);
-					//char path[PATH_MAX];
-					// printf("Opened path...\n");
+		int i = 0;
+		int file_size;
+		while(i < numFiles){
+			if(currToken != NULL){
+				
+				DIR *dir;
+				dir = opendir(projectName);
+				closedir(dir);
+
+				// waiting for the server to send us the file through the socket.
+				while(waiting){
+					loading();
+
 					if(ioctl(sockfd2, FIONREAD, &file_size) < 0){
 						return;
 					}
 					if(file_size == 0){
-						//printf("%d\b\n", msg_length);
 						continue;
 					}
-					char *file_buffer = (char *)malloc(file_size);
-					if(read(sockfd2, file_buffer, file_size) < 0){
-						printf("Error reading file %s from socket...\n", currToken->token);
+					else if(file_size > 0){
+						printf("The file size is %d...", file_size);
+						break;
 					}
-						
-					//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
-					int fd_file = open(currToken->token, O_RDWR | O_CREAT, 0600);
-					if (fd_file < 0){
-						printf("Failed to create the file clientside...\nError No: %d\n", fd_file);
-					}
-					printf("I was able to create the tarfile!\n");
-					if(write(fd_file, file_buffer, file_size) < 0){
-						printf("There was a problem writing compressed data to local dir.\n");
-					}
-					system("tar -xzvf data.tar.gz");
-					close(fd_file);
-					currToken = currToken->next; // go to the next link
 				}
 				
+				char *file_buffer = (char *)malloc(file_size);
+				if(read(sockfd2, file_buffer, file_size) < 0){
+					printf("Error reading file %s from socket...\n", currToken->token);
+				}
+					
+				//snprintf(path, PATH_MAX, "%s/%s", projectName, "data.tar.gz");
+				int fd_file = open(currToken->token, O_RDWR | O_CREAT, 0600);
+				if (fd_file < 0){
+					printf("Failed to create the file clientside...\nError No: %d\n", fd_file);
+				}
+				printf("I was able to create the tarfile!\n");
+				if(write(fd_file, file_buffer, file_size) < 0){
+					printf("There was a problem writing compressed data to local dir.\n");
+				}
+				system("tar -xzvf data.tar.gz");
+				close(fd_file);
+				currToken = currToken->next; // go to the next link
 			}
 			
-			// this means we are recieving the correct message...
-			// tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message, msg_length);
-			
-			
-			
-
-			
-
 		}
-		else if(startsWith(message, "checkout:fail:")){
-			// The project doesn't exist
-			int reason_len = msg_length - 14;
-			char reason_msg[reason_len];
-			int k = 0;
-			int msg_counter = msg_length - reason_len;
-			for(k = 0; k<reason_len; k++){
-				reason_msg[k] = message[msg_counter];
-				++msg_counter;
-			}
-			printf("Checkout Failed...\n\tReason: %s\n", reason_msg);
-		}
+		
+		// this means we are recieving the correct message...
+		// tokenizeFileMsg *tokenizedData = prot_tokenizeFileMsg(message, msg_length);
+		
+		
+		
 
 		
+
 	}
+	else if(startsWith(message, "checkout:fail:")){
+		// The project doesn't exist
+		int reason_len = msg_length - 14;
+		char reason_msg[reason_len];
+		int k = 0;
+		int msg_counter = msg_length - reason_len;
+		for(k = 0; k<reason_len; k++){
+			reason_msg[k] = message[msg_counter];
+			++msg_counter;
+		}
+		printf("Checkout Failed...\n\tReason: %s\n", reason_msg);
+	}
+
+		
+	
 	printf("Either we are done, or we gave up.\n");
 	
 }
 
-// a protocol function to accept a file string sent over the network and tokenize it
-// tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
-// 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
-// 	int i = 0;
-// 	int part = 0;
-
-// 	unsigned lenOfMsg = sizeOfMsg-5;
-// 	printf("This is the length of the string recieved: %d\n",sizeOfMsg);
-// 	char *msgCpy = (char *)malloc(sizeOfMsg * sizeof(char));
-// 	memcpy(msgCpy, "\0", sizeOfMsg);
-// 	strcpy(msgCpy, msgToTokenize);
-
-// 	char *projectName = "";
-// 	char *data = "";
-
-
-// 	while( part <= 2){
-		
-// 		switch(part){
-// 			case 0:
-// 				printf("Case 0\n");
-// 				removeSubstring(msgCpy, "file:");
-// 				++part;
-				
-// 				break;
-// 			case 1:
-// 				printf("Case 1\n");
-// 				if(msgCpy[i] != ':'){
-// 					charAppend(projectName, msgCpy[i]);
-// 				}
-// 				else{
-// 					newTokens->projectName = (char *)malloc(strlen(projectName));
-// 					memcpy(newTokens->projectName, projectName, strlen(projectName));
-// 					++part;
-// 				}
-// 				++i;
-// 				break;
-// 			case 2:
-// 				printf("%d < %d\n", i, lenOfMsg);
-// 				if(msgCpy[i] != ':' || i < lenOfMsg){
-// 					charAppend(data, msgCpy[i]);
-// 				}
-// 				++i;
-// 				if(i == lenOfMsg){
-// 					newTokens->data = (char *)malloc(strlen(data));
-// 					memcpy(newTokens->data, data, strlen(data));
-// 					printf("assigned data...\n");
-// 					++part;
-// 				}
-				
-// 				break;
-// 			default:
-// 				++i;
-// 				printf("WENIS\n");
-// 				break;
-// 		}
-// 	}
-// 	return newTokens;
-	
-// }
 tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 	tokenizeFileMsg *newTokens = (tokenizeFileMsg *)malloc(sizeof(tokenizeFileMsg));
 	int i = 0;
