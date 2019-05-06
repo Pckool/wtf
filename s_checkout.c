@@ -128,14 +128,12 @@ int getProjectCurrVersion(char *ProjectName){
     }
     while ((dp = readdir(dir) ) != NULL){
         if(dp->d_type == DT_DIR){
-            if(strcmp(dp->d_name, ".") == 0 && strcmp(dp->d_name, "..") == 0){
+            if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0 || strcmp(dp->d_name, ".Manifest") == 0){
                 printf("skipping %s...", dp->d_name);
                 continue;
             }
-            else{
-                printf("Found Dir: %s with a difference of %d from '.'\n", dp->d_name, strcmp(dp->d_name, "."));
-                ++version;
-            }
+            printf("Found Dir: %s\n", dp->d_name);
+            ++version;
                 
             
         }   
