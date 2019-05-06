@@ -78,9 +78,9 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 printf("This is the appended path: `%s`\n", newPath);
                 threadData *data = (threadData *)malloc(sizeof(threadData));
 
-                data->path = (char *)malloc(strlen(newPath) * sizeof(char) + 1);
-                memcpy(data->path,"\0", strlen(newPath) * sizeof(char) + 1); // ensure it is a string
-                strcpy(data->path, newPath);
+                data->path = (char *)malloc(strlen(path) * sizeof(char) + 1);
+                memcpy(data->path,"\0", strlen(path) * sizeof(char) + 1); // ensure it is a string
+                strcpy(data->path, path);
 
                 data->projectName = (char *)malloc(strlen(projectName) * sizeof(char) + 1);
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char) + 1); // ensure it is a string
@@ -102,38 +102,62 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
 
 void *pushFileToClient(void *dat){
     printf("Sending file to client...\n");
-    threadData *data = (threadData *)dat;
-    int fd = open(data->path, O_RDWR);
 
-    if(fd < 0){
-        printf("there was a problem opening %s; aborting...\n", data->path);
+    threadData *data = (threadData *)dat;
+
+    char newPath_Man[PATH_MAX];
+    snprintf(newPath_Man, PATH_MAX, "%s/%s", data->path, ".Manifest");
+
+    char newPath_Dat[PATH_MAX];
+    snprintf(newPath_Dat, PATH_MAX, "%s/%s", data->path, "data.tar.gz");
+
+
+    int fd_data = open(newPath_Dat, O_RDWR);
+    if(fd_data < 0){
+        printf("there was a problem opening %s; aborting...\n", newPath_Dat);
+        return;
+    }
+
+    int fd_man = open(newPath_Man, O_RDWR);
+    if(fd_dman < 0){
+        printf("there was a problem opening %s; aborting...\n", newPath_Man);
         return;
     }
 
 
-    struct stat fileStat;
-    printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
-    if(fstat(fd, &fileStat) < 0){
+    struct stat fileStat_man;
+    // printf("This is the data:\tfd: %d\tpath: %s\n", fd_data, data->path);
+    if(fstat(fd_man, &fileStat_man) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
-    char buffer[fileStat.st_size];
-    if(read(fd, buffer, fileStat.st_size) < 0){
-        printf("There was an error reading file `%s`...\n", data->path);
+    char project_buffer[fileStat_man.st_size];
+    if(read(fd_man, project_buffer, fileStat_man.st_size) < 0){
+        printf("There was an error reading file `%s`...\n", newPath_Dat);
+    }
+    
+    struct stat fileStat_dat;
+    if(fstat(fd_dat, &fileStat_dat) < 0){
+        printf("Could not get filedata, aborting...\n");
+        return;
+    }
+    char manifest_buffer[fileStat_dat.st_size];
+    if(read(fd_dat, manifest_buffer, fileStat_dat.st_size) < 0){
+        printf("There was an error reading file `%s`...\n", newPath_Man);
     }
     
 
-    printf("\nRead data with %d bytes...\n\n", fileStat.st_size);
+    printf("\nRead data with %d bytes...\n\n", fileStat_dat.st_size);
     // char *clientPath = getClientsPath(data->path, data->projectName);
     char *message;
-    int len = strlen(data->projectName) + sizeof("1") +sizeof("data.tar.gz") + sizeof("file:");
+    int len = strlen(data->projectName) + sizeof("2") +sizeof("data.tar.gz") + sizeof("file:"), sizeof(".Manifest");
     message = (char *)malloc(len * sizeof(char));
     memcpy(message, "\0", len * sizeof(char));
     
-    char *byte_content = getByteContent(data->path);
+    // char *byte_content = getByteContent(data->path);
     
     // snprintf(message, len, "file:%s:%s", data->projectName, byte_content);
-    snprintf(message, len, "file:%s:%s:%s", data->projectName, "1", "data.tar.gz");
+    snprintf(message, len, "file:%s:%s:%s:%s", data->projectName, "2", "data.tar.gz", ".Manifest");
 
     
     
@@ -144,15 +168,24 @@ void *pushFileToClient(void *dat){
         return;
     }
     printf("Message sent successfully...\n");
-    int amm = write(sockfd_local, buffer, fileStat.st_size);
+    // Sending data.tar.gz
+    int amm = write(sockfd_local, project_buffer, fileStat_dat.st_size);
     if(amm < 0){
         printf("There was an issue writing to the socket...\n");
         return;
     }
-    
-    printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat.st_size);
+    printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat_dat.st_size);
 
-    close(fd);
+    // sending .Manifest
+    int amm = write(sockfd_local, buffer, fileStat_man.st_size);
+    if(amm < 0){
+        printf("There was an issue writing to the socket...\n");
+        return;
+    }
+    printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat_man.st_size);
+    
+
+    close(fd_data);
 }
 
 
