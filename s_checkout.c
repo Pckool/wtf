@@ -114,7 +114,7 @@ void *pushFileToClient(void *dat){
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
 
-    if(fstat(fd, fileStat) < 0){
+    if(fstat(fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
@@ -189,23 +189,3 @@ char *getClientsPath(char *serverPath, char *projectName){
 }
 
 
-char *getLine(char *str){
-    printf("Extracting the first line from %s\n", str);
-    char *temp = malloc(sizeof(char));
-    memcpy(temp, "\0", sizeof(char));
-
-    char *final = malloc(sizeof(char));
-    memcpy(final, "\0", sizeof(char));
-    char lett;
-    int i;
-    for(i=0; i<strlen(str); ++i){
-
-        lett = str[i];
-        temp = charAppend(temp, lett);
-
-        if(lett == '\n'){ // if the letter is a new line terminator then we exit the loop
-            i = strlen(str) - 1;
-        }
-    }
-    return temp;
-}
