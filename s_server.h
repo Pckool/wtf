@@ -19,7 +19,6 @@
 #include <pthread.h>
 
 typedef struct threadData{
-    int fd;
     char *path;
     char *projectName;
 }threadData;

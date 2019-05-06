@@ -72,12 +72,9 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 int fd = open(newPath, O_RDWR);
                 if(fd < 0) {
                     printf("Something went wrong opening `%s`\n", newPath);
-                    return;
+                    return -1;
                 }
                 printf("This is the appended path: `%s`\n", newPath);
-
-                threadData *data = (threadData *)malloc(sizeof(threadData));
-                data->fd = fd;
 
                 data->path = (char *)malloc(strlen(newPath) * sizeof(char));
                 memcpy(data->path,"\0", strlen(newPath) * sizeof(char)); // ensure it is a string
@@ -86,6 +83,8 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 data->projectName = (char *)malloc(strlen(projectName) * sizeof(char));
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char)); // ensure it is a string
                 strcpy(data->projectName, projectName);
+
+                printf("This is the data before sending:\tfd: %d\tpath: %s\n", fd, data->path);
 
                 pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)data);
                 pthread_join(thread_id_filePush, NULL);
@@ -96,6 +95,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
         }
         
     }
+    return 0;
     (void) closedir(dir);
 }
 
@@ -106,16 +106,16 @@ void *pushFileToClient(void *dat){
     int fd = open(data->path, O_RDWR);
 
     struct stat fileStat;
-    printf("This is the data:\tfd: %d\tpath: %s\n", data->fd, data->path);
+    printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
 
-    if(fstat(data->fd, &fileStat) < 0){
+    if(fstat(fd, &fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
     printf("check");
     char *buffer[fileStat.st_size];
 
-    if(read(data->fd, buffer, fileStat.st_size) < 0){
+    if(read(fd, buffer, fileStat.st_size) < 0){
         printf("There was an error reading file `%s`...\n", data->path);
     }
     printf("check2");
