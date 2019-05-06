@@ -2,8 +2,7 @@
 #include "s_server.h"
 #include "h_global.h"
 
-pthread_mutex_t mutexCreate = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutexDestroy = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 int sockfd = -1;
 
 
@@ -32,12 +31,13 @@ char* create_s(char* buffer){
 	}
 	DIR *dir;
 	dir = opendir(proj);
-	// snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
-	// int fd = open(path, O_RDWR | O_CREAT, 0600);
-	// if(fd < 0){
-	// 	printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
-	// }
-	// close(fd);
+	snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
+	 int fd = open(path, O_RDWR | O_CREAT, 0600);
+	 if(fd < 0){
+	 	printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
+	 }
+	write(fd, "1\n", 2);
+	close(fd);
 	char* sendback[2];
 }
 int main(int argc, char* argv[])
@@ -188,39 +188,53 @@ int newUser(newBuffer *buff){
 
 void *newUserCreateThread(void *buff){
 	newBuffer *buffer = (newBuffer *)buff;
-	pthread_mutex_lock(&mutexCreate);
+	pthread_mutex_lock(&mutex);
 	printf("Created a new `create` thread for the user...\n");
 	create_s((buffer->buffer));
-	pthread_mutex_unlock(&mutexCreate);
+	pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 
 void *newUserDestroyThread(void *buff){
 	newBuffer *buffer = (newBuffer *)buff;
-	pthread_mutex_lock(&mutexDestroy);
+	pthread_mutex_lock(&mutex);
 	printf("Created a new `destroy` thread for the user...\n");
 	remove_directory_help((buffer->buffer));
-	pthread_mutex_unlock(&mutexDestroy);
+	pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 
 void *newUserCheckoutThread(void *buff){
+	pthread_mutex_lock(&mutex);
 	newBuffer *buffer = (newBuffer *)buff;
 	printf("Created a new `checkout` thread for the user...\n");
 	checkout_s((buffer->buffer), buffer->sockfd);
+	pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 
 void *newUserCurrverThread(void *buff){
+	pthread_mutex_lock(&mutex);
 	newBuffer *buffer = (newBuffer *)buff;
 	printf("Created a new `currversion` thread for the user...\n");
-  directoryCounter_s((buffer->buffer));
+   directoryCounter_s((buffer->buffer));
+   pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 
 void *newUserRollbackThread(void *buff){
+	pthread_mutex_lock(&mutex);
 	newBuffer *buffer = (newBuffer *)buff;
 	printf("Created a new `rollback` thread for the user...\n");
-  rollback_s((buffer->buffer));
+  	rollback_s((buffer->buffer));
+  	pthread_mutex_unlock(&mutex);
 	return NULL;
+}
+void *newUserCommitThread(void *buff){
+	pthread_mutex_lock(&mutex);
+	newBuffer *buffer = (newBuffer *)buff;
+   	printf("Created a new `commit` thread for the user...\n");
+   	commit_s((buffer->buffer), buffer->sockfd);
+   	pthread_mutex_unlock(&mutex);
+   	return NULL;
 }
