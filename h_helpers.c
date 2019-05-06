@@ -155,11 +155,12 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 	strcpy(copyToManipulate2, inputMsg);
 
 	printf("3\n");
-	while(i<lenOfMsg){
+	while(i <= lenOfMsg){
 
 		char frontLetter[2] = {copyToManipulate[0], '\0'};
-		char nextLetter[2] = {copyToManipulate[1], '\0'};
+		
 		if( strcmp(frontLetter,":") != 0){ // while we don't have the token separating char
+			char nextLetter[2] = {copyToManipulate[1], '\0'};
 			printf("\tAPPENDING STRING\n");
 			// append the char to the temp string
 			tempToken = charAppend(tempToken, copyToManipulate[0]);
@@ -171,7 +172,16 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 			copyToManipulate = strstr(++copyToManipulate, nextLetter);
 			
 		}
+		else if(strcmp(frontLetter,"\0") != 0 || i == lenOfMsg){
+			char nextLetter[2] = {copyToManipulate[1], '\0'};
+			printf("4\n");
+			head->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));
+			head->next = newProtocolLink(tempToken);
+			free(tempToken);
+			break;
+		}
 		else{ // we have found the token char
+			char nextLetter[2] = {copyToManipulate[1], '\0'};
 			printf("4\n");
 			head->next = (ProtocolLink *)malloc(sizeof(ProtocolLink));
 			head->next = newProtocolLink(tempToken);
