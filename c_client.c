@@ -110,7 +110,11 @@ void create(char* projectName){
 	if (fd < 0){
 		printf("Failed to create .Manifest clientside...\nError No: %d\n", fd);
 	}
+	int res = write(fd, "1\n", 3);
+	if(res < 0)
+		printf("Error writing version No. to .Manifest\n");
 	close(fd);
+	closedir(dir);
 }
 
 // sets the global socket fd and also returns it
@@ -211,6 +215,12 @@ int main(int argc, char* argv[])
   if(strcmp(argv[1], "currentversion") == 0){
     if(argv[2] != NULL)
       current(argv[2]);
+    else
+      error("No Project name provided...\n");
+  }
+	if(strcmp(argv[1], "push") == 0){
+    if(argv[2] != NULL)
+      push_c(argv[2]);
     else
       error("No Project name provided...\n");
   }

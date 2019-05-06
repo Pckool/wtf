@@ -10,6 +10,7 @@
 // #include <dirent.h>
 // #include <fcntl.h>
 // #include "h_both.h"
+#include "h_both.h"
 #include "s_server.h"
 
 void remove_directory_help(const char *buffer){

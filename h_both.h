@@ -41,9 +41,15 @@ char *charAppend(char *str, char charr);
 char *getLine(char *str);
 void loading();
 char *getByteContent(char *filePath);
+//tokenizing
+DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head);
+DataLink *newDataLink(char *token);
+void printTokenLinks(DataLink *head);
 ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head);
 ProtocolLink *newProtocolLink(char *token);
 void printTokenLinks(ProtocolLink *head);
 int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd);
+
+int waitForSocketMessage(int sockfd);
 
 #endif

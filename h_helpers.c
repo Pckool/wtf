@@ -151,9 +151,6 @@ ProtocolLink *tokenizeProtocolMessage(char *inputMsg, ProtocolLink *head){
 	char *copyToManipulate = (char *)malloc(lenOfMsg+1);
 	strcpy(copyToManipulate, inputMsg);
 
-	char *copyToManipulate2 = (char *)malloc(lenOfMsg+1);
-	strcpy(copyToManipulate2, inputMsg);
-
 	printf("3\n");
 	while(i <= lenOfMsg){
 
@@ -221,6 +218,83 @@ void printTokenLinks(ProtocolLink *head){
 	
 }
 
+DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
+	char separatorStr[2] = {separator, '\0'};
+
+	printf("1\n");
+	char *tempToken = (char *)malloc(sizeof(char));
+	memcpy(tempToken, "\0", sizeof(char));
+	printf("2\n");
+	int i = 0;
+	int lenOfMsg = strlen(inputMsg);
+
+	char *copyToManipulate = (char *)malloc(lenOfMsg+1);
+	strcpy(copyToManipulate, inputMsg);
+
+	printf("3\n");
+	while(i <= lenOfMsg){
+
+		char frontLetter[2] = {copyToManipulate[0], '\0'};
+		
+		if( strcmp(frontLetter, separator) != 0 && strcmp(frontLetter,"\0") != 0){ // while we don't have the token separating char
+			char nextLetter[2] = {copyToManipulate[1], '\0'};
+			printf("\tAPPENDING STRING\n");
+			// append the char to the temp string
+			if(strcmp(frontLetter, "\n") != 0)
+				tempToken = charAppend(tempToken, copyToManipulate[0]);
+
+			printf("\tREMOVING FIRST LETTER IN STRING\n");
+			// remove the first char
+			
+			printf("\tCREATED FIRST LETTER `%c` AS STRING: %s\n", copyToManipulate[0], frontLetter);
+			copyToManipulate = strstr(++copyToManipulate, nextLetter);
+			
+		}
+		else if(strcmp(frontLetter,"\0") == 0 || i == lenOfMsg){
+			char nextLetter[2] = {copyToManipulate[1], '\0'};
+			printf("4\n");
+			head->next = (DataLink *)malloc(sizeof(ProtocolLink));
+			head->next = newDataLink(tempToken);
+			free(tempToken);
+			break;
+		}
+		else{ // we have found the token char
+			char nextLetter[2] = {copyToManipulate[1], '\0'};
+			printf("4\n");
+			head->next = (DataLink *)malloc(sizeof(ProtocolLink));
+			head->next = newDataLink(tempToken);
+			free(tempToken);
+
+			// remove the first char
+			copyToManipulate = strstr(++copyToManipulate, nextLetter);
+			printf("5\n");
+			tokenizeProtocolMessage(copyToManipulate, head->next);
+			break;
+
+		}
+		++i;
+	}
+	return head;
+}
+DataLink *newDataLink(char *token){
+	DataLink *link = (DataLink *)malloc(sizeof(DataLink));
+	link->token = (char *)malloc(strlen(token) * sizeof(char) + 1);
+	memcpy(link->token, "\0", strlen(token) * sizeof(char) + 1);
+	strcpy(link->token, token);
+
+	link->next = NULL;
+	return link;
+}
+
+void printTokenLinks(DataLink *head){
+	if(head->token != NULL){
+		printf("%s\n", head->token);
+		if(head->next != NULL){
+			printTokenLinks(head->next);
+		}
+	}
+	
+}
 int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 	ProtocolLink *msg_tokens = newProtocolLink("_START_"); // initializing link-list
 	printf("About to tokenize data...\n");
@@ -246,21 +320,7 @@ int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 			if(currToken != NULL){
 
 				// waiting for the server to send us the file through the socket.
-				while(true){
-					loading();
-
-					if(ioctl(sockfd, FIONREAD, &file_size) < 0){
-						return;
-					}
-					if(file_size == 0){
-						continue;
-					}
-					else if(file_size > 0){
-						file_size = file_size;
-						printf("The file size is %d...\n", file_size);
-						break;
-					}
-				}
+				file_size = waitForSocketMessage(sockfd2);
 				
 				char *file_buffer = (char *)malloc(file_size);
 				if(read(sockfd, file_buffer, file_size) < 0){
@@ -298,4 +358,28 @@ int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd){
 		}
 		printf("Checkout Failed...\n\tReason: %s\n", reason_msg);
 	}
+}
+
+// will wait for the socket to recieve a message, then it will return the size
+int waitForSocketMessage(int sockfd){
+	int msg_length = 0;
+	printf("waiting for server... |");
+	fflush(stdout);
+
+	while(true){
+		loading();
+		// get the socket message length and wait for it
+		if(ioctl(sockfd, FIONREAD, &msg_length) < 0){
+			return -1;
+		}
+		if(msg_length == 0){
+			//printf("%d\b\n", msg_length);
+			continue;
+		}
+		else if(msg_length > 0){
+			printf("The message size is %d...\n", msg_length);
+			break;
+		}
+	}
+	return msg_length;
 }
