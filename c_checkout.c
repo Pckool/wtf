@@ -33,7 +33,7 @@ void checkout(char *projectName, int sockfd){
 	while( msg_length != 0){
 		if(ioctl(sockfd, FIONREAD, &msg_length) < 0){
 			printf("No data recieved from the server");
-			contnue;
+			continue;
 		}
 			
 
@@ -100,7 +100,10 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 	int i = 0;
 	int part = 0;
 	int len = strlen(msgToTokenize);
-	char msgCpy[len] = msgToTokenize;
+	char *msgCpy = (char *)malloc(len * sizeof(char));
+	memcpy(msgCpy, "\0", len);
+	strcpy(msgCpy, msgToTokenize);
+
 	char *projectName = "";
 	char *data = "";
 
