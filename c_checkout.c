@@ -114,9 +114,9 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 	char *projectName = "";
 	char *data = "";
 
-	unsigned lenOfMsg = strlen(msgToTokenize);
+	unsigned lenOfMsg = len;
 
-	while(i < lenOfMsg || part <= 2){
+	while(i < len || part <= 2){
 		
 		switch(part){
 			case 0:
