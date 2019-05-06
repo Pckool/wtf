@@ -86,8 +86,6 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char) + 1); // ensure it is a string
                 strcpy(data->projectName, projectName);
 
-                printf("This is the data before sending:\tfd: %d\tpath: %s\n", fd, data->path);
-
                 pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)data);
                 pthread_join(thread_id_filePush, NULL);
                 // launch a thread and mutex it
@@ -116,7 +114,7 @@ void *pushFileToClient(void *dat){
     struct stat fileStat;
     printf("This is the data:\tfd: %d\tpath: %s\n", fd, data->path);
 
-    if(fstat(fd, &fileStat) < 0){
+    if(fstat(fd, fileStat) < 0){
         printf("Could not get filedata, aborting...\n");
         return;
     }
