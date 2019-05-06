@@ -159,6 +159,7 @@ int connecter(int fileSize){
 		error("ERROR connecting");
 		return -1;
 	}
+	printf("connector is returning the socket fd...\n");
 	return sockfd;
 }
 
