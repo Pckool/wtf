@@ -26,6 +26,8 @@ void checkout_s(const char *buffer, int sockfd){
     char path[PATH_MAX];
     snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
 
+    printf("appending %s to .repo\n", proj);
+
     // convert version number into a string
     char version_str[10];
     snprintf(version_str, 10, "%d", version);
