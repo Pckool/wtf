@@ -141,13 +141,14 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg){
 				if(msgCpy[i] != ':' || i < lenOfMsg){
 					charAppend(data, msgCpy[i]);
 				}
-				else{
+				++i;
+				if(i = lenOfMsg){
 					newTokens->data = (char *)malloc(strlen(data));
 					memcpy(newTokens->data, data, strlen(data));
 					printf("assigned data...\n");
 					++part;
 				}
-				++i;
+				
 				break;
 			default:
 				++i;
