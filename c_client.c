@@ -110,7 +110,7 @@ void create(char* projectName){
 	if (fd < 0){
 		printf("Failed to create .Manifest clientside...\nError No: %d\n", fd);
 	}
-	int res = write(fd, "1\n", 3);
+	int res = write(fd, "1\n", 2);
 	if(res < 0)
 		printf("Error writing version No. to .Manifest\n");
 	close(fd);
