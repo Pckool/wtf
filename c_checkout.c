@@ -115,13 +115,16 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 	unsigned lenOfMsg = strlen(msgToTokenize);
 
 	while(i < lenOfMsg){
-		printf("YIKES\n");
+		
 		switch(part){
 			case 0:
+				printf("Case 0\n");
 				removeSubstring(msgCpy, "file:");
 				++part;
+				
 				break;
 			case 1:
+				printf("Case 1\n");
 				if(msgCpy[i] != ':'){
 					charAppend(projectName, msgCpy[i]);
 				}
@@ -133,6 +136,7 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 				++i;
 				break;
 			case 2:
+				printf("Case 2\n");
 				if(msgCpy[i] != ':'){
 					charAppend(data, msgCpy[i]);
 				}
@@ -142,6 +146,9 @@ tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize){
 					++part;
 				}
 				++i;
+				break;
+			default:
+				printf("WENIS\n");
 				break;
 		}
 	}
