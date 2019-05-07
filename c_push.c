@@ -51,9 +51,10 @@ void push_c(char *projectName){
     currFile = filesToSend;
     int i = 0;
     int countAU = 0;
+    char *lines = comm_buffer;
     
-    while(i <strlen(comm_buffer) && lineData != NULL){ // loop to go through each line
-        char *line = getLine(comm_buffer);
+    while(i <strlen(lines) && lineData != NULL){ // loop to go through each line
+        char *line = getLine(lines);
         i = i + strlen(line);
         printf("Line: %s\n", line);
         lineData = tokenizeString(line, '\t', lineData);
@@ -79,7 +80,7 @@ void push_c(char *projectName){
             // ew have now read the file, get ready to save it into a data linked list
             currFile->next = newDataLink(lineData->token);
             currFile = currFile->next;
-            lineData = lineData+strlen(line);
+            lines = lines+strlen(line);
             ++countAU;
         }
         
