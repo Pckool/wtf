@@ -50,7 +50,7 @@ void push_c(char *projectName){
     currFile = filesToSend;
     int i = 0;
     int countAU = 0;
-    printf("About to loop\n");
+    
     while(i <strlen(comm_buffer)){ // loop to go through each line
         char *line = getLine(comm_buffer);
         tokenizeString(line, '\t', lineData);
@@ -70,7 +70,7 @@ void push_c(char *projectName){
                 return;
             }
             char file_buffer[fileStat_file.st_size];
-            if(read(fd, comm_buffer, fileStat_file.st_size) < 0){
+            if(read(fd, file_buffer, fileStat_file.st_size) < 0){
                 printf("There was an error reading file `%s`...\n", lineData->token);
             }
             // ew have now read the file, get ready to save it into a data linked list
