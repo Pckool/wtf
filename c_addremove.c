@@ -117,15 +117,23 @@ void add(char* proj, char* file){
 }
 
 void c_remove(char *proj, char *file){
-         char* mpath[2000];
+        char* mpath = (char *)malloc(2000);
+        memcpy(mpath, "\0", 2000);
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
         int man_fd;
         printf("Trying to open %s\n", mpath);
-        man_fd = open(mpath, O_RDWR); //Open manifest
+        man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+
         if (man_fd < 0){
-                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
-                return;
+                if(findProject(proj) < 0){
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
+                        return;
+                }
+                else{
+                        mpath = getProjectDir(proj);
+                }
+                
         }
 
         struct stat fileStat;
