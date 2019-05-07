@@ -1,16 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <dirent.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include "h_global.h"
+#include "h_both.h"
+#include "s_server.h"
 
 void delete(const char *path)
 {
@@ -63,6 +52,11 @@ void delete(const char *path)
 
 
 void rollback_s(char buffer[]){
+   DataLink *lineData = (DataLink *)malloc(sizeof(DataLink));
+   lineData = newDataLink("_START_");
+   lineData = tokenizeString(buffer, ':', lineData);
+
+
 	char *proj = malloc(sizeof(buffer - 9));
 	int i = 0;
 	int p = 9;
@@ -72,9 +66,8 @@ void rollback_s(char buffer[]){
 		i++;
 		p++;
 	}
-	char* tok = strtok(proj, ":");
-	tok = strtok(NULL, ":");
-	int version = atoi(tok);
+
+	int version = atoi(lineData->next->next->token);
         DIR *dp;
         struct dirent *dir;
         char path[PATH_MAX]; //Pathway to the project directory
