@@ -52,14 +52,18 @@ void push_c(char *projectName){
     int i = 0;
     int countAU = 0;
     char *lines = comm_buffer;
+
+
     
-    while(i <strlen(lines) && lineData != NULL){ // loop to go through each line
+    while(i <strlen(lines)){ // loop to go through each line
         char *line = getLine(lines);
         i = i + strlen(line);
         printf("Line: %s\n", line);
         lineData = tokenizeString(line, '\t', lineData);
+        lineData = lineData->next;
+
         if(lineData->next == NULL){ // This is to check if it is a version number (at the top of the file)
-            lineData = lineData->next;
+            // lineData = lineData->next;
             
             continue;
         }
