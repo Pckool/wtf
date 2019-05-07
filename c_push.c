@@ -35,7 +35,7 @@ void push_c(char *projectName){
     if(read(fd_comm, comm_buffer, fileStat_comm.st_size) < 0){
         printf("There was an error reading file `%s`...\n", commitPath);
     }
-
+    printf("Initializing buffers...\n");
     // We now have a buffer called comm_buffer that contains the data from .Commit
     // let's tokenize this
     DataLink *lineData = (DataLink *)malloc(sizeof(DataLink));
