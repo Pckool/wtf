@@ -14,10 +14,13 @@ void push_c(char *projectName){
         return;
     }
     char *projectDir = getProjectDir(projectName);
+    char commitPath[PATH_MAX];
+    snprintf(commitPath, 2000, "%s/%s", projectDir, ".Commit"); //Path to manifest
+
     if(projectDir == NULL){
         printf("ERROR Couldn't form the path to the project %s; aborting...\n", getProjectDir);
     }
-    char *commitPath = "";
+
     unsigned lenComm = strlen(projectDir) + strlen(".Commit") + 1;
     snprintf(commitPath, lenComm, "%s/%s", projectDir, ".Commit");
 
