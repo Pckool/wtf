@@ -66,7 +66,7 @@ void push_c(char *projectName){
         // if it is not the version number
         
         printf("%s is the thing\n", lineData->next->token);
-        if(strcmp(lineData->next->token, "U") == 0 || strcmp(lineData->next->token, "A") == 0){ // if the line is U or M or A
+        if(strcmp(lineData->token, "U") == 0 || strcmp(lineData->token, "A") == 0){ // if the line is U or M or A
             int fd = open(lineData->token, O_RDONLY); // file listed in the .Commit
 
             struct stat fileStat_file;
