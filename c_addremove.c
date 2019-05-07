@@ -31,7 +31,8 @@ void add(char* proj, char* file){
         
         close(fd);
 
-        char* mpath[2000];
+        char* mpath = (char *)malloc(2000);
+        memcpy(mpath, "\0", 2000);
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
         int man_fd;
@@ -39,8 +40,14 @@ void add(char* proj, char* file){
         man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
         if (man_fd < 0){
-                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
-                return;
+                if(findProject < 0){
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
+                        return;
+                }
+                else{
+                        mpath = getProjectDir(proj);
+                }
+                
         }
 
         struct stat fileStat;
@@ -105,7 +112,7 @@ void add(char* proj, char* file){
                 }
                 close(man_fd);
         }
-        
+        free(mpath);
         free(hash);
 }
 
