@@ -124,11 +124,11 @@ char *getProjectDir(char *projectName){
     char *temp = (char *)malloc(1);
     memcpy(temp, "\0", 1); // literally an empty string
 
-    DataLink *currPathPart;
+    DataLink *currPathPart = pathParts;
 
     while(true){
         if(currPathPart == NULL)
-            return NULL;
+            return temp;
 
         concat(temp, currPathPart->token);
         printf("temp: %s\n", temp);
