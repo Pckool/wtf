@@ -120,7 +120,6 @@ char *getProjectDir(char *projectName){
 
 
     tokenizeString(pwd, '/', pathParts);
-    printf("Tokenized in getProjectDir...\n");
     char *temp = (char *)malloc(2);
     memcpy(temp, "\0", 2); // literally an empty string
 
@@ -128,7 +127,7 @@ char *getProjectDir(char *projectName){
 
     while(currPathPart != NULL){
         concat(temp, currPathPart->token);
-        printf("temp: %s\n", temp);
+        printf("currPathPart->token: %s\n", currPathPart->token);
         if(strcmp(currPathPart->token, projectName) == 0){
             printf("Found DIR path: %s\n", temp);
             return temp;
