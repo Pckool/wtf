@@ -115,6 +115,7 @@ char *getProjectDir(char *projectName){
     DataLink *pathParts = (DataLink *)malloc(sizeof(DataLink));
     pathParts = newDataLink("_START_");
     tokenizeString(projectName, '/', pathParts);
+    printf("Tokenized in getProjectDir...\n");
     char *temp = (char *)malloc(1);
     memcpy(temp, "\0", 1); // literally an empty string
 
