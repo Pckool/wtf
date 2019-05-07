@@ -21,9 +21,8 @@ void push_c(char *projectName){
     }
 
     unsigned lenComm = strlen(projectDir) + strlen(".Commit") + 1;
-    snprintf(commitPath, lenComm, "%s/%s", projectDir, ".Commit");
+    snprintf(commitPath, lenComm+1, "%s/%s", projectDir, ".Commit");
 
-    printf("YEET: %s\n", commitPath);
     int fd_comm = open(commitPath, O_RDWR);
     if(fd_comm < 0){
         printf("ERROR There was a problem opening .Commit. Did you commit already?");
