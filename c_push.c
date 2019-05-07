@@ -15,7 +15,6 @@ void push_c(char *projectName){
     }
     char *projectDir = getProjectDir(projectName);
     char commitPath[PATH_MAX];
-    snprintf(commitPath, 2000, "%s/%s", projectDir, ".Commit"); //Path to manifest
 
     if(projectDir == NULL){
         printf("ERROR Couldn't form the path to the project %s; aborting...\n", getProjectDir);
