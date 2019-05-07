@@ -124,7 +124,7 @@ char *getProjectDir(char *projectName){
             return NULL;
 
         concat(temp, currPathPart->token);
-
+        printf("temp: %s\n", temp);
         if(strcmp(currPathPart->token, projectName) == 0){
             printf("Found DIR path: %s\n", temp);
             return temp;
