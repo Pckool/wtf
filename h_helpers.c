@@ -267,9 +267,9 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 			free(tempToken);
 
 			// remove the first char
-			copyToManipulate = strstr(++copyToManipulate, nextLetter);
+			copyToManipulate = copyToManipulate+1;
 			// printf("5\n");
-			tokenizeProtocolMessage(copyToManipulate, head->next);
+			tokenizeString(copyToManipulate, separator, head->next);
 			break;
 
 		}
