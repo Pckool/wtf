@@ -115,7 +115,7 @@ char *getProjectDir(char *projectName){
     DataLink *pathParts = (DataLink *)malloc(sizeof(DataLink));
     pathParts = newDataLink("_START_");
 
-    char *pwd[PATH_MAX];
+    char *pwd = (char *)malloc(PATH_MAX);
     getcwd(pwd, PATH_MAX);
 
 
