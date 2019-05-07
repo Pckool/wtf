@@ -126,6 +126,7 @@ char *getProjectDir(char *projectName){
     DataLink *currPathPart = pathParts;
 
     while(true){
+        temp = concat(temp, "/");
         temp = concat(temp, currPathPart->token);
         printf("currPathPart->token: %s\n", currPathPart->token);
         if(strcmp(currPathPart->token, projectName) == 0){
