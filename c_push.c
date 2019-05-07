@@ -123,7 +123,7 @@ char *getProjectDir(char *projectName){
     char *temp = (char *)malloc(2);
     memcpy(temp, "\0", 2); // literally an empty string
 
-    DataLink *currPathPart = pathParts;
+    DataLink *currPathPart = pathParts->token;
 
     while(true){
         temp = concat(temp, "/");
