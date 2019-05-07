@@ -121,15 +121,12 @@ char *getProjectDir(char *projectName){
 
     tokenizeString(pwd, '/', pathParts);
     printf("Tokenized in getProjectDir...\n");
-    char *temp = (char *)malloc(1);
-    memcpy(temp, "\0", 1); // literally an empty string
+    char *temp = (char *)malloc(2);
+    memcpy(temp, "\0", 2); // literally an empty string
 
     DataLink *currPathPart = pathParts;
 
-    while(true){
-        if(currPathPart == NULL)
-            return temp;
-
+    while(currPathPart != NULL){
         concat(temp, currPathPart->token);
         printf("temp: %s\n", temp);
         if(strcmp(currPathPart->token, projectName) == 0){
