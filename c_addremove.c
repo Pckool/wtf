@@ -45,19 +45,18 @@ void add(char* proj, char* file){
                         return;
                 }
                 else{
-                        mpath = getProjectDir(proj);
-                        
+                        snprintf(mpath, 2000, "%s/%s", getProjectDir(proj), ".Manifest"); //Path to manifest
                         printf("found %s\n", mpath);
                 }
                 
         }
+        close(man_fd);
         man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
         if (man_fd < 0){
-                if(findProject(proj) < 0){
-                        printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
-                        return;
-                }
+                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
+                return;
         }
+        
 
         struct stat fileStat;
         if(fstat(man_fd, &fileStat) < 0){
