@@ -222,17 +222,17 @@ void printTokenLinks(ProtocolLink *head){
 DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 	char separatorStr[2] = {separator, '\0'};
 
-	printf("1\n");
+	// printf("1\n");
 	char *tempToken = (char *)malloc(sizeof(char));
 	memcpy(tempToken, "\0", sizeof(char));
-	printf("2\n");
+	// printf("2\n");
 	int i = 0;
 	int lenOfMsg = strlen(inputMsg);
 
 	char *copyToManipulate = (char *)malloc(lenOfMsg+1);
 	strcpy(copyToManipulate, inputMsg);
 
-	printf("3\n");
+	// printf("3\n");
 	while(i <= lenOfMsg){
 
 		char frontLetter[2] = {copyToManipulate[0], '\0'};
@@ -253,7 +253,7 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 		}
 		else if(strcmp(frontLetter,"\0") == 0 || i == lenOfMsg){
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
-			printf("4\n");
+			// printf("4\n");
 			head->next = (DataLink *)malloc(sizeof(ProtocolLink));
 			head->next = newDataLink(tempToken);
 			free(tempToken);
@@ -261,14 +261,14 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 		}
 		else{ // we have found the token char
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
-			printf("4\n");
+			// printf("4\n");
 			head->next = (DataLink *)malloc(sizeof(ProtocolLink));
 			head->next = newDataLink(tempToken);
 			free(tempToken);
 
 			// remove the first char
 			copyToManipulate = strstr(++copyToManipulate, nextLetter);
-			printf("5\n");
+			// printf("5\n");
 			tokenizeProtocolMessage(copyToManipulate, head->next);
 			break;
 
