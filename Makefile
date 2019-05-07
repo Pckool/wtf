@@ -22,7 +22,7 @@ Client: c_client.o h_helpers.o c_addremove.o c_configure.o c_checkout.o c_compre
 client.o: c_client.h $(H_DEPS)
 
 
-Server: h_helpers.o s_server.o s_destroy.o s_checkout.o s_currver.o s_rollback.o
+Server: h_helpers.o s_server.o s_destroy.o s_checkout.o s_currver.o s_rollback.o s_commit.o
 	$(CC) -o $@ -pthread $^
 server.o: s_server.h $(H_DEPS)
 

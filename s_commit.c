@@ -1,14 +1,5 @@
-#include <strings.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <dirent.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <pthread.h>
+#include "h_both.h"
+#include "s_server.h"
 
 
 void commit_s(char* buffer, int sockfd){
