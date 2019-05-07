@@ -119,7 +119,7 @@ char *getProjectDir(char *projectName){
     getcwd(pwd, PATH_MAX);
 
 
-    tokenizeString(pwd, '/', pathParts);
+    tokenizeString(++pwd, '/', pathParts);
     char *temp = (char *)malloc(2);
     memcpy(temp, "\0", 2); // literally an empty string
 
