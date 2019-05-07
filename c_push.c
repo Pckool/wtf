@@ -48,14 +48,13 @@ void push_c(char *projectName){
 
     printf("Finished Ininitalizing...\n");
     DataLink *currFile = (DataLink *)malloc(sizeof(DataLink));
-    // currFile = filesToSend;
+    currFile = filesToSend;
     int i = 0;
     int countAU = 0;
     
-    while(i <strlen(comm_buffer && lineData != NULL)){ // loop to go through each line
-        printf("1...\n");
+    while(i <strlen(comm_buffer) && lineData != NULL){ // loop to go through each line
         char *line = getLine(comm_buffer);
-        printf("2...\n");
+        
         printf("Line: %s\n", line);
         lineData = tokenizeString(line, '\t', lineData);
         if(lineData->next == NULL){ // This is to check if it is a version number (at the top of the file)
