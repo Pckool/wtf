@@ -66,7 +66,7 @@ void rollback_s(char buffer[]){
 		i++;
 		p++;
 	}
-   printf("lineData->next->next->token: %s\n", lineData->next->next->token)
+   printf("lineData->next->next->token: %s\n", lineData->next->next->token);
 	int version = atoi(lineData->next->next->token);
         DIR *dp;
         struct dirent *dir;
