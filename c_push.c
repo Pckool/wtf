@@ -53,6 +53,7 @@ void push_c(char *projectName){
     
     while(i <strlen(comm_buffer && lineData != NULL)){ // loop to go through each line
         char *line = getLine(comm_buffer);
+        printf("Line: %s\n", line);
         lineData = tokenizeString(line, '\t', lineData);
         if(lineData->next == NULL){ // This is to check if it is a version number (at the top of the file)
             lineData = lineData+strlen(line);
