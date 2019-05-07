@@ -47,7 +47,7 @@ void add(char* proj, char* file){
                 else{
                         mpath = getProjectDir(proj);
                         
-                        
+                        printf("found %s\n", mpath);
                 }
                 
         }
