@@ -237,7 +237,7 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 
 		char frontLetter[2] = {copyToManipulate[0], '\0'};
 		
-		if( strcmp(frontLetter, separator) != 0 && strcmp(frontLetter,"\0") != 0){ // while we don't have the token separating char
+		if( strcmp(frontLetter, separatorStr) != 0 && strcmp(frontLetter, "\0") != 0){ // while we don't have the token separating char
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
 			printf("\tAPPENDING STRING\n");
 			// append the char to the temp string
