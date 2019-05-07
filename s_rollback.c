@@ -71,13 +71,13 @@ void rollback_s(char buffer[]){
         DIR *dp;
         struct dirent *dir;
         char path[PATH_MAX]; //Pathway to the project directory
-        snprintf(path, PATH_MAX, "%s/%s", ".repo",proj ); //Formatting the pathway
+        snprintf(path, PATH_MAX, "%s/%s", ".repo",lineData->next->next->token ); //Formatting the pathway
         dp = opendir(path);
         while((dir = readdir(dp)) != NULL) { //The directory can be read
         	if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){ //The directory is not the "." or ".." directory
                		if(dir->d_type == DT_DIR && atoi(dir->d_name) > version){ //Makes sure it is a directory
          			bzero(path, PATH_MAX);
-				snprintf(path, PATH_MAX, "%s/%s/%s", ".repo", proj, dir->d_name);
+				snprintf(path, PATH_MAX, "%s/%s/%s", ".repo", lineData->next->next->token, dir->d_name);
 				delete(path); 	
                   }
 		}
