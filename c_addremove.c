@@ -46,6 +46,8 @@ void add(char* proj, char* file){
                 }
                 else{
                         mpath = getProjectDir(proj);
+                        close(man_fd);
+                        man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
                 }
                 
         }
