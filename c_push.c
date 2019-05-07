@@ -54,12 +54,12 @@ void push_c(char *projectName){
     
     while(i <strlen(comm_buffer) && lineData != NULL){ // loop to go through each line
         char *line = getLine(comm_buffer);
-        
+        i = i + strlen(line);
         printf("Line: %s\n", line);
         lineData = tokenizeString(line, '\t', lineData);
         if(lineData->next == NULL){ // This is to check if it is a version number (at the top of the file)
             lineData = lineData+strlen(line);
-            i = i + strlen(line);
+            
             continue;
         }
         // if it is not the version number
@@ -79,7 +79,6 @@ void push_c(char *projectName){
             // ew have now read the file, get ready to save it into a data linked list
             currFile->next = newDataLink(lineData->token);
             currFile = currFile->next;
-            i = i + strlen(line);
             lineData = lineData+strlen(line);
             ++countAU;
         }
