@@ -95,7 +95,7 @@ void push_c(char *projectName){
     currFile = filesToSend;
     while(currFile != NULL){ // loop through the struct and append
         int orgSize = strlen(filesToTar); 
-        realloc(filesToTar, strlen(filesToTar) + strlen(currFile->token) + 2);
+        filesToTar = realloc(filesToTar, strlen(filesToTar) + strlen(currFile->token) + 2);
         memcpy(pushMessage+orgSize, " ", 1);
         memcpy(filesToTar+orgSize+1, currFile->token, strlen(currFile->token) + 1);
         currFile = currFile->next;
