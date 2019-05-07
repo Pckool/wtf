@@ -126,7 +126,7 @@ char *getProjectDir(char *projectName){
     DataLink *currPathPart = pathParts;
 
     while(true){
-        concat(temp, currPathPart->token);
+        temp = concat(temp, currPathPart->token);
         printf("currPathPart->token: %s\n", currPathPart->token);
         if(strcmp(currPathPart->token, projectName) == 0){
             printf("Found DIR path: %s\n", temp);
