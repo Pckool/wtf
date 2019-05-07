@@ -111,6 +111,7 @@ void push_c(char *projectName){
 }
 
 char *getProjectDir(char *projectName){
+    printf("in getProjectDir...\n");
     DataLink *pathParts = (DataLink *)malloc(sizeof(DataLink));
     pathParts = newDataLink("_START_");
     tokenizeString(projectName, '/', pathParts);
