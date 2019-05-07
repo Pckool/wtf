@@ -59,7 +59,7 @@ void push_c(char *projectName){
         printf("Line: %s\n", line);
         lineData = tokenizeString(line, '\t', lineData);
         if(lineData->next == NULL){ // This is to check if it is a version number (at the top of the file)
-            lineData = lineData+strlen(line);
+            lineData = lineData->next;
             
             continue;
         }
@@ -76,11 +76,12 @@ void push_c(char *projectName){
             char file_buffer[fileStat_file.st_size];
             if(read(fd, file_buffer, fileStat_file.st_size) < 0){
                 printf("There was an error reading file `%s`...\n", lineData->token);
+                return;
             }
-            // ew have now read the file, get ready to save it into a data linked list
+            // we have now read the file, get ready to save it into a data linked list
             currFile->next = newDataLink(lineData->token);
             currFile = currFile->next;
-            lines = lines+strlen(line);
+            removeLine(&lines, &line);
             ++countAU;
         }
         
