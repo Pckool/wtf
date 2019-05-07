@@ -48,7 +48,7 @@ void push_c(char *projectName){
     currFile = filesToSend;
     int i = 0;
     int countAU = 0;
-
+    printf("About to loop\n");
     while(i <strlen(comm_buffer)){ // loop to go through each line
         char *line = getLine(comm_buffer);
         tokenizeString(line, '\t', lineData);
@@ -141,4 +141,5 @@ char *getProjectDir(char *projectName){
         }
             
     }
+    return NULL;
 }

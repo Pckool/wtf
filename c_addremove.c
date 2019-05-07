@@ -129,7 +129,7 @@ void c_remove(char *proj, char *file){
         memcpy(mpath, "\0", 2000);
         snprintf(mpath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
 
-        int man_fd;
+         int man_fd;
         printf("Trying to open %s\n", mpath);
         man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
 
@@ -139,9 +139,16 @@ void c_remove(char *proj, char *file){
                         return;
                 }
                 else{
-                        mpath = getProjectDir(proj);
+                        snprintf(mpath, 2000, "%s/%s", getProjectDir(proj), ".Manifest"); //Path to manifest
+                        printf("found %s\n", mpath);
                 }
                 
+        }
+        close(man_fd);
+        man_fd = open(mpath, O_RDWR | O_APPEND); //Open manifest
+        if (man_fd < 0){
+                printf("There was an error opening the %s file...\nError No: %d\n", file, man_fd);
+                return;
         }
 
         struct stat fileStat;
