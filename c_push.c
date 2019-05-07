@@ -119,22 +119,25 @@ char *getProjectDir(char *projectName){
     getcwd(pwd, PATH_MAX);
 
 
-    tokenizeString(++pwd, '/', pathParts);
+    pathParts = tokenizeString(++pwd, '/', pathParts);
     char *temp = (char *)malloc(2);
     memcpy(temp, "\0", 2); // literally an empty string
 
     DataLink *currPathPart = pathParts;
 
     while(true){
-        if(currPathPart != NULL)
-            return temp;
         concat(temp, currPathPart->token);
         printf("currPathPart->token: %s\n", currPathPart->token);
         if(strcmp(currPathPart->token, projectName) == 0){
             printf("Found DIR path: %s\n", temp);
             return temp;
         }
-        else
+        else{
             currPathPart = currPathPart->next;
+            if(currPathPart == NULL){
+                break;
+            }
+        }
+            
     }
 }
