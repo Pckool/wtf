@@ -46,8 +46,9 @@ void push_c(char *projectName){
     DataLink *filesToSend = (DataLink *)malloc(sizeof(DataLink));
     filesToSend = newDataLink("_START_");
 
+    printf("Finished Ininitalizing...\n");
     DataLink *currFile = (DataLink *)malloc(sizeof(DataLink));
-    currFile = filesToSend;
+    // currFile = filesToSend;
     int i = 0;
     int countAU = 0;
     
