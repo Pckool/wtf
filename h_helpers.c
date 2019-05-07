@@ -261,7 +261,7 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 		}
 		else{ // we have found the token char
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
-			// printf("4\n");
+			printf("FOUND DELIMITER\n");
 			head->next = (DataLink *)malloc(sizeof(ProtocolLink));
 			head->next = newDataLink(tempToken);
 			free(tempToken);
