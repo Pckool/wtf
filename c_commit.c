@@ -151,7 +151,7 @@ void commit_c(char* projectName){
                         char *commitBuffer = (char *)malloc(2 * sizeof(char));
                         memcpy(commitBuffer, "\0", 2);
 
-                        printf("made the commit buffer...\n");
+                        printf("allocated memory for the commit buffer...\n");
                         // compairing time
                         while(clientManifest_curr != NULL){
                                 
@@ -177,6 +177,9 @@ void commit_c(char* projectName){
                                                                 }   
                                                 }
                                                 concat(commitBuffer, "\n");
+                                                printf("Commit buffer:\n%s\n", commitBuffer);
+                                                clientManifest_curr = clientManifest_curr->next;
+                                                continue;
                                         }
                                 }
                                 while(serverManifest_curr != NULL && strcmp(serverManifest_curr->token, "_") != 0){
