@@ -126,7 +126,7 @@ void commit_c(char* projectName){
                                         DataLink *clientManifestLine = clientManifestLineHead->next;
                                         DataLink *clientManifestLine_curr = clientManifestLine;
 
-                                while(servertManifest_curr != NULL){
+                                while(serverManifest_curr != NULL){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
@@ -141,9 +141,9 @@ void commit_c(char* projectName){
                                                 // the lines are the same
                                                 // append M
                                                 concat(commitBuffer, "M\t");
-                                                while(clientManifestLine_curr!=NULL){
+                                                while(clientManifestLine_curr!=NULL) {
                                                     concat(commitBuffer, clientManifestLine_curr->token);
-                                                    if(clientManifestLine_curr->NULL != NULL){
+                                                    if(clientManifestLine_curr->next != NULL) {
                                                             // if the next token in the line is NOT null (not at EOL)
                                                             concat(commitBuffer, "\t");
                                                     }   
@@ -159,7 +159,7 @@ void commit_c(char* projectName){
                                                         concat(commitBuffer, "A\t");
                                                         while(clientManifestLine_curr!=NULL){
                                                         concat(commitBuffer, clientManifestLine_curr->token);
-                                                                if(clientManifestLine_curr->NULL != NULL){
+                                                                if(clientManifestLine_curr->next != NULL){
                                                                         // if the next token in the line is NOT null (not at EOL)
                                                                         concat(commitBuffer, "\t");
                                                                 }   
@@ -169,7 +169,7 @@ void commit_c(char* projectName){
                                                 }
                                         }
                                         serverManifestLine_curr = serverManifestLine_curr->next;
-                                        servertManifest_curr = servertManifest_curr->next;
+                                        serverManifest_curr = servertManifest_curr->next;
                                 }
                                 clientManifestLine_curr = clientManifestLine_curr->next;
                                 clientManifest_curr = clientManifest_curr->next;
