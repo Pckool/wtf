@@ -72,12 +72,13 @@ void commit_c(char* projectName){
         
         int i = 0;
         
-        if(strcmp(messageTokensHead->token, "file") == 0){
+
+        if(strcmp(messageTokens->token, "file") == 0){
                 // we have recieved a file stream header
                 char *fileData;
-                if(strcmp(messageTokensHead->next->token, projectName) == 0 ){
+                if(strcmp(messageTokens->next->token, projectName) == 0 ){
                         // we recieved a file in this project! Let's goooo
-                        int yikes = atoi(messageTokensHead->next->next->token);
+                        int yikes = atoi(messageTokens->next->next->token);
                         printf("%d num files\n", yikes);
                         while(i<yikes){
                                 // we will loop through all of the file names given and wait for the server to send us it's data

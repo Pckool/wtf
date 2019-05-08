@@ -391,8 +391,8 @@ char *sendAndRecieveMessage(char *buffer, int sockfd){
         
 	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 
-        // waiting for the server's response
-        int msg_length = 0;
+       // waiting for the server's response
+    int msg_length = 0;
 
 	// this will loop through until it recieves a readable responce from the socket.
 	msg_length = waitForSocketMessage(sockfd);
@@ -403,8 +403,9 @@ char *sendAndRecieveMessage(char *buffer, int sockfd){
                 return;
         }
 
-        char message[msg_length];
-	if(read(sockfd, message, msg_length) < 0){
+        char *message = (char *)malloc(msg_length);
+		if(read(sockfd, message, msg_length) < 0){
+			printf("ERROR Sonething went wrong when trying to read the recieved message. \n");
                 return NULL;
         }
         return message;
