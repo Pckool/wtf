@@ -169,7 +169,7 @@ void commit_c(char* projectName){
                                                 }
                                         }
                                         serverManifestLine_curr = serverManifestLine_curr->next;
-                                        serverManifest_curr = servertManifest_curr->next;
+                                        serverManifest_curr = serverManifest_curr->next;
                                 }
                                 clientManifestLine_curr = clientManifestLine_curr->next;
                                 clientManifest_curr = clientManifest_curr->next;
