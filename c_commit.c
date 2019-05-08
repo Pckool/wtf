@@ -29,11 +29,24 @@ void commit_c(char* projectName){
         int sockfd = connecter(size); //Takes the size and goes to connecter
         
         // DONE
-
-        if(findProject(projectName) < 0){
-                printf("ERROR You are not in the project directory of %s; aborting...\n", getProjectDir);
-                return;
+        char subPath[PATH_MAX];
+        snprintf(subPath, 2000, "%s/%s", proj, ".Manifest"); //Path to manifest
+        
+        int fd_1 = open(subPath, O_RDWR | O_APPEND); //Open manifest
+        
+        if (fd_1 < 0){
+                if(findProject(proj) < 0){
+                        printf("There was an error opening the %s file...\nError No: %d\n", file, fd_1);
+                        return;
+                }
+                else{
+                        snprintf(ProjPath, 2000, "%s/%s", getProjectDir(proj), ".Manifest"); //Path to manifest
+                        printf("found %s\n", mpath);
+                }
+                
         }
+        close(fd_1);
+
         char *projectDir = getProjectDir(projectName);
         char commitPath[PATH_MAX];
         char manifestPath[PATH_MAX];
