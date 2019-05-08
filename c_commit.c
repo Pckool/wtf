@@ -54,7 +54,7 @@ void commit_c(char* projectName){
         DataLink *messageTokensHead = (DataLink *)malloc(sizeof(DataLink));
         messageTokensHead = newDataLink("_START_");
 
-        DataLink *messageTokensHead = tokenizeString(dataRecieved, ':', messageTokens);
+        messageTokensHead = tokenizeString(dataRecieved, ':', messageTokensHead);
         DataLink *messageTokens = messageTokensHead->next;
         
         int i = 0;
@@ -66,7 +66,7 @@ void commit_c(char* projectName){
                         // we recieved a file in this project! Let's goooo
                         while(i<atoi(messageTokensHead->next->next->token)){
                                 // we will loop through all of the file names given and wait for the server to send us it's data
-                                fileData = RecieveMessage(int sockfd);
+                                fileData = RecieveMessage(sockfd);
                                 ++i;
                         }
                         //we have gotten the .Manifest from the server and stored it in fileData
@@ -84,8 +84,8 @@ void commit_c(char* projectName){
                         DataLink *serverManifestHead = (DataLink *)malloc(sizeof(DataLink));
                         serverManifestHead = newDataLink("_START_");
 
-                        DataLink *serverManifestHead = tokenizeString(fileData, '\n', messageTokens);
-                        DataLink *serverManifest = serverManifestHead->next;
+                        serverManifestHead = tokenizeString(fileData, '\n', messageTokens);
+                        serverManifest = serverManifestHead->next;
                         DataLink *serverManifest_curr = serverManifest;
 
                         // tokenized the server's manifest
@@ -108,8 +108,8 @@ void commit_c(char* projectName){
                         DataLink *clientManifestHead = (DataLink *)malloc(sizeof(DataLink));
                         clientManifestHead = newDataLink("_START_");
 
-                        DataLink *clientManifestHead = tokenizeString(manifest, '\n', messageTokens);
-                        DataLink *clientManifest = clientManifestHead->next;
+                        clientManifestHead = tokenizeString(manifest, '\n', messageTokens);
+                        clientManifest = clientManifestHead->next;
                         DataLink *clientManifest_curr = clientManifest;
                         // Tokenized the client's .manifest
 
