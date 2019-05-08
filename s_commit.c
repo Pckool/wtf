@@ -1,10 +1,11 @@
 #include "h_both.h"
 #include "s_server.h"
 
+pthread_mutex_t mutextest = PTHREAD_MUTEX_INITIALIZER;
+pthread_t thread_id_filePush;
 
 void commit_s(char* buffer, int sockfd){
         printf("Starting fetch routine with buffer %s...\n", buffer);
-        sockfd_local = sockfd;
         char *proj = malloc(strlen(buffer - 10) + 1); //The reason its - 9 is because thats how many bytes "commit:" is.
         int i = 0;
         int p = 10;
@@ -122,7 +123,7 @@ void *pushFileToClient(void *dat){
 ;
     
     // Sending file
-    int amm = write(dat->sockfd, project_buffer, fileStat.st_size);
+    int amm = write(data->sockfd, project_buffer, fileStat.st_size);
     if(amm < 0){
         printf("There was an issue writing to the socket...\n");
         return;
@@ -130,7 +131,7 @@ void *pushFileToClient(void *dat){
     printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat.st_size);
 
     // sending .Manifest
-    amm = write(dat->sockfd, manifest_buffer, fileStat.st_size);
+    amm = write(data->sockfd, manifest_buffer, fileStat.st_size);
     if(amm < 0){
         printf("There was an issue writing to the socket...\n");
         return;
