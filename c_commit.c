@@ -103,7 +103,7 @@ void commit_c(char* projectName){
                         DataLink *serverManifestHead = (DataLink *)malloc(sizeof(DataLink));
                         serverManifestHead = newDataLink("_START_");
 
-                        serverManifestHead = tokenizeString(fileData, '\n', messageTokens);
+                        serverManifestHead = tokenizeString(fileData, '\n', serverManifestHead);
                         DataLink *serverManifest = serverManifestHead->next;
                         DataLink *serverManifest_curr = serverManifest;
 
@@ -131,7 +131,7 @@ void commit_c(char* projectName){
                         DataLink *clientManifestHead = (DataLink *)malloc(sizeof(DataLink));
                         clientManifestHead = newDataLink("_START_");
 
-                        clientManifestHead = tokenizeString(manifest, '\n', messageTokens);
+                        clientManifestHead = tokenizeString(manifest, '\n', clientManifestHead);
                         DataLink *clientManifest = clientManifestHead->next;
                         DataLink *clientManifest_curr = clientManifest;
                         // Tokenized the client's .manifest
@@ -146,7 +146,7 @@ void commit_c(char* projectName){
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         clientManifestLineHead = newDataLink("_START_");
 
-                                        clientManifestLineHead = tokenizeString(manifest, '\n', messageTokens);
+                                        clientManifestLineHead = tokenizeString(manifest, '\n', clientManifestLineHead);
                                         DataLink *clientManifestLine = clientManifestLineHead->next;
                                         DataLink *clientManifestLine_curr = clientManifestLine;
 
@@ -154,7 +154,7 @@ void commit_c(char* projectName){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
-                                        serverManifestLineHead = tokenizeString(fileData, '\n', messageTokens);
+                                        serverManifestLineHead = tokenizeString(fileData, '\n', serverManifestLineHead);
                                         DataLink *serverManifestLine = serverManifestLineHead->next;
                                         DataLink *serverManifestLine_curr = serverManifestLine;
 
