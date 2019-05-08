@@ -1,7 +1,6 @@
 #include "h_both.h"
 #include "s_server.h"
 
-pthread_mutex_t mutextest = PTHREAD_MUTEX_INITIALIZER;
 pthread_t thread_id_filePush;
 
 void commit_s(char* buffer, int sockfd){
