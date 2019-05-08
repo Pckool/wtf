@@ -129,14 +129,6 @@ void *pushFileToClient(void *dat){
         return;
     }
     printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat.st_size);
-
-    // sending .Manifest
-    amm = write(data->sockfd, manifest_buffer, fileStat.st_size);
-    if(amm < 0){
-        printf("There was an issue writing to the socket...\n");
-        return;
-    }
-    printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat.st_size);
     
 
     close(fd_data);
