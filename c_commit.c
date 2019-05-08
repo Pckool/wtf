@@ -85,7 +85,7 @@ void commit_c(char* projectName){
                         serverManifestHead = newDataLink("_START_");
 
                         serverManifestHead = tokenizeString(fileData, '\n', messageTokens);
-                        serverManifest = serverManifestHead->next;
+                        DataLink *serverManifest = serverManifestHead->next;
                         DataLink *serverManifest_curr = serverManifest;
 
                         // tokenized the server's manifest
@@ -109,7 +109,7 @@ void commit_c(char* projectName){
                         clientManifestHead = newDataLink("_START_");
 
                         clientManifestHead = tokenizeString(manifest, '\n', messageTokens);
-                        clientManifest = clientManifestHead->next;
+                        DataLink *clientManifest = clientManifestHead->next;
                         DataLink *clientManifest_curr = clientManifest;
                         // Tokenized the client's .manifest
 
