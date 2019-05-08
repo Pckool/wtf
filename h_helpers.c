@@ -424,8 +424,9 @@ char *RecieveMessage(int sockfd){
                 return;
         }
 
-        char message[msg_length];
+        char *message = (char *)malloc(msg_length);
 		if(read(sockfd, message, msg_length) < 0){
+			printf("ERROR Sonething went wrong when trying to read the recieved message. \n");
                 return NULL;
         }
         return message;
