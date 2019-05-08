@@ -61,7 +61,7 @@ int scanDir_sendManifest(char *path, int sockfd, char *projectName){
                 return -1;
         }
         close(latest_manifest);
-        printf("Making this thing\n");
+
         threadData *data = (threadData *)malloc(sizeof(threadData));
 
         data->path = (char *)malloc(strlen(newPath) * sizeof(char) + 1);
@@ -82,12 +82,15 @@ int scanDir_sendManifest(char *path, int sockfd, char *projectName){
         message = (char *)malloc(len * sizeof(char));
         memcpy(message, "\0", len * sizeof(char));
         
+        
+        printf("allocated space for message\n");
+        
         // char *byte_content = getByteContent(data->path);
         
         // snprintf(message, len, "file:%s:%s", data->projectName, byte_content);
         snprintf(message, len, "file:%s:%s:%s:%s", projectName, "1", ".Manifest");
 
-        
+        printf("copied data into the space for message\n");
         
         printf("This is sending to the client: %s\n", message);
 
