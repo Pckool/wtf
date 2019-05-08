@@ -88,9 +88,7 @@ int scanDir_sendManifest(char *path, int sockfd, char *projectName){
         // char *byte_content = getByteContent(data->path);
         
         // snprintf(message, len, "file:%s:%s", data->projectName, byte_content);
-        snprintf(message, len, "file:%s:%s:%s:%s", projectName, "1", ".Manifest");
-
-        printf("copied data into the space for message\n");
+        snprintf(message, len, "file:%s:%s:%s", projectName, "1", ".Manifest");
         
         printf("This is sending to the client: %s\n", message);
 
