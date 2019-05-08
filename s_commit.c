@@ -131,11 +131,11 @@ void *pushFileToClient(void *dat){
     if(fileStat.st_size == 0){
         project_buffer = realloc(project_buffer, 2);
         memcpy(project_buffer, "\0", 2);
-        project_buffer[0] = '_';
+        memcpy(project_buffer, '_', 1);
     }
 
     printf("\nRead data with %d bytes...\n\n", fileStat.st_size);
-;
+
     
     // Sending file
     int amm = write(data->sockfd, project_buffer, fileStat.st_size);
