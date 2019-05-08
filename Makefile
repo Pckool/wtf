@@ -17,7 +17,7 @@ h_%.o: h_%.c $(H_DEPS) # $(S_DEPS)
 
 all: WTFClient WTFServer
 
-WTFClient: c_client.o h_helpers.o c_addremove.o c_configure.o c_checkout.o c_compression.o c_push.o
+WTFClient: c_client.o h_helpers.o c_addremove.o c_configure.o c_checkout.o c_compression.o c_push.o c_commit.o
 	$(CC) -o  $@ -lssl -lcrypto $^
 client.o: c_client.h $(H_DEPS)
 
