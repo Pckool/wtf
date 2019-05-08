@@ -171,14 +171,14 @@ void commit_c(char* projectName){
                                                 // this means the client has a new file
                                                 // append with A
                                                 commitBuffer = concat(commitBuffer, "A\t");
-                                                printf("WENIS2:\n%s\n", commitBuffer);
-                                                while(clientManifestLine_curr!=NULL){
-                                                        // printf("WENIS2:\n%s\n", commitBuffer);
+                                                while(clientManifestLine_curr != NULL){
+                                                        printf("WENIS2:\n%s\n", commitBuffer);
                                                         concat(commitBuffer, clientManifestLine_curr->token);
-                                                                if(clientManifestLine_curr->next != NULL){
-                                                                        // if the next token in the line is NOT null (not at EOL)
-                                                                        commitBuffer = concat(commitBuffer, "\t");
-                                                                }   
+                                                        if(clientManifestLine_curr->next != NULL){
+                                                                // if the next token in the line is NOT null (not at EOL)
+                                                                commitBuffer = concat(commitBuffer, "\t");
+                                                        }
+                                                        clientManifestLine_curr =   clientManifestLine_curr->next;
                                                 }
                                                 printf("WENIS3:\n%s\n", commitBuffer);
                                                 commitBuffer = concat(commitBuffer, "\n");
@@ -209,6 +209,7 @@ void commit_c(char* projectName){
                                                             // if the next token in the line is NOT null (not at EOL)
                                                             commitBuffer = concat(commitBuffer, "\t");
                                                     }   
+                                                    clientManifestLine_curr =   clientManifestLine_curr->next;
                                                 }
                                                 commitBuffer = concat(commitBuffer, "\n");
                                         }
@@ -220,11 +221,12 @@ void commit_c(char* projectName){
                                                         // append with A
                                                         commitBuffer = concat(commitBuffer, "A\t");
                                                         while(clientManifestLine_curr!=NULL){
-                                                        commitBuffer = concat(commitBuffer, clientManifestLine_curr->token);
+                                                                commitBuffer = concat(commitBuffer, clientManifestLine_curr->token);
                                                                 if(clientManifestLine_curr->next != NULL){
                                                                         // if the next token in the line is NOT null (not at EOL)
                                                                         commitBuffer = concat(commitBuffer, "\t");
                                                                 }   
+                                                                clientManifestLine_curr =   clientManifestLine_curr->next;
                                                         }
                                                         commitBuffer = concat(commitBuffer, "\n");
 
