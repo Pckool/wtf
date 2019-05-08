@@ -14,6 +14,8 @@ void commit_s(char* buffer, int sockfd){
                 p++;
         }
 
+        
+
         DataLink *messageTokensHead = (DataLink *)malloc(sizeof(DataLink));
         messageTokensHead = newDataLink("_START_");
 
@@ -25,7 +27,7 @@ void commit_s(char* buffer, int sockfd){
         if(version < 0) return; // if there was an error accessing the metafile
 
         char path[PATH_MAX];
-        snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
+        snprintf(path, PATH_MAX, "%s/%s", ".repo", messageTokens->next->token);
 
         // convert version number into a string
         char version_str[10];
@@ -35,7 +37,7 @@ void commit_s(char* buffer, int sockfd){
         char h_version_path[PATH_MAX];
         snprintf(h_version_path, PATH_MAX, "%s/%s", path, version_str);
 
-        scanDir_sendManifest(h_version_path, sockfd, proj);
+        scanDir_sendManifest(h_version_path, sockfd, messageTokens->next->token);
 
 }
 
