@@ -61,6 +61,7 @@ int scanDir_sendManifest(char *path, int sockfd, char *projectName){
                 return -1;
         }
         close(latest_manifest);
+        printf("Making this thing\n");
         threadData *data = (threadData *)malloc(sizeof(threadData));
 
         data->path = (char *)malloc(strlen(newPath) * sizeof(char) + 1);
@@ -72,8 +73,9 @@ int scanDir_sendManifest(char *path, int sockfd, char *projectName){
         strcpy(data->projectName, projectName);
 
         data->sockfd = sockfd;
-        // send the FILE header messgae to client
 
+        // send the FILE header messgae to client
+        printf("about to make the file message\n");
         char *message;
         int len = strlen(projectName) + sizeof("1") + sizeof(".Manifest") + sizeof("file:")  ;
         
