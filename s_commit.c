@@ -5,9 +5,9 @@ pthread_t thread_id_filePush;
 
 void commit_s(char* buffer, int sockfd){
         printf("Starting fetch routine with buffer %s...\n", buffer);
-        char *proj = malloc(strlen(buffer - 10) + 1); //The reason its - 9 is because thats how many bytes "commit:" is.
+        char *proj = malloc(strlen(buffer - 7) + 1); //The reason its - 9 is because thats how many bytes "commit:" is.
         int i = 0;
-        int p = 10;
+        int p = 7;
         while (i < sizeof(proj)){
                 proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
                 i++;

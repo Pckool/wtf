@@ -199,7 +199,7 @@ int getProjectCurrVersion(char *ProjectName){
 
 
     if ((dir = opendir (path)) == NULL) {
-        printf("Cannot open path `%s`...\n", path);
+        printf("ERROR failed to get version number; Cannot open path `%s`...\n", path);
         return;
     }
     while ((dp = readdir(dir) ) != NULL){
