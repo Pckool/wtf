@@ -27,9 +27,9 @@ void commit_c(char* projectName){
         stat(fp, buf); //Gets stats about the file and puts it in the struct buf
         int size = buf->st_size;
         int sockfd = connecter(size); //Takes the size and goes to connecter
-        
+        free(buf);
         // DONE
-        char projectDir[PATH_MAX];
+        char *projectDir = (char *)malloc(PATH_MAX);
 
         DIR *dir;
         dir = opendir (projectName);
@@ -48,6 +48,9 @@ void commit_c(char* projectName){
                         printf("found %s\n", projectDir);
                 }
     
+        }
+        else{
+                projectDir = projectName;
         }
         closedir(dir);
 
@@ -220,7 +223,7 @@ void commit_c(char* projectName){
                 }
         }
 
-        
+        free(projectDir);
         
 }
 
