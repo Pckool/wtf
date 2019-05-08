@@ -32,7 +32,7 @@ char* create_s(char* buffer){
 	}
 	snprintf(path, PATH_MAX, "%s/%s/%s", ".repo", proj, "0");
 
-	int check = mkdir(path, S_IRWXU); //tries to make the directory
+	check = mkdir(path, S_IRWXU); //tries to make the directory
 	bzero(path, PATH_MAX);
 	if(!check){ //If check passes
 		printf("%s\n", "Directory Created!");
