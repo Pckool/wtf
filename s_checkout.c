@@ -190,7 +190,7 @@ void *pushFileToClientoop(void *dat){
 
 
 int getProjectCurrVersion(char *ProjectName){
-    printf("What is the latest version?\n");
+    printf("What is the latest version in %s?\n", ProjectName);
     DIR *dir;
     struct dirent *dp;
     int version = 0;
@@ -205,7 +205,7 @@ int getProjectCurrVersion(char *ProjectName){
     while ((dp = readdir(dir) ) != NULL){
         if(dp->d_type == DT_DIR){
             if(strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0){
-                printf("skipping `%s`...\n", dp->d_name);
+                printf("skipping `%s`\n", dp->d_name);
                 continue;
             }
             printf("Found Dir: `%s`\n", dp->d_name);
