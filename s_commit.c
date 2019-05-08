@@ -8,12 +8,20 @@ void commit_s(char* buffer, int sockfd){
         char *proj = malloc(strlen(buffer - 7) + 1); //The reason its - 9 is because thats how many bytes "commit:" is.
         int i = 0;
         int p = 7;
-        while (i < sizeof(proj)){
+        while (i < strlen(proj)){
                 proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
                 i++;
                 p++;
         }
-	int version = getProjectCurrVersion(proj);
+
+        DataLink *messageTokensHead = (DataLink *)malloc(sizeof(DataLink));
+        messageTokensHead = newDataLink("_START_");
+
+        messageTokensHead = tokenizeString(buffer, ':', messageTokensHead);
+
+        DataLink *messageTokens = messageTokensHead->next;
+
+	int version = getProjectCurrVersion(messageTokens->next->token);
         if(version < 0) return; // if there was an error accessing the metafile
 
         char path[PATH_MAX];
@@ -40,6 +48,9 @@ int scanDir_sendManifest(char *path, int sockfd, char *projectName){
                 printf("Cannot open path %s...\n", path);
                 return -1;
         }
+        
+
+
         char newPath[PATH_MAX];
         snprintf(newPath, PATH_MAX, "%s/%s", path, ".Manifest");
         int latest_manifest = open(newPath, O_RDONLY);
