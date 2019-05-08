@@ -187,6 +187,13 @@ int newUser(newBuffer *buff){
 //     	pthread_mutex_unlock(&mutex);
 
   	}
+	else if(startsWith(buff->buffer, "commit:")){
+		pthread_create(&thread_id_checkout, NULL, newUserCommitThread, (void*) buff);
+		pthread_join(thread_id_checkout, NULL);
+	}
+	else{
+		printf("I don't know how to handle this message...\n");
+	}
 	
 
 	if(true){
