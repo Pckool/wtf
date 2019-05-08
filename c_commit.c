@@ -124,8 +124,8 @@ void commit_c(char* projectName){
                                 printf("ERROR Could not get filedata for .Manifest, aborting...\n");
                                 return;
                         }
-                        printf("read the manifest...\n");
-                        char manifest[fileStat_man.st_size];
+                        printf("read the manifest of size &d...\n", fileStat_man.st_size);
+                        char * manifest = (char *)malloc(fileStat_man.st_size);
 
                         if(read(fd_man, manifest, fileStat_man.st_size) < 0){
                                 printf("No .Manifest found for this project, aborting\n");
@@ -139,7 +139,7 @@ void commit_c(char* projectName){
                         DataLink *clientManifestHead = (DataLink *)malloc(sizeof(DataLink));
                         clientManifestHead = newDataLink("_START_");
                         
-                                clientManifestHead = tokenizeString(manifest, '\n', clientManifestHead);
+                        clientManifestHead = tokenizeString(manifest, '\n', clientManifestHead);
                         
                         DataLink *clientManifest = clientManifestHead->next;
                         DataLink *clientManifest_curr = clientManifest;
@@ -149,7 +149,8 @@ void commit_c(char* projectName){
 
                         // a buffer to hold the string to write to the .commit file
                         char *commitBuffer = (char *)malloc(2 * sizeof(char));
-                        memcpy(commitBuffer, "\0", 2 * sizeof(char));
+                        memcpy(commitBuffer, "\0", 2);
+
                         printf("made the commit buffer...\n");
                         // compairing time
                         while(clientManifest_curr != NULL){
