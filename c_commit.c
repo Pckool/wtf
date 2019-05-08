@@ -166,14 +166,14 @@ void commit_c(char* projectName){
                                 
 
                                 if(strcmp(serverManifest_curr->token, "_") == 0){
-                                        printf("WENIS:\n%s\n", commitBuffer);
                                         if(serverManifest_curr->next == NULL){
-                                                printf("WENIS2:\n%s\n", commitBuffer);
                                                 // if there is not next line in the server's manifest
                                                 // this means the client has a new file
                                                 // append with A
                                                 concat(commitBuffer, "A\t");
+                                                printf("WENIS2:\n%s\n", commitBuffer);
                                                 while(clientManifestLine_curr!=NULL){
+                                                        // printf("WENIS2:\n%s\n", commitBuffer);
                                                         concat(commitBuffer, clientManifestLine_curr->token);
                                                                 if(clientManifestLine_curr->next != NULL){
                                                                         // if the next token in the line is NOT null (not at EOL)
