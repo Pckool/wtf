@@ -160,9 +160,11 @@ void commit_c(char* projectName){
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                 clientManifestLineHead = newDataLink("_START_");
 
-                                clientManifestLineHead = tokenizeString(manifest, '\n', clientManifestLineHead);
+                                clientManifestLineHead = tokenizeString(clientManifest_curr->token, '\n', clientManifestLineHead);
                                 DataLink *clientManifestLine = clientManifestLineHead->next;
                                 DataLink *clientManifestLine_curr = clientManifestLine;
+
+                                printf("WENIS:\n%s\n", commitBuffer);
 
                                 if(strcmp(serverManifest_curr->token, "_") == 0){
                                         if(serverManifest_curr->next == NULL){
@@ -188,7 +190,7 @@ void commit_c(char* projectName){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
-                                        serverManifestLineHead = tokenizeString(fileData, '\n', serverManifestLineHead);
+                                        serverManifestLineHead = tokenizeString(serverManifest_curr->token, '\n', serverManifestLineHead);
                                         DataLink *serverManifestLine = serverManifestLineHead->next;
                                         DataLink *serverManifestLine_curr = serverManifestLine;
 
