@@ -77,7 +77,9 @@ void commit_c(char* projectName){
                 char *fileData;
                 if(strcmp(messageTokensHead->next->token, projectName) == 0 ){
                         // we recieved a file in this project! Let's goooo
-                        while(i<atoi(messageTokensHead->next->next->token)){
+                        int yikes = atoi(messageTokensHead->next->next->token);
+                        printf("%d num files\n", yikes);
+                        while(i<yikes){
                                 // we will loop through all of the file names given and wait for the server to send us it's data
                                 fileData = RecieveMessage(sockfd);
                                 printf("Message %s\n", fileData);

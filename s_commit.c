@@ -131,7 +131,7 @@ void *pushFileToClient(void *dat){
     if(fileStat.st_size == 0){
         project_buffer = realloc(project_buffer, 2);
         memcpy(project_buffer, "\0", 2);
-        // project_buffer[0] = '_';
+        project_buffer[0] = '_';
     }
 
     printf("\nRead data with %d bytes...\n\n", fileStat.st_size);

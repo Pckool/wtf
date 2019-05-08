@@ -425,7 +425,7 @@ char *RecieveMessage(int sockfd){
         }
 
         char message[msg_length];
-	if(read(sockfd, message, msg_length) < 0){
+		if(read(sockfd, message, msg_length) < 0){
                 return NULL;
         }
         return message;
