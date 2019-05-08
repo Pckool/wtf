@@ -128,7 +128,8 @@ void *pushFileToClient(void *dat){
         printf("There was an error reading file `%s`...\n", data->path);
         return;
     }
-    if(fileStat.st_size == 0){
+    if(fileStat.st_size == 1){
+        // the file is empty (there but empty)
         project_buffer = realloc(project_buffer, 2);
         memcpy(project_buffer, "\0", 2);
         memcpy(project_buffer, "_", 2);
@@ -144,7 +145,6 @@ void *pushFileToClient(void *dat){
         return;
     }
     printf("File sent successfully with %d/%d bytes written...\n", amm, fileStat.st_size);
-     printf("Message: %s\n", project_buffer);
     
 
     close(fd_data);
