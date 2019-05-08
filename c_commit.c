@@ -170,18 +170,18 @@ void commit_c(char* projectName){
                                                 // if there is not next line in the server's manifest
                                                 // this means the client has a new file
                                                 // append with A
-                                                concat(commitBuffer, "A\t");
+                                                commitBuffer = concat(commitBuffer, "A\t");
                                                 printf("WENIS2:\n%s\n", commitBuffer);
                                                 while(clientManifestLine_curr!=NULL){
                                                         // printf("WENIS2:\n%s\n", commitBuffer);
                                                         concat(commitBuffer, clientManifestLine_curr->token);
                                                                 if(clientManifestLine_curr->next != NULL){
                                                                         // if the next token in the line is NOT null (not at EOL)
-                                                                        concat(commitBuffer, "\t");
+                                                                        commitBuffer = concat(commitBuffer, "\t");
                                                                 }   
                                                 }
                                                 printf("WENIS3:\n%s\n", commitBuffer);
-                                                concat(commitBuffer, "\n");
+                                                commitBuffer = concat(commitBuffer, "\n");
                                                 printf("Commit buffer:\n%s\n", commitBuffer);
                                                 clientManifest_curr = clientManifest_curr->next;
                                                 continue;
@@ -202,15 +202,15 @@ void commit_c(char* projectName){
                                         if(strcmp(serverManifestLine_curr->token, clientManifestLine_curr->token) == 0){
                                                 // the lines are the same
                                                 // append M
-                                                concat(commitBuffer, "M\t");
+                                                commitBuffer = concat(commitBuffer, "M\t");
                                                 while(clientManifestLine_curr!=NULL) {
-                                                    concat(commitBuffer, clientManifestLine_curr->token);
+                                                    commitBuffer = concat(commitBuffer, clientManifestLine_curr->token);
                                                     if(clientManifestLine_curr->next != NULL) {
                                                             // if the next token in the line is NOT null (not at EOL)
-                                                            concat(commitBuffer, "\t");
+                                                            commitBuffer = concat(commitBuffer, "\t");
                                                     }   
                                                 }
-                                                concat(commitBuffer, "\n");
+                                                commitBuffer = concat(commitBuffer, "\n");
                                         }
                                         else{
                                                 // the lines are different
@@ -218,15 +218,15 @@ void commit_c(char* projectName){
                                                         // if there is not next line in the server's manifest
                                                         // this means the client has a new file
                                                         // append with A
-                                                        concat(commitBuffer, "A\t");
+                                                        commitBuffer = concat(commitBuffer, "A\t");
                                                         while(clientManifestLine_curr!=NULL){
-                                                        concat(commitBuffer, clientManifestLine_curr->token);
+                                                        commitBuffer = concat(commitBuffer, clientManifestLine_curr->token);
                                                                 if(clientManifestLine_curr->next != NULL){
                                                                         // if the next token in the line is NOT null (not at EOL)
-                                                                        concat(commitBuffer, "\t");
+                                                                        commitBuffer = concat(commitBuffer, "\t");
                                                                 }   
                                                         }
-                                                        concat(commitBuffer, "\n");
+                                                        commitBuffer = concat(commitBuffer, "\n");
 
                                                 }
                                         }
