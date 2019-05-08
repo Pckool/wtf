@@ -130,6 +130,7 @@ void *pushFileToClient(void *dat){
     }
     if(fileStat.st_size == 1){
         // the file is empty (there but empty)
+        printf("the file is empty (there but empty)\n");
         project_buffer = realloc(project_buffer, 2);
         memcpy(project_buffer, "\0", 2);
         memcpy(project_buffer, "_", 2);
