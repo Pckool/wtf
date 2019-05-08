@@ -155,7 +155,8 @@ void commit_c(char* projectName){
                         // compairing time
                         while(clientManifest_curr != NULL){
                                 
-                                
+                                printf("WENIS:\n%s\n", commitBuffer);
+
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                 clientManifestLineHead = newDataLink("_START_");
 
