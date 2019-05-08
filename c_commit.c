@@ -80,6 +80,7 @@ void commit_c(char* projectName){
                         while(i<atoi(messageTokensHead->next->next->token)){
                                 // we will loop through all of the file names given and wait for the server to send us it's data
                                 fileData = RecieveMessage(sockfd);
+                                printf("Message %s\n", fileData);
                                 ++i;
                         }
                         //we have gotten the .Manifest from the server and stored it in fileData
