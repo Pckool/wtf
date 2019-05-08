@@ -118,7 +118,7 @@ void commit_c(char* projectName){
                                 printf("ERROR Could not get filedata for .Manifest, aborting...\n");
                                 return;
                         }
-                        printf("Read filedata for .Manifest, aborting...\n");
+                        printf("read the manifest...\n");
                         char manifest[fileStat_man.st_size];
                         read(fd_man, manifest, fileStat_man.st_size);
                         closedir(fd_man);
@@ -136,6 +136,7 @@ void commit_c(char* projectName){
                         // a buffer to hold the string to write to the .commit file
                         char *commitBuffer = (char *)malloc(2 * sizeof(char));
                         memcpy(commitBuffer, "\0", 2 * sizeof(char));
+                        printf("made the commit buffer...\n");
                         // compairing time
                         while(clientManifest_curr != NULL){
                                 
