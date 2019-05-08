@@ -155,7 +155,6 @@ void commit_c(char* projectName){
                         // compairing time
                         while(clientManifest_curr != NULL){
                                 
-                                printf("WENIS:\n%s\n", commitBuffer);
 
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                 clientManifestLineHead = newDataLink("_START_");
@@ -164,10 +163,12 @@ void commit_c(char* projectName){
                                 DataLink *clientManifestLine = clientManifestLineHead->next;
                                 DataLink *clientManifestLine_curr = clientManifestLine;
 
-                                printf("WENIS:\n%s\n", commitBuffer);
+                                
 
                                 if(strcmp(serverManifest_curr->token, "_") == 0){
+                                        printf("WENIS:\n%s\n", commitBuffer);
                                         if(serverManifest_curr->next == NULL){
+                                                printf("WENIS2:\n%s\n", commitBuffer);
                                                 // if there is not next line in the server's manifest
                                                 // this means the client has a new file
                                                 // append with A
@@ -179,6 +180,7 @@ void commit_c(char* projectName){
                                                                         concat(commitBuffer, "\t");
                                                                 }   
                                                 }
+                                                printf("WENIS3:\n%s\n", commitBuffer);
                                                 concat(commitBuffer, "\n");
                                                 printf("Commit buffer:\n%s\n", commitBuffer);
                                                 clientManifest_curr = clientManifest_curr->next;
