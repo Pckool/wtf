@@ -30,6 +30,7 @@ void commit_c(char* projectName){
         
         // DONE
         char subPath[PATH_MAX];
+        char projPath[PATH_MAX];
         snprintf(subPath, 2000, "%s/%s", projectName, ".Manifest"); //Path to manifest
 
         int fd_1 = open(subPath, O_RDWR | O_APPEND); //Open manifest
@@ -40,20 +41,24 @@ void commit_c(char* projectName){
                         return;
                 }
                 else{
-                        snprintf(subPath, 2000, "%s/%s", getProjectDir(projectName), ".Manifest"); //Path to manifest
-                        printf("found %s\n", subPath);
+                        
+                        if(getProjectDir(projectName) == NULL){
+                                printf("ERROR Couldn't find the project, please go next to the project folder or inside of it.\n");
+                                return;
+                        }
+                                
+                        snprintf(projPath, PATH_MAX, "%s/%s", getProjectDir(projectName), ".Manifest"); //Path to manifest
+                        printf("found %s\n", projPath);
+                        
+                        
                 }
                 
         }
         close(fd_1);
 
-        char *projectDir = getProjectDir(projectName);
         char commitPath[PATH_MAX];
         char manifestPath[PATH_MAX];
 
-        if(projectDir == NULL){
-                printf("ERROR Couldn't form the path to the project %s; aborting...\n", getProjectDir);
-        }
         char buffer[256] = "commit:"; //This is here because eventually we need to add the networking protocols
 	int bufferStartLen = 7;
 	int p = 0;
