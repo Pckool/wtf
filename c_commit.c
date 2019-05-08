@@ -126,18 +126,26 @@ void commit_c(char* projectName){
                         }
                         printf("read the manifest...\n");
                         char manifest[fileStat_man.st_size];
-                        read(fd_man, manifest, fileStat_man.st_size);
+
+                        if(read(fd_man, manifest, fileStat_man.st_size) < 0){
+                                printf("No .Manifest found for this project, aborting\n");
+                                closedir(fd_man);
+                                return;
+                        };
                         closedir(fd_man);
 
                         // re have read the .Manifest into var manifest
 
                         DataLink *clientManifestHead = (DataLink *)malloc(sizeof(DataLink));
                         clientManifestHead = newDataLink("_START_");
-
-                        clientManifestHead = tokenizeString(manifest, '\n', clientManifestHead);
+                        
+                                clientManifestHead = tokenizeString(manifest, '\n', clientManifestHead);
+                        
                         DataLink *clientManifest = clientManifestHead->next;
                         DataLink *clientManifest_curr = clientManifest;
+                        
                         // Tokenized the client's .manifest
+                        printf("Tokenized the client's .manifest\n");
 
                         // a buffer to hold the string to write to the .commit file
                         char *commitBuffer = (char *)malloc(2 * sizeof(char));
@@ -145,6 +153,22 @@ void commit_c(char* projectName){
                         printf("made the commit buffer...\n");
                         // compairing time
                         while(clientManifest_curr != NULL){
+                                if(strcmp(serverManifest_curr->token, "_") == 0){
+                                        if(serverManifest_curr->next == NULL){
+                                                // if there is not next line in the server's manifest
+                                                // this means the client has a new file
+                                                // append with A
+                                                concat(commitBuffer, "A\t");
+                                                while(clientManifestLine_curr!=NULL){
+                                                        concat(commitBuffer, clientManifestLine_curr->token);
+                                                                if(clientManifestLine_curr->next != NULL){
+                                                                        // if the next token in the line is NOT null (not at EOL)
+                                                                        concat(commitBuffer, "\t");
+                                                                }   
+                                                }
+                                                concat(commitBuffer, "\n");
+                                        }
+                                }
                                 
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         clientManifestLineHead = newDataLink("_START_");
@@ -153,7 +177,7 @@ void commit_c(char* projectName){
                                         DataLink *clientManifestLine = clientManifestLineHead->next;
                                         DataLink *clientManifestLine_curr = clientManifestLine;
 
-                                while(serverManifest_curr != NULL){
+                                while(serverManifest_curr != NULL strcmp(serverManifest_curr->token, "_") != 0){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
