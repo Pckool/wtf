@@ -35,7 +35,7 @@ void commit_c(char* projectName){
         int fd_1 = open(subPath, O_RDWR | O_APPEND); //Open manifest
         
         if (fd_1 < 0){
-                if(findProject(proj) < 0){
+                if(findProject(projectName) < 0){
                         printf("There was an error opening the %s file...\nError No: %d\n", ".Manifest", fd_1);
                         return;
                 }
