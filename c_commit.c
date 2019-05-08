@@ -32,11 +32,10 @@ void commit_c(char* projectName){
         char projectDir[PATH_MAX];
 
         DIR *dir;
-
-        if ((dir = opendir ("./projectName")) == NULL) {
+        dir = opendir (projectName);
+        if (dir == NULL) {
                 if(findProject(projectName) < 0){
                         perror("ERROR Couldn't find the project directory, please go next to the project folder or inside of it.\n");
-                                return;
                         return;
                 }
                 else{
@@ -47,8 +46,6 @@ void commit_c(char* projectName){
                         }
                         snprintf(projectDir, PATH_MAX, "%s/%s", getProjectDir(projectName), ".Manifest"); //Path to manifest
                         printf("found %s\n", projectDir);
-                        
-                        
                 }
     
         }
@@ -108,11 +105,12 @@ void commit_c(char* projectName){
                         
                         int fd_man = open(manifestPath, O_RDWR);
                         if(fd_man < 0){
-                                printf("error reading .Manifest from local path %s.\n", manifestPath);
+                                printf("ERROR trouble reading .Manifest from local path %s.\n", manifestPath);
+                                return;
                         }
                         struct stat fileStat_man;
                         if(fstat(fd_man, &fileStat_man) < 0){
-                                printf("Could not get filedata for .Manifest, aborting...\n");
+                                printf("ERROR Could not get filedata for .Manifest, aborting...\n");
                                 return;
                         }
                         char manifest[fileStat_man.st_size];
