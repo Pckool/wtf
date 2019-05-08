@@ -2,7 +2,7 @@
 #include "h_both.h" 
 
 
-void commit_c(char* projectName, int sockfd){
+void commit_c(char* projectName){
         // 1: send a message top the server requesting the latest .Manifest
         // commit:<projectName>
         // 2: wait for the server to send the file back
