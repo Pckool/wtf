@@ -124,7 +124,7 @@ void commit_c(char* projectName){
                                 printf("ERROR Could not get filedata for .Manifest, aborting...\n");
                                 return;
                         }
-                        printf("read the manifest of size &d...\n", fileStat_man.st_size);
+                        printf("read the manifest of size %d...\n", fileStat_man.st_size);
                         char * manifest = (char *)malloc(fileStat_man.st_size);
 
                         if(read(fd_man, manifest, fileStat_man.st_size) < 0){
