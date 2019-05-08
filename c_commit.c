@@ -122,7 +122,7 @@ void commit_c(char* projectName){
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         clientManifestLineHead = newDataLink("_START_");
 
-                                        DataLink *clientManifestLineHead = tokenizeString(manifest, '\n', messageTokens);
+                                        clientManifestLineHead = tokenizeString(manifest, '\n', messageTokens);
                                         DataLink *clientManifestLine = clientManifestLineHead->next;
                                         DataLink *clientManifestLine_curr = clientManifestLine;
 
@@ -130,7 +130,7 @@ void commit_c(char* projectName){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
-                                        DataLink *serverManifestLineHead = tokenizeString(fileData, '\n', messageTokens);
+                                        serverManifestLineHead = tokenizeString(fileData, '\n', messageTokens);
                                         DataLink *serverManifestLine = serverManifestLineHead->next;
                                         DataLink *serverManifestLine_curr = serverManifestLine;
 
@@ -182,7 +182,7 @@ void commit_c(char* projectName){
                         }
                         unsigned lenComm = strlen(projectDir) + strlen(".Commit") + 1;
                         snprintf(commitPath, lenComm+1, "%s/%s", projectDir, ".Commit");
-                        int fd_commit = open(commitPath, O_RDWR | O_CREATE);
+                        int fd_commit = open(commitPath, O_RDWR | O_CREAT);
                         if(fd_commit < 0){
                                 printf("ERROR There was an issue creating the .commit file; aborting...\n");
                                 return;
