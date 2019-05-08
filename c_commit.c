@@ -159,7 +159,7 @@ void commit_c(char* projectName){
                                 DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                 clientManifestLineHead = newDataLink("_START_");
 
-                                clientManifestLineHead = tokenizeString(clientManifest_curr->token, '\n', clientManifestLineHead);
+                                clientManifestLineHead = tokenizeString(clientManifest_curr->token, '\t', clientManifestLineHead);
                                 DataLink *clientManifestLine = clientManifestLineHead->next;
                                 DataLink *clientManifestLine_curr = clientManifestLine;
 
@@ -192,7 +192,7 @@ void commit_c(char* projectName){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
-                                        serverManifestLineHead = tokenizeString(serverManifest_curr->token, '\n', serverManifestLineHead);
+                                        serverManifestLineHead = tokenizeString(serverManifest_curr->token, '\t', serverManifestLineHead);
                                         DataLink *serverManifestLine = serverManifestLineHead->next;
                                         DataLink *serverManifestLine_curr = serverManifestLine;
 
