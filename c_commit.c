@@ -129,10 +129,10 @@ void commit_c(char* projectName){
 
                         if(read(fd_man, manifest, fileStat_man.st_size) < 0){
                                 printf("No .Manifest found for this project, aborting\n");
-                                closedir(fd_man);
+                                close(fd_man);
                                 return;
                         };
-                        closedir(fd_man);
+                        close(fd_man);
 
                         // re have read the .Manifest into var manifest
 
