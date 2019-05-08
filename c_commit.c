@@ -49,7 +49,7 @@ void commit_c(char* projectName){
 		bufferStartLen++;
 		p++;
 	}
-        char *dataRecieved = sendAndRecieveMassage(buffer, sockfd);
+        char *dataRecieved = sendAndRecieveMessage(buffer, sockfd);
         // this is for the data we just got
         DataLink *messageTokensHead = (DataLink *)malloc(sizeof(DataLink));
         messageTokensHead = newDataLink("_START_");
