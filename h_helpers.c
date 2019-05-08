@@ -239,15 +239,15 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 		
 		if( strcmp(frontLetter, separatorStr) != 0 && strcmp(frontLetter, "\0") != 0){ // while we don't have the token separating char
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
-			printf("\tAPPENDING STRING\n");
+			// printf("\tAPPENDING STRING\n");
 			// append the char to the temp string
 			if(strcmp(frontLetter, "\n") != 0)
 				tempToken = charAppend(tempToken, copyToManipulate[0]);
 
-			printf("\tREMOVING FIRST LETTER IN STRING\n");
+			// printf("\tREMOVING FIRST LETTER IN STRING\n");
 			// remove the first char
 			
-			printf("\tCREATED FIRST LETTER `%c` AS STRING: %s\n", copyToManipulate[0], frontLetter);
+			// printf("\tCREATED FIRST LETTER `%c` AS STRING: %s\n", copyToManipulate[0], frontLetter);
 			copyToManipulate = strstr(++copyToManipulate, nextLetter);
 			
 		}
@@ -261,7 +261,7 @@ DataLink *tokenizeString(char *inputMsg, char separator, DataLink *head){
 		}
 		else{ // we have found the token char
 			char nextLetter[2] = {copyToManipulate[1], '\0'};
-			printf("FOUND DELIMITER\n");
+			// printf("FOUND DELIMITER\n");
 			head->next = (DataLink *)malloc(sizeof(ProtocolLink));
 			head->next = newDataLink(tempToken);
 			free(tempToken);
@@ -383,4 +383,49 @@ int waitForSocketMessage(int sockfd){
 		}
 	}
 	return msg_length;
+}
+
+char *sendAndRecieveMessage(char *buffer, int sockfd){
+        // Start writing the message to the server
+        
+	write(sockfd, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
+
+        // waiting for the server's response
+        int msg_length = 0;
+
+	// this will loop through until it recieves a readable responce from the socket.
+	msg_length = waitForSocketMessage(sockfd);
+
+        if(msg_length<0){
+                printf("We got an error, either the server didn't send us the data or soemthing along those lines. Closing the socket...\n");
+                closedir(sockfd);
+                return;
+        }
+
+        char message[msg_length];
+	if(read(sockfd, message, msg_length) < 0){
+                return NULL;
+        }
+        return message;
+}
+
+char *RecieveMessage(int sockfd){
+        // Start writing the message to the server
+        
+        int msg_length = 0;
+
+	// this will loop through until it recieves a readable responce from the socket.
+	msg_length = waitForSocketMessage(sockfd);
+
+        if(msg_length<0){
+                printf("We got an error, either the server didn't send us the data or soemthing along those lines. Closing the socket...\n");
+                closedir(sockfd);
+                return;
+        }
+
+        char message[msg_length];
+	if(read(sockfd, message, msg_length) < 0){
+                return NULL;
+        }
+        return message;
 }

@@ -50,6 +50,9 @@ ProtocolLink *newProtocolLink(char *token);
 void printTokenLinks(ProtocolLink *head);
 int prot_fileRecieve(char *message, const unsigned msg_length, int sockfd);
 
+char *sendAndRecieveMessage(char *buffer, int sockfd);
+char *RecieveMessage(int sockfd);
+
 int waitForSocketMessage(int sockfd);
 
 #endif

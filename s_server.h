@@ -26,6 +26,7 @@ typedef struct newBuffer{
 typedef struct threadData{
     char *path;
     char *projectName;
+    int sockfd;
 }threadData;
 
 
@@ -44,8 +45,14 @@ int findProject(char *path);
 char *getLine(char *str);
 int getProjectCurrVersion(char *ProjectName);
 int scanDir_sendFiles(char *path, int sockfd, char *projectName);
-void *pushFileToClient(void *data);
+void *pushFileToClientoop(void *data);
+
 char *getClientsPath(char *serverPath, char *projectName);
+
+//commit
+void commit_s(char* buffer, int sockfd);
+int scanDir_sendManifest(char *path, int sockfd, char *projectName);
+void *pushFileToClient(void *data);
 
 // Threads
 void *newUserCreateThread(void *buffer);
@@ -53,6 +60,7 @@ void *newUserDestroyThread(void *buffer);
 void *newUserCheckoutThread(void *buffer);
 void *newUserCurrverThread(void *buffer);
 void *newUserRollbackThread(void *buffer);
+void *newUserCommitThread(void *buff);
 
 // Helping Function
 int findDir(char *dirname);

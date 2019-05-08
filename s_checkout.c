@@ -14,7 +14,6 @@ void checkout_s(const char *buffer, int sockfd){
     char *proj = malloc(sizeof(buffer - 9)); //The reason its - 9 is because thats how many bytes "rmdir:" is.
     int i = 0;
     int p = 9;
-    int x = 0;
     while (i < sizeof(proj)){
         proj[i] = buffer[p]; //Transfer the project name from the buffer to proj.
         i++;
@@ -86,7 +85,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
                 memcpy(data->projectName,"\0", strlen(projectName) * sizeof(char) + 1); // ensure it is a string
                 strcpy(data->projectName, projectName);
 
-                pthread_create(&thread_id_filePush, NULL, pushFileToClient, (void*)data);
+                pthread_create(&thread_id_filePush, NULL, pushFileToClientoop, (void*)data);
                 pthread_join(thread_id_filePush, NULL);
                 // launch a thread and mutex it
                 
@@ -100,7 +99,7 @@ int scanDir_sendFiles(char *path, int sockfd, char *projectName){
 }
 
 
-void *pushFileToClient(void *dat){
+void *pushFileToClientoop(void *dat){
     printf("Sending file to client...\n");
 
     threadData *data = (threadData *)dat;
@@ -218,7 +217,7 @@ int getProjectCurrVersion(char *ProjectName){
     
     (void) closedir(dir);
     
-    return version;
+    return version - 1;
 }
 
 // this will only be used if we decide to compress files one at a time. If we go the tar route, this function will not be used.

@@ -13,8 +13,8 @@ void checkout(char *projectName, int sockfd){
 	struct stat *buf; //Needed to check the size of the config file
 	buf = malloc(sizeof(struct stat));
 	char* fp = ".configure";
-        stat(fp, buf); //Gets stats about the file and puts it in the struct buf
-        int size = buf->st_size;
+    stat(fp, buf); //Gets stats about the file and puts it in the struct buf
+    int size = buf->st_size;
 	int sockfd2 = connecter(size); //Takes the size and goes to connecter
 
 	char buffer[256] = "checkout:"; //This is here because eventually we need to add the networking protocols
@@ -28,7 +28,6 @@ void checkout(char *projectName, int sockfd){
 	write(sockfd2, buffer, strlen(buffer)); //Write the buffer that contains the name of the project and network protocol to the socket
 	
 	int msg_length = 0;
-	int waiting = true;
 
 	// this will loop through until it recieves a readable responce from the socket.
 	msg_length = waitForSocketMessage(sockfd2);
@@ -39,11 +38,7 @@ void checkout(char *projectName, int sockfd){
 	n = read(sockfd2, message, msg_length);
 	
 	printf("%s with length %d\n", message, msg_length);
-	///
-	if(ioctl(sockfd2, FIONREAD, &msg_length) < 0){
-		return;
-	}
-	printf("size of socket now: %d\n", msg_length);
+
 	///
 	DIR *dir;
 	dir = opendir(projectName);

@@ -12,7 +12,7 @@ void error(char *msg){
 }
  
 char* create_s(char* buffer){
-	char *proj = malloc(sizeof(buffer - 6)); //The reason its - 6 is because thats how many bytes "mkdir:" is.
+	char *proj = malloc(strlen(buffer - 6) + 1 ); //The reason its - 6 is because thats how many bytes "mkdir:" is.
 	int i = 0;
 	int p = 6;
 	int x = 0;
@@ -24,20 +24,28 @@ char* create_s(char* buffer){
 	mkdir(".repo", S_IRWXU); //Makes a .repo directory where the server will store all the projects.
 	char path[PATH_MAX];
 	snprintf(path, PATH_MAX, "%s/%s", ".repo", proj);
+	
+	int check = mkdir(path, S_IRWXU); //tries to make the directory
+	bzero(path, PATH_MAX);
+	if(check){ //If check passes
+		printf("%s\n", "Directory Created!");
+	}
+	snprintf(path, PATH_MAX, "%s/%s/%s", ".repo", proj, "0");
+
 	int check = mkdir(path, S_IRWXU); //tries to make the directory
 	bzero(path, PATH_MAX);
 	if(!check){ //If check passes
 		printf("%s\n", "Directory Created!");
 	}
-	DIR *dir;
-	dir = opendir(proj);
-	snprintf(path, PATH_MAX, "%s/%s/%s",".repo", proj, ".Manifest");
+	// DIR *dir;
+	// dir = opendir(proj);
+	snprintf(path, PATH_MAX, "%s/%s/%s/%s",".repo", proj, "0", ".Manifest");
 	 int fd = open(path, O_RDWR | O_CREAT, 0600);
 	 if(fd < 0){
 	 	printf("Failed to create .Manifest in server...\nError No: %d\n", fd);
 	 }
-	write(fd, "1\n", 2);
 	close(fd);
+	// closedir(proj);
 	char* sendback[2];
 }
 int main(int argc, char* argv[])
@@ -234,7 +242,7 @@ void *newUserCommitThread(void *buff){
 	pthread_mutex_lock(&mutex);
 	newBuffer *buffer = (newBuffer *)buff;
    	printf("Created a new `commit` thread for the user...\n");
-   	commit_s((buffer->buffer), buffer->sockfd);
+   	commit_s(buffer->buffer, buffer->sockfd);
    	pthread_mutex_unlock(&mutex);
    	return NULL;
 }

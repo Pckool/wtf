@@ -53,6 +53,11 @@ char *readLine(char *str);
 void push_c(char *projectName);
 char *getProjectDir(char *projectName);
 
+// commit
+void commit_c(char *projectName);
+
+
+
 // Checkout
 void checkout(char *projectName, int sockfd);
 tokenizeFileMsg *prot_tokenizeFileMsg(char *msgToTokenize, unsigned sizeOfMsg);
