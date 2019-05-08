@@ -378,10 +378,11 @@ int waitForSocketMessage(int sockfd){
 			continue;
 		}
 		else if(msg_length > 0){
-			printf("The message size is %d...\n", msg_length);
+			printf("\nThe message size is %d...\n", msg_length);
 			break;
 		}
 	}
+
 	return msg_length;
 }
 

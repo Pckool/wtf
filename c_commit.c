@@ -88,6 +88,8 @@ void commit_c(char* projectName){
                         unsigned lenMan = strlen(projectDir) + strlen(".Manifest") + 1;
                         snprintf(manifestPath, lenMan+1, "%s/%s", projectDir, ".Manifest");
 
+                        printf("Looking for %s\n", manifestPath);
+
                         // rehash function
                         // rehash(manifestPath);
                         // do a check to see if the rehash was a success
@@ -102,17 +104,20 @@ void commit_c(char* projectName){
                         DataLink *serverManifest_curr = serverManifest;
 
                         // tokenized the server's manifest
-                        
+                         printf("tokenized the server's manifest \n");
+
                         int fd_man = open(manifestPath, O_RDWR);
                         if(fd_man < 0){
                                 printf("ERROR trouble reading .Manifest from local path %s.\n", manifestPath);
                                 return;
                         }
+                        printf("opened .Manifest, aborting...\n");
                         struct stat fileStat_man;
                         if(fstat(fd_man, &fileStat_man) < 0){
                                 printf("ERROR Could not get filedata for .Manifest, aborting...\n");
                                 return;
                         }
+                        printf("Read filedata for .Manifest, aborting...\n");
                         char manifest[fileStat_man.st_size];
                         read(fd_man, manifest, fileStat_man.st_size);
                         closedir(fd_man);
