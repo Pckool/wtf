@@ -153,6 +153,15 @@ void commit_c(char* projectName){
                         printf("made the commit buffer...\n");
                         // compairing time
                         while(clientManifest_curr != NULL){
+                                
+                                
+                                DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
+                                clientManifestLineHead = newDataLink("_START_");
+
+                                clientManifestLineHead = tokenizeString(manifest, '\n', clientManifestLineHead);
+                                DataLink *clientManifestLine = clientManifestLineHead->next;
+                                DataLink *clientManifestLine_curr = clientManifestLine;
+
                                 if(strcmp(serverManifest_curr->token, "_") == 0){
                                         if(serverManifest_curr->next == NULL){
                                                 // if there is not next line in the server's manifest
@@ -169,15 +178,7 @@ void commit_c(char* projectName){
                                                 concat(commitBuffer, "\n");
                                         }
                                 }
-                                
-                                DataLink *clientManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
-                                        clientManifestLineHead = newDataLink("_START_");
-
-                                        clientManifestLineHead = tokenizeString(manifest, '\n', clientManifestLineHead);
-                                        DataLink *clientManifestLine = clientManifestLineHead->next;
-                                        DataLink *clientManifestLine_curr = clientManifestLine;
-
-                                while(serverManifest_curr != NULL strcmp(serverManifest_curr->token, "_") != 0){
+                                while(serverManifest_curr != NULL && strcmp(serverManifest_curr->token, "_") != 0){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
 
