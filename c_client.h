@@ -54,7 +54,7 @@ void push_c(char *projectName);
 char *getProjectDir(char *projectName);
 
 // commit
-void commit_c(char *projectName);
+void commit_c(char* projectName, int sockfd);
 
 
 
