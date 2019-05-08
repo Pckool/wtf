@@ -31,11 +31,13 @@ void commit_c(char* projectName){
         // DONE
         char subPath[PATH_MAX];
         char projPath[PATH_MAX];
-        snprintf(subPath, 2000, "%s/%s", projectName, ".Manifest"); //Path to manifest
+        snprintf(subPath, PATH_MAX, "%s/%s", projectName, ".Manifest"); //Path to manifest
 
         int fd_1 = open(subPath, O_RDWR | O_APPEND); //Open manifest
-        
-        if (fd_1 < 0){
+
+        DIR *dir;
+
+        if ((dir = opendir ("./projectName")) == NULL) {
                 if(findProject(projectName) < 0){
                         printf("There was an error opening the %s file...\nError No: %d\n", ".Manifest", fd_1);
                         return;
@@ -43,18 +45,17 @@ void commit_c(char* projectName){
                 else{
                         
                         if(getProjectDir(projectName) == NULL){
-                                printf("ERROR Couldn't find the project, please go next to the project folder or inside of it.\n");
+                                perror("ERROR Couldn't find the project, please go next to the project folder or inside of it.\n");
                                 return;
                         }
-                                
                         snprintf(projPath, PATH_MAX, "%s/%s", getProjectDir(projectName), ".Manifest"); //Path to manifest
                         printf("found %s\n", projPath);
                         
                         
                 }
-                
+    
         }
-        close(fd_1);
+        closedir(dir);
 
         char commitPath[PATH_MAX];
         char manifestPath[PATH_MAX];
