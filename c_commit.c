@@ -151,7 +151,7 @@ void commit_c(char* projectName){
                         char *commitBuffer = (char *)malloc(2 * sizeof(char));
                         memcpy(commitBuffer, "\0", 2);
 
-                        printf("allocated memory for the commit buffer: current server token: ...\n", serverManifest_curr->token);
+                        printf("allocated memory for the commit buffer: current server token: %s...\n", serverManifest_curr->token);
                         // compairing time
                         while(clientManifest_curr != NULL){
                                 
