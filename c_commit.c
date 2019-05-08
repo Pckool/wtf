@@ -172,7 +172,7 @@ void commit_c(char* projectName){
                                                 // append with A
                                                 commitBuffer = concat(commitBuffer, "A\t");
                                                 while(clientManifestLine_curr != NULL){
-                                                        printf("WENIS2:\n%s\n", commitBuffer);
+                                                        printf("Current token:\n%s\n", clientManifestLine_curr->token);
                                                         concat(commitBuffer, clientManifestLine_curr->token);
                                                         if(clientManifestLine_curr->next != NULL){
                                                                 // if the next token in the line is NOT null (not at EOL)
