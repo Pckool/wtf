@@ -40,7 +40,7 @@ void commit_c(char* projectName){
                         return;
                 }
                 else{
-                        snprintf(subPath, 2000, "%s/%s", getProjectDir(proj), ".Manifest"); //Path to manifest
+                        snprintf(subPath, 2000, "%s/%s", getProjectDir(projectName), ".Manifest"); //Path to manifest
                         printf("found %s\n", subPath);
                 }
                 
