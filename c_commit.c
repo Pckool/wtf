@@ -182,6 +182,7 @@ void commit_c(char* projectName){
                                                 continue;
                                         }
                                 }
+                                printf("Commit buffer:\n%s\n", commitBuffer);
                                 while(serverManifest_curr != NULL && strcmp(serverManifest_curr->token, "_") != 0){
                                         DataLink *serverManifestLineHead = (DataLink *)malloc(sizeof(DataLink));
                                         serverManifestLineHead = newDataLink("_START_");
